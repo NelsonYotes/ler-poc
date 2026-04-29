@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Parchment — Learning & Employment Records</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<style>
+  :root {
+    --instui-blue45:#2B7ABC; --instui-blue57:#0E68B3; --instui-blue12:#E0EBF5;
+    --instui-grey125:#273540; --instui-grey100:#334451; --instui-grey57:#586874;
+    --instui-grey45:#6A7883; --instui-grey24:#9EA6AD; --instui-grey14:#D7DADE;
+    --instui-grey12:#E8EAEC; --instui-grey11:#F2F4F4;
+    --instui-green45:#03893D; --instui-green12:#DCEEE4;
+    --instui-red45:#E62429; --instui-red12:#FCE4E5;
+    --instui-orange45:#CF4A00; --instui-orange12:#FCE5D9;
+  }
+  * { font-family:'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; }
+  body { background:var(--instui-grey11); color:var(--instui-grey125); }
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:var(--instui-grey12); }
+  ::-webkit-scrollbar-thumb { background:var(--instui-grey24); border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:var(--instui-grey45); }
+  .fade-in { animation:fadeIn 0.3s ease-in-out; }
+  .slide-up { animation:slideUp 0.35s ease-out; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .card-hover { transition:box-shadow 0.15s ease,border-color 0.15s ease; }
+  .card-hover:hover { box-shadow:0 2px 12px rgba(0,0,0,0.08); border-color:var(--instui-grey24) !important; }
+  .skill-pill { transition:background 0.1s ease; }
+  .skill-pill:hover { background:var(--instui-blue12) !important; }
+  .instui-btn { font-family:inherit; font-size:0.875rem; font-weight:700; line-height:1.25; border-radius:0.25rem; border-width:1px; border-style:solid; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:background 0.12s ease,border-color 0.12s ease; }
+  .instui-btn:focus-visible { outline:2px solid var(--instui-blue45); outline-offset:2px; }
+  .instui-btn:disabled { opacity:0.5; cursor:not-allowed; }
+  .instui-input:focus { outline:none; border-color:var(--instui-blue45); box-shadow:0 0 0 2px var(--instui-blue12); }
+  @media print { nav,.no-print{display:none !important;} body{background:white !important;} main{padding:40px 60px !important;max-width:100% !important;} }
+</style>
+</head>
+<body class="antialiased" style="background:#F2F4F4;color:#273540;">
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+// ─── MOCK DATA ───────────────────────────────────────────────
+const MOCK_CREDENTIALS = [
+  {id:'c1', name:'B.S. in Chemical Engineering', issuer:'Mount Elbert University', date:'2024-05-22', type:'Degree', skills:['Chemical Engineering','Process Control','Thermodynamics','Data Analysis','Lab Research'], imageUrl:'https://picsum.photos/seed/degree1/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c2', name:'High School Diploma', issuer:'Appletree High School', date:'2019-05-22', type:'Degree', skills:['Mathematics','Writing','Critical Thinking'], imageUrl:'https://picsum.photos/seed/degree2/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c3', name:'AWS Certified Solutions Architect', issuer:'Amazon Web Services', date:'2023-08-20', type:'Certification', skills:['Cloud Computing','AWS','Scalability','Infrastructure','Security'], imageUrl:'https://picsum.photos/seed/aws/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c4', name:'Advanced React Patterns', issuer:'Frontend Masters', date:'2024-01-05', type:'Course', skills:['React','TypeScript','Web Development','UI Design','Performance Optimization'], imageUrl:'https://picsum.photos/seed/react/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c5', name:'AI & UX Design Proficiency', issuer:'MIT Department of Computer Science', date:'2024-05-22', type:'Badge', skills:['AI Design','UX Research','Prototyping','Artificial Intelligence','User Testing'], imageUrl:'https://picsum.photos/seed/mit/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c6', name:'Technology Specialist Achievement', issuer:'West Valley Community College', date:'2024-05-22', type:'Certification', skills:['IT Support','Networking','Troubleshooting','Cybersecurity Fundamentals'], imageUrl:'https://picsum.photos/seed/wvcc/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c7', name:'Gator Experience Record', issuer:'University of Florida', date:'2026-02-10', type:'CLR', skills:['Community-Based Learning','Creative & Entrepreneurial Works','Global & Sociocultural Learning','Leadership & Involvement','Professional Exploration','Research','Internships & Work-Based Learning'], imageUrl:'https://picsum.photos/seed/florida-gators/400/250', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c8', name:'REAL Tide Summary of Experiences', issuer:'The University of Alabama', date:'2025-12-15', type:'CLR', skills:['Community Service','Leadership Development','Professional Development','Holistic Development','Global & Intercultural Learning'], imageUrl:'https://picsum.photos/seed/alabama-crimson/400/250', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c9', name:'Data Science Foundations', issuer:'Coursera / Johns Hopkins', date:'2023-11-10', type:'Course', skills:['Python','Data Analysis','Statistics','Machine Learning','Data Visualization'], imageUrl:'https://picsum.photos/seed/datascience/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c10', name:'Project Management Professional (PMP)', issuer:'Project Management Institute', date:'2024-03-15', type:'Certification', skills:['Project Management','Agile','Stakeholder Communication','Risk Management','Budgeting'], imageUrl:'https://picsum.photos/seed/pmp/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c11', name:'Leadership Excellence Badge', issuer:'National Student Leadership Conference', date:'2023-07-20', type:'Badge', skills:['Leadership','Team Building','Communication','Decision Making'], imageUrl:'https://picsum.photos/seed/leadership/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
+  {id:'c12', name:'Leadership and Career Readiness', issuer:'West Valley Community College', date:'2024-09-15', type:'Badge', skills:['Leadership','Career Development','Professional Skills','Communication','Goal Setting'], imageUrl:'https://picsum.photos/seed/careerready/200/200', isVerified:true, publicUrl:'https://www.parchment.com/lp/award/598faa1a-c96b-435e-badd-2ad8d24701ad'},
+  {id:'c13', name:'Associates in Applied Science', issuer:'West Valley Community College', date:'2021-05-20', type:'Degree', skills:['Applied Sciences','Technical Studies','Critical Thinking','Problem Solving','Quantitative Analysis'], imageUrl:'https://picsum.photos/seed/aas/200/200', isVerified:true, publicUrl:'https://www.parchment.com/lp/award/6e80b2f3-5cfd-4766-9c54-3c3a955762bd'},
+];
+
+const MOCK_OPPORTUNITIES = [
+  {id:'o1', type:'Job', title:'Senior Frontend Engineer', organization:'Vercel', location:'Remote', matchScore:94, matchReason:'Your Advanced React Patterns course and TypeScript skills are a direct match. AWS certification adds cloud deployment credibility.', requirements:['React','TypeScript','Performance Optimization','Web Development'], description:'Join our team to build the next generation of web deployment tools used by millions of developers worldwide.', compensation:'$150k – $220k'},
+  {id:'o2', type:'Job', title:'Cloud Solutions Architect', organization:'Snowflake', location:'San Mateo, CA (Hybrid)', matchScore:89, matchReason:'Your AWS Solutions Architect certification is a strong match. Experience with scalable infrastructure aligns well.', requirements:['Cloud Computing','AWS','Scalability','Infrastructure'], description:'Design highly scalable data warehousing solutions for enterprise clients across multiple cloud providers.', compensation:'$180k – $250k'},
+  {id:'o3', type:'Job', title:'Product Designer — AI Experiences', organization:'Anthropic', location:'San Francisco, CA', matchScore:83, matchReason:'Your AI & UX Design Proficiency badge from MIT is highly relevant. UX research skills match the role requirements.', requirements:['UX Research','AI Design','Prototyping','User Testing'], description:'Shape the interface layer between people and powerful AI systems. Help make AI safe and beneficial.', compensation:'$160k – $210k'},
+  {id:'o4', type:'Job', title:'Data Engineer', organization:'Databricks', location:'Remote', matchScore:78, matchReason:'Data Analysis skills from your Chemical Engineering degree and Data Science course align with pipeline engineering needs.', requirements:['Python','Data Analysis','SQL','Cloud Computing'], description:'Build and maintain large-scale data infrastructure powering ML and analytics workloads.', compensation:'$140k – $190k'},
+  {id:'o5', type:'Scholarship', title:'STEM Graduate Fellowship', organization:'National Science Foundation', location:'National (US)', matchScore:87, matchReason:'Your B.S. Chemical Engineering degree and research experience from the Gator Experience Record are strong qualifiers.', requirements:['Chemical Engineering','Research','Data Analysis','Lab Research'], description:'Three-year fellowship supporting STEM graduate research at accredited US institutions.', compensation:'$37k/year stipend + tuition', deadline:'November 15, 2026'},
+  {id:'o6', type:'Program', title:'Tech Leadership Accelerator', organization:'Google for Startups', location:'Virtual + NYC (Hybrid)', matchScore:81, matchReason:'Leadership development skills from Alabama CLR and project management certification position you well.', requirements:['Leadership','Project Management','Communication','Professional Development'], description:'12-week accelerator connecting emerging tech leaders with mentors, capital, and community.', compensation:'Equity-free, $10k travel stipend', deadline:'Rolling admissions'},
+  {id:'o7', type:'Internship', title:'Cloud Infrastructure Intern', organization:'Amazon Web Services', location:'Seattle, WA', matchScore:91, matchReason:'AWS certification and cloud computing skills are a near-perfect match. IT support background is a bonus.', requirements:['AWS','Cloud Computing','Networking','Security'], description:'Work alongside senior engineers on real infrastructure serving hundreds of millions of customers.', compensation:'$8,500/month', deadline:'March 1, 2027'},
+  {id:'o8', type:'Job', title:'IT Systems Analyst', organization:'Deloitte', location:'Chicago, IL (Hybrid)', matchScore:72, matchReason:'Technology Specialist certification and troubleshooting skills align with consulting infrastructure needs.', requirements:['IT Support','Networking','Troubleshooting','Communication'], description:'Analyze and improve enterprise IT systems for Fortune 500 clients across multiple industries.', compensation:'$90k – $120k'},
+];
+
+const MOCK_ORDERS = [
+  {id:'ord-1', date:'2024-05-22', status:'Delivered', statusDetail:'Available for download', document:'Official Transcript', purpose:'Graduate School Application', from:'Mount Elbert University', to:'MIT Graduate Admissions', subtotal:12.00, fee:2.50, total:14.50},
+  {id:'ord-2', date:'2024-03-15', status:'Processing', statusDetail:'Being prepared by institution', document:'Enrollment Verification', purpose:'Employment Background Check', from:'Mount Elbert University', to:'Salesforce Inc.', subtotal:0.00, fee:0.00, total:0.00},
+  {id:'ord-3', date:'2023-11-10', status:'Delivered', statusDetail:'Available for download', document:'Official Transcript', purpose:'Transfer Application', from:'Appletree High School', to:'West Valley Community College', subtotal:8.50, fee:1.00, total:9.50},
+  {id:'ord-4', date:'2023-08-05', status:'Cancelled', statusDetail:'Cancelled by requester', document:'Degree Verification Letter', purpose:'Employment Verification', from:'Mount Elbert University', to:'Google LLC', subtotal:7.00, fee:1.00, total:8.00},
+  {id:'ord-5', date:'2023-06-18', status:'Delivered', statusDetail:'Available for download', document:'Official Transcript', purpose:'Scholarship Application', from:'West Valley Community College', to:'National Merit Scholarship Corp.', subtotal:8.50, fee:1.00, total:9.50},
+];
+
+const INITIAL_LER = {
+  id:'ler-1',
+  title:'Senior Frontend Engineering Portfolio',
+  executiveSummary:'Experienced front-end developer with expertise in React, TypeScript, and cloud infrastructure. Holds verified credentials from leading institutions and an AWS certification, demonstrating a strong foundation in building and deploying scalable web applications. Co-curricular records document broad experiential learning across leadership, research, and professional development.',
+  skillsProfile:['React','TypeScript','AWS','Cloud Computing','Web Development','Performance Optimization','UI Design','Data Analysis'],
+  customSkills:['GraphQL','Tailwind CSS','Next.js'],
+  softSkills:['Communication','Mentorship','Agile'],
+  employmentHistory:[],
+  credentialIds:['c3','c4','c7','c8'],
+  status:'Published',
+  createdAt:new Date().toISOString(),
+  targetRole:'Cloud Architect / Senior Engineer',
+};
+
+// ─── AI SERVICE ──────────────────────────────────────────────
+async function generateLERSummary(credentials, customSkills) {
+  await new Promise(r => setTimeout(r, 1400));
+  const allSkills = [...new Set([...credentials.flatMap(c=>c.skills), ...customSkills])].slice(0,12);
+  const degree = credentials.find(c=>c.type==='Degree');
+  const certs = credentials.filter(c=>c.type==='Certification');
+  const hasCLR = credentials.some(c=>c.type==='CLR');
+  const hasBadge = credentials.some(c=>c.type==='Badge');
+  const parts = [];
+  if (degree) parts.push(`Holds a verified ${degree.name} from ${degree.issuer}.`);
+  if (certs.length>0) parts.push(`Complemented by ${certs.length} industry certification${certs.length>1?'s':''} including ${certs.map(c=>c.name).join(' and ')}.`);
+  if (hasCLR) parts.push('Co-curricular record documents rich experiential learning spanning leadership, research, and community engagement.');
+  if (hasBadge) parts.push('Digital badges validate specialized proficiency in high-demand skill areas.');
+  if (customSkills.length>0) parts.push(`Additional self-developed expertise in ${customSkills.slice(0,3).join(', ')}.`);
+  if (parts.length===0) parts.push('Motivated professional with a verified credential portfolio demonstrating technical and collaborative expertise.');
+  return {executiveSummary:parts.join(' '), skillsProfile:allSkills};
+}
+
+function matchOpportunities(ler) {
+  const skills = [...(ler.skillsProfile||[]),...(ler.customSkills||[]),...(ler.softSkills||[])].map(s=>s.toLowerCase());
+  return MOCK_OPPORTUNITIES.filter(opp=>opp.requirements.some(req=>skills.some(s=>s.includes(req.toLowerCase())||req.toLowerCase().includes(s))));
+}
+
+// ─── UTILITIES ───────────────────────────────────────────────
+const talentNeuronUrl = skill => `https://www.talentneuron.com/portal/market-data/skills/${skill.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`;
+const lerShareUrl = ler => `${window.location.origin}${window.location.pathname}?lerView=${ler.id}`;
+function scoreColor(s){return s>=90?'text-[#027634] bg-[#DCEEE4] border-[#B8DEC6]':s>=80?'text-[#0E68B3] bg-[#E0EBF5] border-[#C0D9EE]':s>=70?'text-[#B34000] bg-[#FCE5D9] border-[#F5C4A8]':'text-[#586874] bg-[#F2F4F4] border-[#D7DADE]';}
+function scoreBar(s){return s>=90?'bg-[#03893D]':s>=80?'bg-[#2B7ABC]':s>=70?'bg-[#CF4A00]':'bg-[#9EA6AD]';}
+
+// ─── BUTTON ──────────────────────────────────────────────────
+const Button = ({children,variant='primary',size='md',isLoading,className='',...props}) => {
+  const variants={primary:'bg-[#2B7ABC] text-white border-[#2B7ABC] hover:bg-[#0E68B3] hover:border-[#0E68B3]',success:'bg-[#03893D] text-white border-[#03893D] hover:bg-[#027634] hover:border-[#027634]',outline:'bg-[#F2F4F4] text-[#273540] border-[#D7DADE] hover:bg-[#E8EAEC] hover:border-[#9EA6AD]',ghost:'bg-transparent text-[#0E68B3] border-transparent hover:bg-[#E0EBF5]',danger:'bg-[#E62429] text-white border-[#E62429] hover:bg-[#C71F23] hover:border-[#C71F23]'};
+  const sizes={sm:'px-3 py-1.5 text-sm min-h-[1.875rem]',md:'px-4 py-2 text-sm min-h-[2.375rem]',lg:'px-5 py-2.5 text-base min-h-[2.875rem]'};
+  return <button className={`instui-btn ${variants[variant]} ${sizes[size]} ${className}`} disabled={isLoading||props.disabled} {...props}>{isLoading&&<svg className="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-current" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>}{children}</button>;
+};
+
+// ─── CREDENTIAL CARD ─────────────────────────────────────────
+const TYPE_COLORS = {Degree:'bg-[#E0EBF5] text-[#0E68B3] border-[#C0D9EE]',Certification:'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]',Badge:'bg-[#FCE5D9] text-[#B34000] border-[#F5C4A8]',Course:'bg-[#DAEEEF] text-[#00717B] border-[#A8D8DB]',CLR:'bg-[#F1E6F5] text-[#9242B4] border-[#D8B8E8]'};
+const TYPE_LABELS = {Degree:'Diploma',Certification:'Certificate',Badge:'Badge',Course:'Course',CLR:'Learner Record'};
+
+const CredentialCard = ({credential:c,isSelected=false,onToggle,onView,selectable=false}) => {
+  const isBadge=c.type==='Badge', isCLR=c.type==='CLR';
+  return (
+    <div onClick={()=>{if(isCLR&&onView)onView(c.id);else if(onToggle)onToggle(c.id);}} className={`relative bg-white rounded-lg border transition-all card-hover flex gap-4 p-4 h-full ${selectable||onToggle?'cursor-pointer':''} ${isSelected?'border-[#2B7ABC] ring-2 ring-[#2B7ABC]/10 bg-[#E0EBF5]/30':'border-[#D7DADE]'}`}>
+      <div className={`shrink-0 overflow-hidden border border-[#E8EAEC] bg-[#F2F4F4] flex items-center justify-center ${isBadge?'w-16 h-16 rounded-full':'w-20 h-16 rounded-md'}`}>
+        {c.imageUrl?<img src={c.imageUrl} className="w-full h-full object-cover" alt={c.name}/>:<span className="text-xl font-bold text-[#9EA6AD]">{c.name.charAt(0)}</span>}
+      </div>
+      <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${TYPE_COLORS[c.type]}`}>{TYPE_LABELS[c.type]}</span>
+          {c.isVerified?<span className="text-[10px] font-bold text-[#027634] bg-[#DCEEE4] px-1.5 py-0.5 rounded border border-[#B8DEC6]">✓ Verified</span>:<span className="text-[10px] font-bold text-[#B34000] bg-[#FCE5D9] px-1.5 py-0.5 rounded border border-[#F5C4A8]">Self-Declared</span>}
+        </div>
+        <h3 className="font-bold text-[#273540] text-sm leading-tight">{c.name}</h3>
+        <p className="text-xs text-[#586874] truncate">{c.issuer}</p>
+        <p className="text-xs text-[#9EA6AD]">{new Date(c.date).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</p>
+        {isCLR&&onView&&<button onClick={e=>{e.stopPropagation();onView(c.id);}} className="mt-1 text-xs font-bold text-[#2B7ABC] hover:text-[#0E68B3] hover:underline text-left">View Full Record →</button>}
+        {!isCLR&&c.publicUrl&&!selectable&&<a href={c.publicUrl} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="mt-1 text-xs font-bold text-[#2B7ABC] hover:text-[#0E68B3] hover:underline">View Credential →</a>}
+      </div>
+      {isSelected&&<div className="absolute top-3 right-3 text-[#2B7ABC]"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg></div>}
+    </div>
+  );
+};
+
+// ─── OPPORTUNITY CARD ────────────────────────────────────────
+const OPP_TYPE_COLORS = {Job:'bg-[#E0EBF5] text-[#0E68B3] border-[#C0D9EE]',Scholarship:'bg-[#FCE5D9] text-[#B34000] border-[#F5C4A8]',Program:'bg-[#F1E6F5] text-[#9242B4] border-[#D8B8E8]',Internship:'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]'};
+
+const OpportunityCard = ({opp}) => (
+  <div className="bg-white rounded-lg border border-[#D7DADE] p-5 card-hover group">
+    <div className="flex flex-col md:flex-row gap-5">
+      <div className="w-14 h-14 bg-[#F2F4F4] rounded-lg border border-[#E8EAEC] flex items-center justify-center shrink-0">
+        <span className="text-xl font-bold text-[#9EA6AD]">{opp.organization.charAt(0)}</span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-center gap-2 mb-1.5">
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${OPP_TYPE_COLORS[opp.type]}`}>{opp.type}</span>
+          <span className="text-sm text-[#586874]">{opp.organization}</span>
+          <span className="text-sm text-[#9EA6AD]">·</span>
+          <span className="text-sm text-[#9EA6AD]">{opp.location}</span>
+        </div>
+        <h3 className="text-base font-bold text-[#273540] group-hover:text-[#2B7ABC] transition-colors leading-snug mb-1.5">{opp.title}</h3>
+        <p className="text-sm text-[#586874] leading-relaxed mb-3 line-clamp-2">{opp.description}</p>
+        <div className="flex flex-wrap gap-1.5 mb-3">{opp.requirements.map((r,i)=><span key={i} className="px-2.5 py-1 bg-[#F2F4F4] border border-[#D7DADE] text-[#586874] text-xs font-bold rounded">{r}</span>)}</div>
+        <div className="flex flex-wrap items-center gap-4 text-sm">
+          {opp.compensation&&<span className="font-bold text-[#03893D]">{opp.compensation}</span>}
+          {opp.deadline&&<span className="text-[#9EA6AD]">Deadline: {opp.deadline}</span>}
+        </div>
+      </div>
+      <div className="md:w-44 flex flex-col items-end justify-between gap-3 shrink-0 md:border-l md:border-[#E8EAEC] md:pl-5">
+        <div className="text-right">
+          <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded border text-sm font-bold ${scoreColor(opp.matchScore)}`}>{opp.matchScore}%<span className="text-xs">Match</span></div>
+          <div className="mt-2 w-full bg-[#E8EAEC] rounded-full h-1.5 overflow-hidden"><div className={`h-full rounded-full ${scoreBar(opp.matchScore)}`} style={{width:`${opp.matchScore}%`}}/></div>
+          <p className="text-xs text-[#9EA6AD] mt-2 leading-relaxed italic line-clamp-3 text-right">"{opp.matchReason}"</p>
+        </div>
+        <button className="inline-flex items-center gap-1 text-sm font-bold text-[#2B7ABC] hover:text-[#0E68B3]">Apply with LER <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+);
+
+// ─── LER CARD ────────────────────────────────────────────────
+const LERCard = ({ler,isActive,onSelect,onView,onToggleStatus,onDelete}) => {
+  const [menu,setMenu]=React.useState(false);
+  const [copied,setCopied]=React.useState(false);
+  const total=(ler.skillsProfile?.length||0)+(ler.customSkills?.length||0)+(ler.softSkills?.length||0);
+  const copyLink=e=>{e.stopPropagation();navigator.clipboard.writeText(lerShareUrl(ler));setCopied(true);setTimeout(()=>setCopied(false),2000);};
+  return (
+    <div onClick={onSelect} className={`relative bg-white rounded-lg border transition-all card-hover flex flex-col cursor-pointer ${isActive?'border-[#2B7ABC] shadow-sm':'border-[#D7DADE]'}`}>
+      {isActive&&<div className="absolute top-0 left-0 right-0 h-0.5 bg-[#2B7ABC] rounded-t-lg"/>}
+      <div className="p-5">
+        <div className="flex justify-between items-start mb-3">
+          <button onClick={e=>{e.stopPropagation();onView();}} className="text-left font-bold text-[#2B7ABC] text-sm leading-snug hover:text-[#0E68B3] hover:underline line-clamp-2 flex-1 pr-2">{ler.title}</button>
+          <div className="relative shrink-0">
+            <button onClick={e=>{e.stopPropagation();setMenu(m=>!m);}} className="p-1.5 text-[#9EA6AD] hover:text-[#586874] rounded hover:bg-[#F2F4F4] transition-colors"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg></button>
+            {menu&&(<><div className="fixed inset-0 z-10" onClick={()=>setMenu(false)}/>
+              <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-[#D7DADE] z-20 overflow-hidden py-1">
+                <button onClick={e=>{e.stopPropagation();onView();setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#273540] hover:bg-[#F2F4F4]">View Record</button>
+                <button onClick={e=>{copyLink(e);setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#273540] hover:bg-[#F2F4F4]">{copied?'✓ Link Copied!':'Copy Share Link'}</button>
+                <button onClick={e=>{e.stopPropagation();onDelete();setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#E62429] hover:bg-[#FCE4E5]">Delete Record</button>
+              </div>
+            </>)}
+          </div>
+        </div>
+        <div className="flex items-center gap-2 mb-4">
+          <span className={`px-2 py-0.5 text-xs font-bold rounded border ${ler.status==='Published'?'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]':'bg-[#FCE4E5] text-[#C71F23] border-[#F0B8BB]'}`}>{ler.status==='Published'?'● Public':'● Private'}</span>
+          <span className="text-xs text-[#9EA6AD]">{new Date(ler.createdAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>
+        </div>
+        <div className="flex gap-5 mb-4">
+          <div className="text-center"><div className="text-xl font-bold text-[#273540]">{ler.credentialIds.length}</div><div className="text-xs text-[#9EA6AD] uppercase tracking-wide">Credentials</div></div>
+          <div className="text-center"><div className="text-xl font-bold text-[#273540]">{total}</div><div className="text-xs text-[#9EA6AD] uppercase tracking-wide">Skills</div></div>
+        </div>
+        <p className="text-sm text-[#586874] line-clamp-2 leading-relaxed italic border-l-2 border-[#E8EAEC] pl-3">"{ler.executiveSummary}"</p>
+      </div>
+      <div className="px-5 pb-4 mt-auto flex gap-2">
+        <Button variant={ler.status==='Published'?'success':'outline'} size="sm" onClick={e=>{e.stopPropagation();onToggleStatus();}} className="flex-1">{ler.status==='Published'?'Published':'Set Public'}</Button>
+        <Button variant="outline" size="sm" onClick={e=>{e.stopPropagation();onView();}}>View</Button>
+      </div>
+    </div>
+  );
+};
+
+// ─── CLR PREVIEW MODAL ───────────────────────────────────────
+const CLRPreviewModal = ({credential:c,onClose}) => {
+  const isUF=c.issuer.toLowerCase().includes('florida');
+  const isAlabama=c.issuer.toLowerCase().includes('alabama');
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl min-h-[80vh] my-8 flex flex-col relative overflow-hidden">
+        <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/30 text-white rounded-full transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        {isUF&&(
+          <div className="flex-1 flex flex-col">
+            <div className="bg-[#0021A5] px-10 py-8 text-white flex justify-between items-start">
+              <div><div className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">University of Florida</div><h1 className="text-3xl font-black tracking-tight uppercase">Gator Experience Record</h1><p className="text-lg font-bold opacity-90 mt-1">Jordan K. Anderson</p></div>
+              <div className="text-right text-[10px] font-black uppercase tracking-widest opacity-70 space-y-1"><p>Issued: Feb 10, 2026</p><p>ID: 250210MKL1I3</p></div>
+            </div>
+            <div className="flex-1 p-10 space-y-10 bg-white">
+              <div className="grid grid-cols-7 gap-4">
+                {[{l:'Community-Based',v:'23',u:'Hours',i:'👥'},{l:'Creative & Entrepreneurial',v:'8',u:'Hours',i:'💡'},{l:'Global & Sociocultural',v:'8',u:'Activities',i:'🌍'},{l:'Leadership',v:'2',u:'Activities',i:'⚓'},{l:'Professional Exploration',v:'4',u:'Activities',i:'🧭'},{l:'Research',v:'16',u:'Hours',i:'📚'},{l:'Work-Based',v:'144',u:'Hours',i:'🤝'}].map((s,i)=>(
+                  <div key={i} className="text-center"><div className="text-3xl mb-2">{s.i}</div><p className="text-[9px] font-black uppercase leading-tight text-slate-500 mb-1">{s.l}</p><div className="text-2xl font-black text-[#0021A5]">{s.v}</div><p className="text-[9px] font-black text-slate-400">{s.u}</p></div>
+                ))}
+              </div>
+              <div><h2 className="text-[#0021A5] font-black uppercase tracking-tight text-lg mb-4 border-b-2 border-slate-100 pb-2">Alternative Credentials</h2>
+                <div className="flex gap-4">{['Mastery','Proficiency','Knowledge','Experience','Fundamentals'].map((b,i)=>(
+                  <div key={i} className="flex flex-col items-center gap-1.5"><div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-black text-xl shadow ${['bg-amber-500','bg-orange-600','bg-blue-800','bg-emerald-600','bg-teal-700'][i]}`}>1</div><span className="text-[9px] font-black uppercase text-slate-400">{b}</span></div>
+                ))}</div>
+              </div>
+            </div>
+            <div className="px-10 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+              <span className="text-[10px] font-black uppercase tracking-widest" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure</span>
+              <p className="text-[10px] text-slate-400 font-bold uppercase">Page 1 of 9</p>
+            </div>
+          </div>
+        )}
+        {isAlabama&&(
+          <div className="flex-1 flex flex-col">
+            <div className="bg-[#9E1B32] px-10 py-8 text-white">
+              <div className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">The University of Alabama</div>
+              <h1 className="text-3xl font-black tracking-tight uppercase">REAL Tide Summary of Experiences</h1>
+              <div className="flex justify-between items-end mt-4">
+                <div><p className="text-xl font-black">Anjali Kurse</p><p className="text-sm opacity-80 font-medium">Junior · Chemistry & History · Minor: Global Health</p></div>
+                <div className="bg-white/20 rounded-xl px-6 py-4 text-center"><div className="text-3xl font-black">$2,500</div><div className="text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">Economic Impact</div></div>
+              </div>
+            </div>
+            <div className="flex-1 p-10 bg-white">
+              <div className="grid grid-cols-5 gap-6">{[{l:'Community Service',v:'4',i:'❤️'},{l:'Leadership Development',v:'5',i:'🏃'},{l:'Professional Development',v:'13',i:'⚙️'},{l:'Holistic Development',v:'4',i:'🧘'},{l:'Global & Intercultural',v:'3',i:'🌍'}].map((s,i)=>(
+                <div key={i} className="text-center p-4 bg-slate-50 rounded-xl"><div className="text-3xl mb-2">{s.i}</div><p className="text-[9px] font-black uppercase leading-tight text-slate-500 mb-1">{s.l}</p><div className="text-2xl font-black text-[#9E1B32]">{s.v}</div><p className="text-[9px] font-black text-slate-400">Hours</p></div>
+              ))}</div>
+            </div>
+            <div className="px-10 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
+              <span className="text-[10px] font-black uppercase tracking-widest" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure</span>
+              <p className="text-[10px] text-slate-400 font-bold uppercase">Page 1 of 7</p>
+            </div>
+          </div>
+        )}
+        {!isUF&&!isAlabama&&(
+          <div className="flex-1 flex flex-col items-center justify-center p-16 text-center">
+            <div className="text-6xl mb-6">📄</div>
+            <h2 className="text-2xl font-black text-slate-900 mb-2">{c.name}</h2>
+            <p className="text-slate-500 font-medium mb-6">{c.issuer}</p>
+            <div className="flex flex-wrap gap-2 justify-center">{c.skills.map(s=><span key={s} className="px-3 py-1 text-xs font-bold rounded border" style={{background:'#E0EBF5',color:'#0E68B3',borderColor:'#C0D9EE'}}>{s}</span>)}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── ADD CREDENTIAL MODAL ────────────────────────────────────
+const AddCredentialModal = ({onSave,onCancel}) => {
+  const [name,setName]=React.useState('');
+  const [issuer,setIssuer]=React.useState('');
+  const [date,setDate]=React.useState(new Date().toISOString().split('T')[0]);
+  const [type,setType]=React.useState('Certification');
+  const iStyle={borderColor:'#D7DADE',color:'#273540',background:'#fff'};
+  return (
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{background:'rgba(39,53,64,0.75)'}}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden border" style={{borderColor:'#D7DADE'}}>
+        <div className="px-5 py-4 flex justify-between items-center" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}>
+          <h3 className="font-bold text-sm" style={{color:'#273540'}}>Add Self-Declared Achievement</h3>
+          <button onClick={onCancel} className="p-1.5 rounded hover:bg-[#E8EAEC]"><svg className="w-5 h-5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div className="p-5 space-y-4">
+          <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Achievement Name</label><input autoFocus type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Graphic Design Certificate" className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
+          <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Issuing Organization</label><input type="text" value={issuer} onChange={e=>setIssuer(e.target.value)} placeholder="e.g. Coursera" className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
+          <div className="grid grid-cols-2 gap-4">
+            <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Date Earned</label><input type="date" value={date} onChange={e=>setDate(e.target.value)} className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
+            <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Type</label>
+              <select value={type} onChange={e=>setType(e.target.value)} className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}>
+                <option value="Certification">Certificate</option><option value="Badge">Badge</option><option value="Course">Course</option><option value="Degree">Degree</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="px-5 py-4 flex justify-end gap-3" style={{background:'#F2F4F4',borderTop:'1px solid #D7DADE'}}>
+          <Button variant="outline" size="sm" onClick={onCancel}>Cancel</Button>
+          <Button variant="primary" size="sm" onClick={()=>onSave({id:Math.random().toString(36).slice(2,11),name,issuer,date,type,skills:[],isVerified:false})} disabled={!name.trim()||!issuer.trim()}>Save Achievement</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── OPPORTUNITIES MODAL ─────────────────────────────────────
+const OpportunitiesModal = ({opps,lerTitle,onClose}) => {
+  const [filter,setFilter]=React.useState('All');
+  const filtered=filter==='All'?opps:opps.filter(o=>o.type===filter);
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(39,53,64,0.75)'}}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col border" style={{borderColor:'#D7DADE'}}>
+        <div className="px-6 py-4 flex items-center justify-between shrink-0" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}>
+          <div>
+            <h3 className="font-bold text-sm" style={{color:'#273540'}}>All Matched Opportunities ({opps.length})</h3>
+            {lerTitle&&<p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>Based on: {lerTitle}</p>}
+          </div>
+          <button onClick={onClose} className="p-1.5 rounded hover:bg-[#E8EAEC] transition-colors" style={{color:'#9EA6AD'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+        <div className="px-6 py-3 flex gap-2 shrink-0" style={{borderBottom:'1px solid #E8EAEC'}}>
+          {['All','Job','Internship','Scholarship','Program'].map(t=>(
+            <button key={t} onClick={()=>setFilter(t)} className="instui-btn px-3 py-1.5 text-xs transition-all" style={filter===t?{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}:{background:'#F2F4F4',color:'#586874',borderColor:'#D7DADE'}}>{t}</button>
+          ))}
+        </div>
+        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          {filtered.length>0?filtered.map(opp=><OpportunityCard key={opp.id} opp={opp}/>):<div className="text-center py-12"><p className="text-sm" style={{color:'#9EA6AD'}}>No opportunities match this filter.</p></div>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── SHARE MENU ───────────────────────────────────────────────
+const ShareMenu = ({ler}) => {
+  const [open,setOpen]=React.useState(false);
+  const [copied,setCopied]=React.useState(false);
+  const url=lerShareUrl(ler);
+  if(ler.status!=='Published') return <Button variant="outline" size="md" disabled>Share</Button>;
+  return (
+    <div className="relative">
+      <Button variant="primary" size="md" onClick={()=>setOpen(o=>!o)}>Share Record <svg className={`ml-2 w-3.5 h-3.5 transition-transform ${open?'rotate-180':''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg></Button>
+      {open&&(<>
+        <div className="fixed inset-0 z-10" onClick={()=>setOpen(false)}/>
+        <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border z-20 overflow-hidden" style={{borderColor:'#D7DADE'}}>
+          <div className="px-4 py-2.5" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}><p className="text-xs font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Share to</p></div>
+          <div className="p-1.5 space-y-0.5">
+            {[{name:'LinkedIn',href:`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`},{name:'X (Twitter)',href:`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent('My LER: '+ler.title)}`},{name:'Facebook',href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}].map(l=>(
+              <a key={l.name} href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-3 py-2 text-sm font-bold rounded hover:bg-[#F2F4F4] transition-colors" style={{color:'#273540'}} onClick={()=>setOpen(false)}>{l.name}</a>
+            ))}
+            <button onClick={()=>{navigator.clipboard.writeText(url);setCopied(true);setTimeout(()=>setCopied(false),2000);setOpen(false);}} className="w-full flex items-center gap-3 px-3 py-2 text-sm font-bold rounded transition-colors" style={{color:'#2B7ABC',borderTop:'1px solid #E8EAEC',marginTop:'4px'}} onMouseEnter={e=>e.currentTarget.style.background='#E0EBF5'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>{copied?'✓ Copied!':'Copy Link'}</button>
+          </div>
+        </div>
+      </>)}
+    </div>
+  );
+};
+
+// ─── LER BUILDER ─────────────────────────────────────────────
+const LERBuilder = ({credentials,onSave,onCancel,initialLer=null,initialSelectedIds=[]}) => {
+  const [step,setStep]=React.useState(initialLer?2:1);
+  const [title,setTitle]=React.useState(initialLer?.title||'');
+  const [targetRole,setTargetRole]=React.useState(initialLer?.targetRole||'');
+  const [selectedIds,setSelectedIds]=React.useState(initialLer?.credentialIds||initialSelectedIds);
+  const [summary,setSummary]=React.useState(initialLer?.executiveSummary||'');
+  const [skills,setSkills]=React.useState(initialLer?.skillsProfile||[]);
+  const [customSkills,setCustomSkills]=React.useState(initialLer?.customSkills||[]);
+  const [newSkill,setNewSkill]=React.useState('');
+  const [isGenerating,setIsGenerating]=React.useState(false);
+  const [editingSkill,setEditingSkill]=React.useState(null);
+  const [status,setStatus]=React.useState(initialLer?.status||'Published');
+  const [search,setSearch]=React.useState('');
+
+  const filteredCreds=React.useMemo(()=>credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())||c.skills.some(s=>s.toLowerCase().includes(search.toLowerCase()))),[credentials,search]);
+  const grouped=React.useMemo(()=>({'Comprehensive Learner Records':filteredCreds.filter(c=>c.type==='CLR'),'Diplomas':filteredCreds.filter(c=>c.type==='Degree'),'Certificates & Courses':filteredCreds.filter(c=>c.type==='Certification'||c.type==='Course'),'Digital Badges':filteredCreds.filter(c=>c.type==='Badge')}),[filteredCreds]);
+  const toggle=id=>setSelectedIds(prev=>prev.includes(id)?prev.filter(i=>i!==id):[...prev,id]);
+
+  const handleGenerate=async(regen=false)=>{
+    if(!title.trim())return;
+    setIsGenerating(true);
+    try{const creds=credentials.filter(c=>selectedIds.includes(c.id));const result=await generateLERSummary(creds,customSkills);setSummary(result.executiveSummary);if(!regen){setSkills(result.skillsProfile);setStep(2);}}
+    catch(e){console.error(e);}finally{setIsGenerating(false);}
+  };
+
+  const addSkill=()=>{const t=newSkill.trim();if(t&&!customSkills.includes(t)&&!skills.includes(t)){setCustomSkills(p=>[...p,t]);setNewSkill('');}};
+  const saveEdit=()=>{if(!editingSkill)return;const{type,index,value}=editingSkill;if(value.trim()){if(type==='verified')setSkills(p=>p.map((s,i)=>i===index?value.trim():s));else setCustomSkills(p=>p.map((s,i)=>i===index?value.trim():s));}setEditingSkill(null);};
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto" style={{background:'rgba(39,53,64,0.75)'}}>
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-[1040px] max-h-[94vh] flex flex-col border my-4" style={{borderColor:'#D7DADE'}}>
+        <div className="px-7 py-5 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid #D7DADE'}}>
+          <div>
+            <h2 className="text-lg font-bold" style={{color:'#273540'}}>{initialLer?'Edit Learning & Employment Record':'Build a Learning & Employment Record'}</h2>
+            <div className="flex items-center gap-2 mt-2">
+              {[1,2].map(s=>(
+                <React.Fragment key={s}>
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all" style={step===s?{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}:step>s?{background:'#03893D',color:'#fff',borderColor:'#03893D'}:{background:'#fff',color:'#9EA6AD',borderColor:'#D7DADE'}}>
+                    {step>s?<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>:s}
+                  </div>
+                  <span className="text-xs font-bold uppercase tracking-wide" style={{color:step===s?'#273540':'#9EA6AD'}}>{s===1?'Select Evidence':'Refine Profile'}</span>
+                  {s<2&&<div className="w-8 h-px" style={{background:'#D7DADE'}}/>}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+          <button onClick={onCancel} className="p-2 rounded hover:bg-[#F2F4F4] transition-colors" style={{color:'#9EA6AD'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-7" style={{background:'#F2F4F4'}}>
+          {step===1&&(
+            <div className="space-y-6 fade-in">
+              <div className="bg-white rounded-lg border p-5 space-y-4" style={{borderColor:'#D7DADE'}}>
+                <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#2B7ABC'}}>Record Title *</label><input autoFocus type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Software Engineering Portfolio" className="instui-input w-full px-3 py-2.5 rounded border text-base font-bold" style={{borderColor:'#D7DADE',color:'#273540'}}/></div>
+                <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#9EA6AD'}}>Target Role or Goal <span className="font-normal">(optional)</span></label><input type="text" value={targetRole} onChange={e=>setTargetRole(e.target.value)} placeholder="e.g. Cloud Architect, Graduate School, Product Manager" className="instui-input w-full px-3 py-2.5 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/></div>
+              </div>
+              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
+                <div className="flex items-center justify-between mb-4">
+                  <div><h3 className="text-sm font-bold uppercase tracking-wide" style={{color:'#273540'}}>Select Credentials</h3><p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{selectedIds.length} selected</p></div>
+                  <div className="relative"><svg className="w-4 h-4 absolute left-3 top-2.5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input type="text" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)} className="instui-input pl-9 pr-4 py-2 text-sm border rounded w-52" style={{background:'#F2F4F4',borderColor:'#D7DADE',color:'#273540'}}/></div>
+                </div>
+                <div className="space-y-6 max-h-[480px] overflow-y-auto pr-1">
+                  {Object.entries(grouped).map(([group,items])=>{
+                    if(!items.length)return null;
+                    return (
+                      <div key={group}>
+                        <h4 className="text-xs font-bold uppercase tracking-wide mb-3" style={{color:'#9EA6AD'}}>{group} ({items.length})</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                          {items.map(cred=>{const sel=selectedIds.includes(cred.id);return (
+                            <div key={cred.id} onClick={()=>toggle(cred.id)} className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all" style={sel?{borderColor:'#2B7ABC',background:'#E0EBF5'}:{borderColor:'#E8EAEC',background:'#fff'}}>
+                              <div className="w-10 h-10 rounded bg-[#F2F4F4] border border-[#E8EAEC] overflow-hidden shrink-0">{cred.imageUrl&&<img src={cred.imageUrl} className="w-full h-full object-cover" alt=""/>}</div>
+                              <div className="flex-1 min-w-0"><p className="text-xs font-bold truncate" style={{color:'#273540'}}>{cred.name}</p><p className="text-xs truncate" style={{color:'#9EA6AD'}}>{cred.issuer}</p></div>
+                              <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all" style={sel?{background:'#2B7ABC',borderColor:'#2B7ABC'}:{borderColor:'#D7DADE'}}>{sel&&<svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>}</div>
+                            </div>
+                          );})}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {step===2&&(
+            <div className="space-y-5 fade-in">
+              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded flex items-center justify-center" style={{background:'#2B7ABC'}}><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                    <div><h3 className="font-bold" style={{color:'#273540'}}>AI-Generated Summary</h3><p className="text-xs" style={{color:'#9EA6AD'}}>Powered by Claude · Edit freely to match your voice</p></div>
+                  </div>
+                  {isGenerating&&<span className="flex items-center gap-2 text-xs font-bold animate-pulse" style={{color:'#2B7ABC'}}><div className="w-2 h-2 bg-current rounded-full"/>Generating…</span>}
+                </div>
+                <textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-input w-full p-3 rounded border resize-none text-sm leading-relaxed" style={{borderColor:'#D7DADE',color:'#273540',background:'#F2F4F4'}}/>
+                <div className="flex justify-end mt-3"><Button variant="ghost" size="sm" onClick={()=>handleGenerate(true)} isLoading={isGenerating}>↻ Regenerate</Button></div>
+              </div>
+
+              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-bold" style={{color:'#273540'}}>Skills Portfolio</h3>
+                  <span className="text-xs italic" style={{color:'#9EA6AD'}}>Edit or add skills to improve your match score</span>
+                </div>
+                <div className="flex gap-2 mb-4">
+                  <input type="text" value={newSkill} onChange={e=>setNewSkill(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addSkill()} placeholder="Add a skill…" className="instui-input flex-1 px-3 py-2 border rounded text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/>
+                  <Button variant="primary" size="sm" onClick={addSkill}>+ Add</Button>
+                </div>
+                {skills.length>0&&(
+                  <div className="mb-4">
+                    <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Verified Skills ({skills.length})</p>
+                    <div className="flex flex-wrap gap-2">{skills.map((skill,idx)=>(
+                      <div key={`v-${idx}`} className="group flex items-center gap-1.5 px-2.5 py-1 rounded skill-pill" style={{background:'#E0EBF5',border:'1px solid #C0D9EE'}}>
+                        {editingSkill?.type==='verified'&&editingSkill.index===idx?<input autoFocus value={editingSkill.value} onChange={e=>setEditingSkill({...editingSkill,value:e.target.value})} onBlur={saveEdit} onKeyDown={e=>e.key==='Enter'&&saveEdit()} className="bg-transparent outline-none text-xs font-bold w-24" style={{color:'#0E68B3'}}/>:<span className="text-xs font-bold" style={{color:'#0E68B3'}}>{skill}</span>}
+                        <div className="hidden group-hover:flex items-center gap-1">
+                          <button onClick={()=>setEditingSkill({type:'verified',index:idx,value:skill})} style={{color:'#2B7ABC'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+                          <button onClick={()=>setSkills(p=>p.filter((_,i)=>i!==idx))} style={{color:'#E62429'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                        </div>
+                      </div>
+                    ))}</div>
+                  </div>
+                )}
+                {customSkills.length>0&&(
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Self-Declared Skills ({customSkills.length})</p>
+                    <div className="flex flex-wrap gap-2">{customSkills.map((skill,idx)=>(
+                      <div key={`c-${idx}`} className="group flex items-center gap-1.5 px-2.5 py-1 rounded skill-pill" style={{background:'#FCE5D9',border:'1px dashed #F5C4A8'}}>
+                        {editingSkill?.type==='custom'&&editingSkill.index===idx?<input autoFocus value={editingSkill.value} onChange={e=>setEditingSkill({...editingSkill,value:e.target.value})} onBlur={saveEdit} onKeyDown={e=>e.key==='Enter'&&saveEdit()} className="bg-transparent outline-none text-xs font-bold w-24" style={{color:'#B34000'}}/>:<span className="text-xs font-bold" style={{color:'#B34000'}}>{skill}</span>}
+                        <div className="hidden group-hover:flex items-center gap-1">
+                          <button onClick={()=>setEditingSkill({type:'custom',index:idx,value:skill})} style={{color:'#CF4A00'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+                          <button onClick={()=>setCustomSkills(p=>p.filter((_,i)=>i!==idx))} style={{color:'#E62429'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                        </div>
+                      </div>
+                    ))}</div>
+                  </div>
+                )}
+              </div>
+
+              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
+                <h3 className="font-bold mb-3" style={{color:'#273540'}}>Visibility</h3>
+                <div className="flex gap-3">{['Published','Private'].map(s=>(
+                  <button key={s} onClick={()=>setStatus(s)} className="instui-btn flex-1 py-2.5 text-sm font-bold transition-all" style={status===s?s==='Published'?{borderColor:'#03893D',background:'#DCEEE4',color:'#027634'}:{borderColor:'#586874',background:'#F2F4F4',color:'#273540'}:{borderColor:'#D7DADE',background:'#fff',color:'#9EA6AD'}}>{s==='Published'?'🌐 Public':'🔒 Private'}</button>
+                ))}</div>
+                <p className="text-xs mt-2" style={{color:'#9EA6AD'}}>{status==='Published'?'Anyone with the link can view this record.':'Only you can see this record.'}</p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="px-7 py-4 bg-white flex justify-between items-center shrink-0 rounded-b-lg" style={{borderTop:'1px solid #D7DADE'}}>
+          <Button variant="outline" size="sm" onClick={()=>step>1?setStep(1):onCancel()}>{step===1?'Cancel':'← Back'}</Button>
+          <div className="flex items-center gap-3">
+            {step===1&&selectedIds.length>0&&<span className="text-xs" style={{color:'#9EA6AD'}}>{selectedIds.length} credential{selectedIds.length!==1?'s':''} selected</span>}
+            {step===1&&<Button variant="primary" size="sm" onClick={()=>handleGenerate()} isLoading={isGenerating} disabled={!title.trim()}>Generate LER →</Button>}
+            {step===2&&<Button variant="success" size="sm" onClick={()=>onSave({id:initialLer?.id||Math.random().toString(36).slice(2,11),title,targetRole,executiveSummary:summary,skillsProfile:skills,customSkills,softSkills:initialLer?.softSkills||[],employmentHistory:initialLer?.employmentHistory||[],credentialIds:selectedIds,status,createdAt:initialLer?.createdAt||new Date().toISOString()})} disabled={!summary.trim()}>Save &amp; Publish Record</Button>}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── LER DETAIL VIEW ─────────────────────────────────────────
+const LERDetailView = ({ler,credentials,onBack,onEdit,onUpdate,isOwner}) => {
+  const [editingSummary,setEditingSummary]=React.useState(false);
+  const [summary,setSummary]=React.useState(ler.executiveSummary);
+  const [clrPreviewId,setClrPreviewId]=React.useState(null);
+  const [copied,setCopied]=React.useState(false);
+  const lerCreds=credentials.filter(c=>ler.credentialIds.includes(c.id));
+  const matched=React.useMemo(()=>matchOpportunities(ler),[ler]);
+
+  const copyLink=()=>{navigator.clipboard.writeText(lerShareUrl(ler));setCopied(true);setTimeout(()=>setCopied(false),2500);};
+
+  return (
+    <div className="slide-up pb-20">
+      {clrPreviewId&&<CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+      <div className="bg-white rounded-lg border p-5 mb-7 flex flex-col md:flex-row md:items-center gap-4" style={{borderColor:'#D7DADE'}}>
+        {isOwner&&<button onClick={onBack} className="p-2.5 rounded hover:bg-[#F2F4F4] transition-colors shrink-0 no-print w-fit" style={{color:'#586874'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>}
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Learning &amp; Employment Record</p>
+          <h2 className="text-xl font-bold leading-tight" style={{color:'#273540'}}>{ler.title}</h2>
+          {ler.targetRole&&<p className="text-sm mt-1" style={{color:'#586874'}}>Target: {ler.targetRole}</p>}
+          <div className="flex items-center gap-3 mt-2">
+            <span className="px-2.5 py-0.5 text-xs font-bold rounded border" style={ler.status==='Published'?{background:'#DCEEE4',color:'#027634',borderColor:'#B8DEC6'}:{background:'#FCE4E5',color:'#C71F23',borderColor:'#F0B8BB'}}>{ler.status==='Published'?'● Public':'● Private'}</span>
+            <span className="text-xs" style={{color:'#9EA6AD'}}>Updated {new Date(ler.createdAt).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</span>
+          </div>
+        </div>
+        {isOwner&&(
+          <div className="flex gap-2 no-print flex-wrap">
+            <Button variant="outline" size="md" onClick={onEdit}>Edit</Button>
+            <button onClick={copyLink} className="instui-btn px-4 py-2 text-sm min-h-[2.375rem]" style={copied?{background:'#DCEEE4',color:'#027634',borderColor:'#B8DEC6'}:{background:'#F2F4F4',color:'#273540',borderColor:'#D7DADE'}}>
+              {copied?'✓ Link Copied!':'Copy Public Link'}
+            </button>
+            <ShareMenu ler={ler}/>
+          </div>
+        )}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-8">
+          <section className="bg-white rounded-lg border p-6 relative overflow-hidden" style={{borderColor:'#D7DADE'}}>
+            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg" style={{background:'#2B7ABC'}}/>
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-xs font-bold uppercase tracking-widest" style={{color:'#2B7ABC'}}>Executive Summary</h3>
+              {isOwner&&<button onClick={()=>{if(editingSummary)onUpdate({...ler,executiveSummary:summary});setEditingSummary(e=>!e);}} className="text-xs font-bold hover:underline" style={{color:'#2B7ABC'}}>{editingSummary?'Save':'Edit'}</button>}
+            </div>
+            {editingSummary?<textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-input w-full p-3 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/>:<p className="text-sm leading-relaxed italic pl-4" style={{color:'#586874',borderLeft:'2px solid #E8EAEC'}}>"{ler.executiveSummary}"</p>}
+          </section>
+
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-wide mb-4 pb-3" style={{color:'#9EA6AD',borderBottom:'1px solid #E8EAEC'}}>Evidence &amp; Credentials ({lerCreds.length})</h3>
+            {lerCreds.length>0?<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={id=>setClrPreviewId(id)}/>)}</div>:<p className="text-sm italic" style={{color:'#9EA6AD'}}>No credentials attached to this record.</p>}
+          </section>
+        </div>
+
+        <div className="space-y-6">
+          <section className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Skills Portfolio</h3>
+            <p className="text-[10px] mb-4" style={{color:'#9EA6AD'}}>Click any skill to explore market data</p>
+            {ler.skillsProfile.length>0&&(
+              <div className="mb-4">
+                <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Verified Skills</p>
+                <div className="flex flex-wrap gap-2">{ler.skillsProfile.map(skill=>(
+                  <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded skill-pill" style={{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE',textDecoration:'none'}}>{skill} ↗</a>
+                ))}</div>
+              </div>
+            )}
+            {ler.customSkills?.length>0&&(
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Self-Declared Skills</p>
+                <div className="flex flex-wrap gap-2">{ler.customSkills.map(skill=>(
+                  <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded skill-pill" style={{background:'#FCE5D9',color:'#B34000',border:'1px dashed #F5C4A8',textDecoration:'none'}}>{skill} ↗</a>
+                ))}</div>
+              </div>
+            )}
+          </section>
+          <section className="rounded-lg p-5 text-white" style={{background:'#334451'}}>
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'rgba(255,255,255,0.6)'}}>Record at a Glance</h3>
+            <div className="space-y-3">
+              {[{label:'Credentials',value:lerCreds.length},{label:'Verified Skills',value:ler.skillsProfile.length},{label:'Self-Declared Skills',value:ler.customSkills.length},{label:'Opportunities Matched',value:matched.length}].map(item=>(
+                <div key={item.label} className="flex justify-between items-center">
+                  <span className="text-sm" style={{color:'rgba(255,255,255,0.75)'}}>{item.label}</span>
+                  <span className="text-xl font-bold">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── DASHBOARD PAGE (institution-grouped) ────────────────────
+const INDUSTRY_ISSUERS = ['Amazon Web Services','Frontend Masters','MIT Department of Computer Science','Coursera / Johns Hopkins','Project Management Institute','National Student Leadership Conference'];
+const INST_COLORS = {
+  'Mount Elbert University':{bar:'#1a5c8a',text:'#1a5c8a'},
+  'Appletree High School':{bar:'#2d6a4f',text:'#2d6a4f'},
+  'West Valley Community College':{bar:'#c95e1e',text:'#c95e1e'},
+  'University of Florida':{bar:'#0021A5',text:'#0021A5'},
+  'The University of Alabama':{bar:'#9E1B32',text:'#9E1B32'},
+  'Professional & Industry':{bar:'#9242B4',text:'#9242B4'},
+};
+
+const DashboardPage = ({credentials,onViewCLR,onAddCred}) => {
+  const [search,setSearch]=React.useState('');
+  const filtered=React.useMemo(()=>search?credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())):credentials,[credentials,search]);
+
+  const groups=React.useMemo(()=>{
+    const g={};
+    filtered.forEach(c=>{
+      const key=INDUSTRY_ISSUERS.includes(c.issuer)?'Professional & Industry':c.issuer;
+      if(!g[key])g[key]=[];
+      g[key].push(c);
+    });
+    return Object.entries(g).sort(([a],[b])=>{
+      if(a==='Professional & Industry')return 1;
+      if(b==='Professional & Industry')return-1;
+      return a.localeCompare(b);
+    });
+  },[filtered]);
+
+  return (
+    <div className="fade-in space-y-7">
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Dashboard</h1>
+          <p className="text-sm mt-0.5" style={{color:'#586874'}}>{credentials.length} credentials from {groups.length} institution{groups.length!==1?'s':''}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <svg className="w-4 h-4 absolute left-3 top-2.5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" placeholder="Search credentials…" value={search} onChange={e=>setSearch(e.target.value)} className="instui-input pl-9 pr-4 py-2 text-sm border rounded w-52" style={{background:'#fff',borderColor:'#D7DADE',color:'#273540'}}/>
+          </div>
+          <Button variant="outline" size="md" onClick={onAddCred}>+ Add Credential</Button>
+        </div>
+      </div>
+
+      {groups.length===0&&<div className="bg-white border-2 border-dashed rounded-lg p-12 text-center" style={{borderColor:'#D7DADE'}}><p className="font-bold" style={{color:'#9EA6AD'}}>No credentials match your search.</p></div>}
+
+      {groups.map(([institution,creds])=>{
+        const color=INST_COLORS[institution]||{bar:'#2B7ABC',text:'#2B7ABC'};
+        const hasCLR=creds.some(c=>c.type==='CLR');
+        return (
+          <div key={institution} className="bg-white rounded-lg border overflow-hidden" style={{borderColor:'#D7DADE'}}>
+            <div className="h-1.5" style={{background:color.bar}}/>
+            <div className="px-6 pt-5 pb-6">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-lg border flex items-center justify-center shrink-0" style={{background:'#F2F4F4',borderColor:'#E8EAEC'}}>
+                    <span className="text-lg font-black" style={{color:color.text}}>{institution.charAt(0)}</span>
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-base" style={{color:'#273540'}}>{institution}</h2>
+                    <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{creds.length} credential{creds.length!==1?'s':''}{hasCLR?' · Includes Co-curricular Record':''}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                {creds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+// ─── OPPORTUNITIES PAGE ───────────────────────────────────────
+const OpportunitiesPage = ({lers,activeLerId,credentials,onSetActiveLer,onViewLer,onNewLer,onEditLer,onDeleteLer,onToggleLerStatus}) => {
+  const [showAllOpps,setShowAllOpps]=React.useState(false);
+  const activeLer=lers.find(l=>l.id===activeLerId)||null;
+  const matchedOpps=React.useMemo(()=>activeLer?matchOpportunities(activeLer):[],[activeLer]);
+
+  return (
+    <div className="fade-in space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Opportunities</h1>
+          {activeLer?<p className="text-sm mt-0.5" style={{color:'#586874'}}>{matchedOpps.length} opportunities matched to <strong style={{color:'#273540'}}>{activeLer.title}</strong></p>:<p className="text-sm mt-0.5" style={{color:'#586874'}}>Select or build a record to see matched opportunities.</p>}
+        </div>
+        <div className="flex gap-3 items-center">
+          {lers.length>0&&(
+            <div className="relative">
+              <select value={activeLerId||''} onChange={e=>onSetActiveLer(e.target.value)} className="instui-input appearance-none pr-8 pl-3 py-2 text-sm border rounded font-bold" style={{borderColor:'#D7DADE',color:'#273540',background:'#fff',minWidth:'220px'}}>
+                {lers.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
+              </select>
+              <svg className="w-4 h-4 absolute right-2.5 top-2.5 pointer-events-none" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
+            </div>
+          )}
+          <Button variant="primary" size="md" onClick={onNewLer}>+ New LER</Button>
+        </div>
+      </div>
+
+      {/* Active LER hero */}
+      {activeLer&&(
+        <div className="rounded-lg p-6 text-white" style={{background:'linear-gradient(135deg,#334451 0%,#273540 100%)'}}>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'rgba(255,255,255,0.6)'}}>Active Learning &amp; Employment Record</p>
+              <h2 className="text-xl font-bold leading-tight mb-2">{activeLer.title}</h2>
+              <p className="text-sm leading-relaxed line-clamp-2 mb-4" style={{color:'rgba(255,255,255,0.8)'}}>{activeLer.executiveSummary}</p>
+              <div className="flex flex-wrap gap-4 text-sm font-bold">
+                <span>{activeLer.credentialIds.length} Credentials</span>
+                <span style={{color:'rgba(255,255,255,0.4)'}}>·</span>
+                <span>{(activeLer.skillsProfile.length+activeLer.customSkills.length)} Skills</span>
+                <span style={{color:'rgba(255,255,255,0.4)'}}>·</span>
+                <span>{matchedOpps.length} Opportunities Matched</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2 shrink-0 no-print">
+              <button onClick={()=>onViewLer(activeLer.id)} className="instui-btn px-3 py-1.5 text-sm min-h-[1.875rem]" style={{background:'rgba(255,255,255,0.12)',border:'1px solid rgba(255,255,255,0.25)',color:'#fff'}}>View Record</button>
+              <button onClick={()=>onEditLer(activeLer)} className="instui-btn px-3 py-1.5 text-sm min-h-[1.875rem]" style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.2)',color:'#fff'}}>Edit</button>
+            </div>
+          </div>
+          <div className="mt-5 pt-5" style={{borderTop:'1px solid rgba(255,255,255,0.15)'}}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'rgba(255,255,255,0.5)'}}>Top Skills</p>
+            <div className="flex flex-wrap gap-2">
+              {activeLer.skillsProfile.slice(0,6).map(skill=><span key={skill} className="px-3 py-1 text-xs font-bold rounded" style={{background:'rgba(255,255,255,0.12)',color:'#fff',border:'1px solid rgba(255,255,255,0.18)'}}>{skill}</span>)}
+              {activeLer.skillsProfile.length>6&&<span className="px-3 py-1 text-xs font-bold rounded" style={{background:'rgba(255,255,255,0.07)',color:'rgba(255,255,255,0.6)'}}>+{activeLer.skillsProfile.length-6} more</span>}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* My Records */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-base font-bold uppercase tracking-wide" style={{color:'#273540'}}>My Records ({lers.length})</h2>
+        </div>
+        {lers.length===0
+          ?<div className="bg-white border-2 border-dashed rounded-lg p-12 text-center" style={{borderColor:'#D7DADE'}}><div className="text-5xl mb-4">📋</div><p className="text-sm mb-4 font-bold" style={{color:'#586874'}}>You haven't built any records yet.</p><Button variant="primary" size="md" onClick={onNewLer}>Build Your First LER</Button></div>
+          :<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{lers.map(ler=><LERCard key={ler.id} ler={ler} isActive={activeLerId===ler.id} onSelect={()=>onSetActiveLer(ler.id)} onView={()=>onViewLer(ler.id)} onToggleStatus={()=>onToggleLerStatus(ler.id)} onDelete={()=>onDeleteLer(ler.id)}/>)}</div>}
+      </div>
+
+      {/* Top Matched Opportunities */}
+      {matchedOpps.length>0&&(
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base font-bold uppercase tracking-wide" style={{color:'#273540'}}>Top Matched Opportunities</h2>
+            <button onClick={()=>setShowAllOpps(true)} className="text-sm font-bold hover:underline" style={{color:'#2B7ABC'}}>View All ({matchedOpps.length}) →</button>
+          </div>
+          <div className="space-y-3">{matchedOpps.slice(0,3).map(opp=><OpportunityCard key={opp.id} opp={opp}/>)}</div>
+        </div>
+      )}
+
+      {showAllOpps&&<OpportunitiesModal opps={matchedOpps} lerTitle={activeLer?.title} onClose={()=>setShowAllOpps(false)}/>}
+    </div>
+  );
+};
+
+// ─── ORDERS PAGE ─────────────────────────────────────────────
+const OrdersPage = () => {
+  const statusStyle = s => s==='Delivered'?{background:'#DCEEE4',color:'#027634',border:'1px solid #B8DEC6'}:s==='Processing'?{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE'}:{background:'#FCE4E5',color:'#C71F23',border:'1px solid #F0B8BB'};
+  const statusIcon = s => s==='Delivered'?'✓ Delivered':s==='Processing'?'⟳ Processing':'✕ Cancelled';
+  return (
+    <div className="fade-in space-y-7">
+      <div>
+        <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Orders</h1>
+        <p className="text-sm mt-0.5" style={{color:'#586874'}}>Your credential request history</p>
+      </div>
+      {MOCK_ORDERS.map(order=>(
+        <div key={order.id} className="bg-white rounded-lg border overflow-hidden" style={{borderColor:'#D7DADE'}}>
+          <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{background:'#F2F4F4',borderBottom:'1px solid #E8EAEC'}}>
+            <div className="flex flex-wrap items-center gap-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Order Date</p>
+                <p className="text-sm font-bold" style={{color:'#273540'}}>{new Date(order.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</p>
+              </div>
+              <div className="h-8 w-px hidden sm:block" style={{background:'#D7DADE'}}/>
+              <div>
+                <span className="text-xs font-bold px-2.5 py-1 rounded" style={statusStyle(order.status)}>{statusIcon(order.status)}</span>
+                <p className="text-xs mt-1" style={{color:'#9EA6AD'}}>{order.statusDetail}</p>
+              </div>
+            </div>
+            <div className="text-right shrink-0">
+              <p className="text-[10px] font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Total</p>
+              <p className="text-xl font-bold" style={{color:'#273540'}}>{order.total===0?'Free':'$'+order.total.toFixed(2)}</p>
+            </div>
+          </div>
+          <div className="px-6 py-5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>Document</p>
+                <p className="text-sm font-bold" style={{color:'#273540'}}>{order.document}</p>
+                <p className="text-xs mt-0.5" style={{color:'#586874'}}>For: {order.purpose}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>From</p>
+                <p className="text-sm" style={{color:'#273540'}}>{order.from}</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>To</p>
+                <p className="text-sm" style={{color:'#273540'}}>{order.to}</p>
+              </div>
+            </div>
+            {order.total>0&&(
+              <div className="flex gap-6 text-xs pt-4" style={{borderTop:'1px solid #E8EAEC'}}>
+                <span style={{color:'#9EA6AD'}}>Subtotal: <strong style={{color:'#273540'}}>${order.subtotal.toFixed(2)}</strong></span>
+                <span style={{color:'#9EA6AD'}}>Processing fee: <strong style={{color:'#273540'}}>${order.fee.toFixed(2)}</strong></span>
+              </div>
+            )}
+          </div>
+          {order.status==='Delivered'&&(
+            <div className="px-6 pb-4 flex justify-end"><Button variant="outline" size="sm">⬇ Download Document</Button></div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ─── SETTINGS PAGE ───────────────────────────────────────────
+const SettingsPage = () => (
+  <div className="fade-in space-y-7 max-w-2xl">
+    <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Settings</h1>
+
+    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
+      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Profile</h2>
+      <div className="flex items-center gap-5 mb-6">
+        <img src="https://picsum.photos/seed/jessica/80/80" className="w-20 h-20 rounded-full border-2" style={{borderColor:'#D7DADE'}} alt="Profile photo"/>
+        <div><Button variant="outline" size="sm">Change Photo</Button><p className="text-xs mt-1.5" style={{color:'#9EA6AD'}}>JPG or PNG, max 5 MB</p></div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {[['First Name','Jordan'],['Last Name','Anderson'],['Email','jordan.anderson@email.com'],['Phone','(555) 867-5309']].map(([label,val])=>(
+          <div key={label}>
+            <label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>{label}</label>
+            <div className="px-3 py-2.5 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540',background:'#F2F4F4'}}>{val}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 flex justify-end"><Button variant="primary" size="sm">Save Changes</Button></div>
+    </div>
+
+    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
+      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Schools Attended</h2>
+      {[{name:'Mount Elbert University',enrolled:'2020 – 2024',status:'Alumni'},{name:'West Valley Community College',enrolled:'2018 – 2020',status:'Alumni'},{name:'Appletree High School',enrolled:'2015 – 2019',status:'Graduate'}].map((school,i,arr)=>(
+        <div key={i} className="flex items-center justify-between py-3.5" style={i<arr.length-1?{borderBottom:'1px solid #E8EAEC'}:{}}>
+          <div>
+            <p className="text-sm font-bold" style={{color:'#273540'}}>{school.name}</p>
+            <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{school.enrolled} · {school.status}</p>
+          </div>
+          <Button variant="ghost" size="sm">Request Credentials</Button>
+        </div>
+      ))}
+    </div>
+
+    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
+      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Account</h2>
+      <div className="space-y-3">
+        {[{title:'Authentication Settings',desc:'Password, two-factor authentication, and sign-in options'},{title:'Privacy Settings',desc:'Control who can view and share your records'}].map(item=>(
+          <div key={item.title} className="flex items-center justify-between p-4 rounded-lg" style={{background:'#F2F4F4'}}>
+            <div>
+              <p className="text-sm font-bold" style={{color:'#273540'}}>{item.title}</p>
+              <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{item.desc}</p>
+            </div>
+            <Button variant="outline" size="sm">Manage →</Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// ─── PUBLIC LER VIEW ─────────────────────────────────────────
+const PublicLERView = ({ler,credentials}) => {
+  const lerCreds=credentials.filter(c=>ler.credentialIds.includes(c.id));
+  const allSkills=[...(ler.skillsProfile||[]),...(ler.customSkills||[])];
+  return (
+    <div className="min-h-screen" style={{background:'#F2F4F4'}}>
+      <div className="no-print" style={{background:'#334451',height:'3.5rem',display:'flex',alignItems:'center',padding:'0 1.5rem'}}>
+        <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
+          <div style={{width:'28px',height:'28px',background:'#2B7ABC',borderRadius:'4px',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{color:'#fff',fontWeight:'700',fontSize:'14px'}}>P</span></div>
+          <span style={{color:'#fff',fontWeight:'700',fontSize:'15px'}}>Parchment</span>
+          <span style={{color:'rgba(255,255,255,0.5)',fontSize:'10px',fontWeight:'400',textTransform:'uppercase',letterSpacing:'0.1em'}}>by Instructure</span>
+        </div>
+      </div>
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        <div className="bg-white rounded-lg border p-8 mb-7 text-center" style={{borderColor:'#D7DADE'}}>
+          <img src="https://picsum.photos/seed/jessica/80/80" className="w-20 h-20 rounded-full mx-auto mb-4 border-2" style={{borderColor:'#D7DADE'}} alt="Jordan K. Anderson"/>
+          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Jordan K. Anderson</h1>
+          <p className="text-xs font-bold uppercase tracking-widest mt-1 mb-4" style={{color:'#9EA6AD'}}>Learning &amp; Employment Record</p>
+          <h2 className="text-xl font-bold" style={{color:'#2B7ABC'}}>{ler.title}</h2>
+          {ler.targetRole&&<p className="text-sm mt-2" style={{color:'#586874'}}>Looking for: <strong style={{color:'#273540'}}>{ler.targetRole}</strong></p>}
+          <div className="mt-5">
+            <button onClick={()=>window.print()} className="instui-btn px-5 py-2.5 text-sm min-h-[2.375rem]" style={{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}}>⬇ Download PDF</button>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
+          <h3 className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'#2B7ABC'}}>Summary</h3>
+          <p className="text-sm leading-relaxed italic pl-4" style={{color:'#586874',borderLeft:'2px solid #E8EAEC'}}>"{ler.executiveSummary}"</p>
+        </div>
+
+        {allSkills.length>0&&(
+          <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Skills</h3>
+            <p className="text-[10px] mb-4" style={{color:'#9EA6AD'}}>Click any skill to view market data on Talent Neuron</p>
+            <div className="flex flex-wrap gap-2">{allSkills.map(skill=>(
+              <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded" style={{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE',textDecoration:'none'}}>{skill} ↗</a>
+            ))}</div>
+          </div>
+        )}
+
+        {lerCreds.length>0&&(
+          <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
+            <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'#2B7ABC'}}>Credentials ({lerCreds.length})</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred}/>)}</div>
+          </div>
+        )}
+
+        <div className="text-center pt-4">
+          <p className="text-xs" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure · {new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── APP ─────────────────────────────────────────────────────
+const App = () => {
+  const lerViewId=React.useMemo(()=>new URLSearchParams(window.location.search).get('lerView'),[]);
+  const [tab,setTab]=React.useState('Dashboard');
+  const [lers,setLers]=React.useState([INITIAL_LER]);
+  const [credentials,setCredentials]=React.useState(MOCK_CREDENTIALS);
+  const [activeLerId,setActiveLerId]=React.useState('ler-1');
+  const [viewingLerId,setViewingLerId]=React.useState(null);
+  const [showBuilder,setShowBuilder]=React.useState(false);
+  const [editingLer,setEditingLer]=React.useState(null);
+  const [showAddCred,setShowAddCred]=React.useState(false);
+  const [clrPreviewId,setClrPreviewId]=React.useState(null);
+
+  // Public view
+  if(lerViewId){
+    const publicLer=lers.find(l=>l.id===lerViewId)||(lerViewId===INITIAL_LER.id?INITIAL_LER:null);
+    if(!publicLer)return <div className="min-h-screen flex items-center justify-center" style={{background:'#F2F4F4'}}><div className="text-center"><p className="text-5xl mb-4">🔍</p><p className="font-bold" style={{color:'#273540'}}>Learning &amp; Employment Record not found.</p></div></div>;
+    return <PublicLERView ler={publicLer} credentials={credentials}/>;
+  }
+
+  const viewingLer=lers.find(l=>l.id===viewingLerId)||null;
+  const saveLer=ler=>{setLers(prev=>{const ex=prev.find(l=>l.id===ler.id);return ex?prev.map(l=>l.id===ler.id?ler:l):[ler,...prev];});setActiveLerId(ler.id);setShowBuilder(false);setEditingLer(null);};
+  const deleteLer=id=>{if(!confirm('Delete this Learning & Employment Record? This cannot be undone.'))return;setLers(prev=>prev.filter(l=>l.id!==id));if(activeLerId===id)setActiveLerId(lers.find(l=>l.id!==id)?.id||'');if(viewingLerId===id)setViewingLerId(null);};
+
+  const TABS=['Dashboard','Opportunities','Orders','Settings'];
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{background:'#F2F4F4'}}>
+      <nav className="sticky top-0 z-40 no-print" style={{background:'#334451',height:'4rem'}}>
+        <div className="max-w-[1280px] mx-auto h-full flex justify-between items-center px-6">
+          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={()=>{setViewingLerId(null);setTab('Dashboard');}}>
+            <div className="w-8 h-8 bg-[#2B7ABC] rounded flex items-center justify-center"><span className="text-white font-bold text-base">P</span></div>
+            <div className="flex flex-col leading-none">
+              <span className="text-white font-bold text-lg">Parchment</span>
+              <span className="text-white/60 text-[10px] font-normal uppercase tracking-widest">by Instructure</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <img src="https://picsum.photos/seed/jessica/32/32" className="w-8 h-8 rounded-full border-2 border-white/30" alt=""/>
+            <span className="text-white/90 text-sm">Hello, <strong className="text-white font-bold">Jessica</strong></span>
+          </div>
+        </div>
+      </nav>
+
+      {!viewingLerId&&(
+        <div className="bg-white border-b px-6 no-print" style={{borderColor:'#D7DADE'}}>
+          <div className="max-w-[1280px] mx-auto flex gap-1">
+            {TABS.map(t=>(
+              <button key={t} onClick={()=>setTab(t)} className="relative h-14 px-4 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B7ABC]" style={{color:tab===t?'#2B7ABC':'#6A7883'}}>
+                {t}
+                {tab===t&&<div className="absolute bottom-0 left-0 w-full h-0.5 rounded-t" style={{background:'#2B7ABC'}}/>}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <main className="flex-1 max-w-[1280px] w-full mx-auto px-6 py-8">
+        {clrPreviewId&&<CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+
+        {viewingLerId&&viewingLer&&(
+          <LERDetailView ler={viewingLer} credentials={credentials} onBack={()=>setViewingLerId(null)} onEdit={()=>{setEditingLer(viewingLer);setShowBuilder(true);}} onUpdate={u=>setLers(prev=>prev.map(l=>l.id===u.id?u:l))} isOwner={true}/>
+        )}
+
+        {!viewingLerId&&tab==='Dashboard'&&(
+          <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>
+        )}
+
+        {!viewingLerId&&tab==='Opportunities'&&(
+          <OpportunitiesPage
+            lers={lers}
+            activeLerId={activeLerId}
+            credentials={credentials}
+            onSetActiveLer={setActiveLerId}
+            onViewLer={id=>setViewingLerId(id)}
+            onNewLer={()=>setShowBuilder(true)}
+            onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}}
+            onDeleteLer={deleteLer}
+            onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}
+          />
+        )}
+
+        {!viewingLerId&&tab==='Orders'&&<OrdersPage/>}
+        {!viewingLerId&&tab==='Settings'&&<SettingsPage/>}
+      </main>
+
+      {showBuilder&&<LERBuilder credentials={credentials} initialLer={editingLer} initialSelectedIds={[]} onSave={saveLer} onCancel={()=>{setShowBuilder(false);setEditingLer(null);}}/>}
+      {showAddCred&&<AddCredentialModal onSave={cred=>{setCredentials(prev=>[cred,...prev]);setShowAddCred(false);}} onCancel={()=>setShowAddCred(false)}/>}
+    </div>
+  );
+};
+
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>);
+</script>
+</body>
+</html>
