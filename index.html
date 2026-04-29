@@ -4,46 +4,196 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Parchment — Learning & Employment Records</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <style>
+  /* ─── InstUI Canvas theme tokens ─── */
   :root {
-    --instui-blue45:#2B7ABC; --instui-blue57:#0E68B3; --instui-blue12:#E0EBF5;
-    --instui-grey125:#273540; --instui-grey100:#334451; --instui-grey57:#586874;
-    --instui-grey45:#6A7883; --instui-grey24:#9EA6AD; --instui-grey14:#D7DADE;
-    --instui-grey12:#E8EAEC; --instui-grey11:#F2F4F4;
-    --instui-green45:#03893D; --instui-green12:#DCEEE4;
-    --instui-red45:#E62429; --instui-red12:#FCE4E5;
-    --instui-orange45:#CF4A00; --instui-orange12:#FCE5D9;
+    --instui-space-xxxs: 0.125rem; --instui-space-xxs: 0.375rem; --instui-space-xs: 0.5rem;
+    --instui-space-sm: 0.75rem; --instui-space-msm: 1rem; --instui-space-md: 1.5rem;
+    --instui-space-lg: 2.25rem; --instui-space-xl: 3rem; --instui-space-xxl: 3.75rem;
+    --instui-fs-xsmall: 0.75rem; --instui-fs-small: 0.875rem; --instui-fs-medium: 1rem;
+    --instui-fs-large: 1.375rem; --instui-fs-xlarge: 1.75rem; --instui-fs-xxlarge: 2.375rem;
+    --instui-title-page: 2.25rem; --instui-title-section: 1.75rem; --instui-title-module: 1.5rem;
+    --instui-title-card-lg: 1.5rem; --instui-title-card-rg: 1.25rem; --instui-title-card-mn: 1rem;
+    --instui-fw-normal: 400; --instui-fw-bold: 700;
+    --instui-lh-fit: 1.125; --instui-lh-condensed: 1.25; --instui-lh-default: 1.5;
+    --instui-bw-small: 0.0625rem; --instui-bw-medium: 0.125rem; --instui-bw-large: 0.25rem;
+    --instui-br-small: 0.125rem; --instui-br-medium: 0.25rem; --instui-br-large: 0.5rem;
+    --instui-white: #FFFFFF; --instui-grey-11: #F2F4F4; --instui-grey-12: #E8EAEC;
+    --instui-grey-14: #D7DADE; --instui-grey-24: #9EA6AD; --instui-grey-45: #6A7883;
+    --instui-grey-57: #586874; --instui-grey-100: #334451; --instui-grey-125: #273540;
+    --instui-blue-12: #E0EBF5; --instui-blue-45: #2B7ABC; --instui-blue-57: #0E68B3; --instui-blue-82: #09508C;
+    --instui-green-12: #DCEEE4; --instui-green-45: #03893D; --instui-green-57: #027634;
+    --instui-orange-12: #FCE5D9; --instui-orange-45: #CF4A00; --instui-orange-57: #B34000;
+    --instui-red-12: #FCE4E5; --instui-red-45: #E62429; --instui-red-57: #C71F23;
+    --instui-violet-12: #F1E6F5; --instui-violet-45: #9E58BD; --instui-violet-57: #9242B4;
+    --instui-sea-12: #DAEEEF; --instui-sea-57: #00717B;
+    --instui-surface-page-primary: var(--instui-white);
+    --instui-surface-page-secondary: var(--instui-grey-11);
+    --instui-surface-card-primary: var(--instui-white);
+    --instui-surface-card-secondary: var(--instui-grey-11);
+    --instui-surface-dark: var(--instui-grey-100);
+    --instui-line-stroke: var(--instui-grey-14);
+    --instui-line-divider: var(--instui-grey-12);
+    --instui-text-body: var(--instui-grey-125);
+    --instui-text-secondary: var(--instui-grey-57);
+    --instui-text-placeholder: var(--instui-grey-24);
+    --instui-text-link: var(--instui-blue-57);
+    --instui-text-success: var(--instui-green-57);
+    --instui-text-warning: var(--instui-orange-57);
+    --instui-text-error: var(--instui-red-57);
+    --instui-shadow-resting: 0 0.0625rem 0.125rem rgba(0,0,0,0.10), 0 0.0625rem 0.1875rem rgba(0,0,0,0.10);
+    --instui-shadow-above: 0 0.1875rem 0.375rem rgba(0,0,0,0.10), 0 0.1875rem 0.375rem rgba(0,0,0,0.15);
+    --instui-shadow-topmost: 0 0.375rem 0.4375rem rgba(0,0,0,0.10), 0 0.625rem 1.75rem rgba(0,0,0,0.25);
+    --instui-input-h-sm: 1.75rem; --instui-input-h-md: 2.375rem; --instui-input-h-lg: 3rem;
   }
-  * { font-family:'Lato','Helvetica Neue',Helvetica,Arial,sans-serif; }
-  body { background:var(--instui-grey11); color:var(--instui-grey125); }
-  ::-webkit-scrollbar { width:6px; height:6px; }
-  ::-webkit-scrollbar-track { background:var(--instui-grey12); }
-  ::-webkit-scrollbar-thumb { background:var(--instui-grey24); border-radius:3px; }
-  ::-webkit-scrollbar-thumb:hover { background:var(--instui-grey45); }
-  .fade-in { animation:fadeIn 0.3s ease-in-out; }
-  .slide-up { animation:slideUp 0.35s ease-out; }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  @keyframes slideUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .card-hover { transition:box-shadow 0.15s ease,border-color 0.15s ease; }
-  .card-hover:hover { box-shadow:0 2px 12px rgba(0,0,0,0.08); border-color:var(--instui-grey24) !important; }
-  .skill-pill { transition:background 0.1s ease; }
-  .skill-pill:hover { background:var(--instui-blue12) !important; }
-  .instui-btn { font-family:inherit; font-size:0.875rem; font-weight:700; line-height:1.25; border-radius:0.25rem; border-width:1px; border-style:solid; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; transition:background 0.12s ease,border-color 0.12s ease; }
-  .instui-btn:focus-visible { outline:2px solid var(--instui-blue45); outline-offset:2px; }
-  .instui-btn:disabled { opacity:0.5; cursor:not-allowed; }
-  .instui-input:focus { outline:none; border-color:var(--instui-blue45); box-shadow:0 0 0 2px var(--instui-blue12); }
-  @media print { nav,.no-print{display:none !important;} body{background:white !important;} main{padding:40px 60px !important;max-width:100% !important;} }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: var(--instui-fs-medium); line-height: var(--instui-lh-default); color: var(--instui-text-body); background: var(--instui-surface-page-secondary); -webkit-font-smoothing: antialiased; }
+  *::-webkit-scrollbar { width: 6px; height: 6px; }
+  *::-webkit-scrollbar-track { background: var(--instui-grey-12); }
+  *::-webkit-scrollbar-thumb { background: var(--instui-grey-24); border-radius: 3px; }
+  .instui-button { font-family: inherit; font-weight: var(--instui-fw-bold); line-height: var(--instui-lh-fit); border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--instui-space-xs); transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; text-decoration: none; white-space: nowrap; }
+  .instui-button:focus-visible { outline: 2px solid var(--instui-blue-45); outline-offset: 2px; }
+  .instui-button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .instui-button-sm { font-size: var(--instui-fs-small); padding: 0 var(--instui-space-sm); height: var(--instui-input-h-sm); }
+  .instui-button-md { font-size: var(--instui-fs-small); padding: 0 var(--instui-space-msm); height: var(--instui-input-h-md); }
+  .instui-button-lg { font-size: var(--instui-fs-medium); padding: 0 var(--instui-space-md); height: var(--instui-input-h-lg); }
+  .instui-button-primary { background: var(--instui-blue-45); border-color: var(--instui-blue-45); color: var(--instui-white); }
+  .instui-button-primary:hover:not(:disabled) { background: var(--instui-blue-57); border-color: var(--instui-blue-57); }
+  .instui-button-secondary { background: var(--instui-white); border-color: var(--instui-grey-14); color: var(--instui-text-body); }
+  .instui-button-secondary:hover:not(:disabled) { background: var(--instui-grey-11); border-color: var(--instui-grey-24); }
+  .instui-button-success { background: var(--instui-green-45); border-color: var(--instui-green-45); color: var(--instui-white); }
+  .instui-button-success:hover:not(:disabled) { background: var(--instui-green-57); border-color: var(--instui-green-57); }
+  .instui-button-danger { background: var(--instui-white); border-color: var(--instui-red-45); color: var(--instui-red-57); }
+  .instui-button-danger:hover:not(:disabled) { background: var(--instui-red-12); }
+  .instui-button-ai { background: linear-gradient(135deg, var(--instui-violet-45), var(--instui-blue-45)); border-color: transparent; color: var(--instui-white); }
+  .instui-button-ai:hover:not(:disabled) { background: linear-gradient(135deg, var(--instui-violet-57), var(--instui-blue-57)); }
+  .instui-button-ghost { background: transparent; border-color: transparent; color: var(--instui-text-link); }
+  .instui-button-ghost:hover:not(:disabled) { background: var(--instui-blue-12); }
+  .instui-button-inverse { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); color: var(--instui-white); }
+  .instui-button-inverse:hover:not(:disabled) { background: rgba(255,255,255,0.20); }
+  .instui-input { font-family: inherit; font-size: var(--instui-fs-small); color: var(--instui-text-body); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-14); border-radius: var(--instui-br-medium); padding: 0 var(--instui-space-sm); height: var(--instui-input-h-md); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; }
+  .instui-input:focus { outline: none; border-color: var(--instui-blue-45); box-shadow: 0 0 0 1px var(--instui-blue-45); }
+  .instui-textarea { font-family: inherit; font-size: var(--instui-fs-small); color: var(--instui-text-body); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-14); border-radius: var(--instui-br-medium); padding: var(--instui-space-sm); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; resize: vertical; line-height: var(--instui-lh-default); }
+  .instui-textarea:focus { outline: none; border-color: var(--instui-blue-45); box-shadow: 0 0 0 1px var(--instui-blue-45); }
+  .instui-label { display: block; font-size: var(--instui-fs-small); font-weight: var(--instui-fw-bold); color: var(--instui-text-body); margin-bottom: var(--instui-space-xxs); }
+  .instui-tabs { display: flex; gap: 0; border-bottom: var(--instui-bw-small) solid var(--instui-line-stroke); }
+  .instui-tab { position: relative; height: 3rem; padding: 0 var(--instui-space-md); font-size: var(--instui-fs-medium); font-weight: var(--instui-fw-bold); color: var(--instui-text-secondary); background: transparent; border: 0; cursor: pointer; transition: color 0.12s ease; }
+  .instui-tab:hover { color: var(--instui-text-body); }
+  .instui-tab[aria-selected="true"] { color: var(--instui-text-body); }
+  .instui-tab[aria-selected="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 0.1875rem; background: var(--instui-blue-45); border-radius: 0.125rem 0.125rem 0 0; }
+  .instui-pill { display: inline-flex; align-items: center; gap: var(--instui-space-xxxs); font-size: var(--instui-fs-xsmall); font-weight: var(--instui-fw-bold); padding: 0.125rem var(--instui-space-xs); border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; line-height: 1.4; }
+  .instui-link { color: var(--instui-text-link); text-decoration: none; font-weight: var(--instui-fw-bold); }
+  .instui-link:hover { text-decoration: underline; }
+  .fade-in { animation: fadeIn 0.3s ease-in-out; }
+  .slide-up { animation: slideUp 0.35s ease-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .card-hover { transition: box-shadow 0.15s ease, border-color 0.15s ease; }
+  .card-hover:hover { box-shadow: var(--instui-shadow-above); }
+  .clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @media print { .no-print, nav { display: none !important; } body { background: white !important; } main { padding: 2.25rem 3rem !important; max-width: 100% !important; } }
 </style>
 </head>
-<body class="antialiased" style="background:#F2F4F4;color:#273540;">
+<body>
 <div id="root"></div>
 <script type="text/babel" data-presets="react">
-// ─── MOCK DATA ───────────────────────────────────────────────
+
+// ═════════════════════ InstUI Primitives ═════════════════════
+const SPACE = {'none':'0','0':'0','xxx-small':'var(--instui-space-xxxs)','xx-small':'var(--instui-space-xxs)','x-small':'var(--instui-space-xs)','small':'var(--instui-space-sm)','medium-small':'var(--instui-space-msm)','medium':'var(--instui-space-md)','large':'var(--instui-space-lg)','x-large':'var(--instui-space-xl)','xx-large':'var(--instui-space-xxl)'};
+const space = v => v ? String(v).split(' ').map(p => SPACE[p] || p).join(' ') : undefined;
+const BG = {'primary':'var(--instui-surface-card-primary)','secondary':'var(--instui-surface-card-secondary)','primary-inverse':'var(--instui-surface-dark)','brand':'var(--instui-blue-45)','info':'var(--instui-blue-12)','success':'var(--instui-green-12)','warning':'var(--instui-orange-12)','danger':'var(--instui-red-12)'};
+const BORDER_COLOR = {'primary':'var(--instui-line-stroke)','secondary':'var(--instui-grey-24)','brand':'var(--instui-blue-45)','info':'var(--instui-blue-45)','success':'var(--instui-green-45)','warning':'var(--instui-orange-45)','danger':'var(--instui-red-45)','transparent':'transparent'};
+const BORDER_W = {'none':'0','small':'var(--instui-bw-small)','medium':'var(--instui-bw-medium)','large':'var(--instui-bw-large)'};
+const RADIUS = {'none':'0','small':'var(--instui-br-small)','medium':'var(--instui-br-medium)','large':'var(--instui-br-large)','circle':'50%','pill':'9999px'};
+const SHADOW = {'none':'none','resting':'var(--instui-shadow-resting)','above':'var(--instui-shadow-above)','topmost':'var(--instui-shadow-topmost)'};
+
+const View = ({ as='div', display, padding, margin, background, borderWidth, borderColor='primary', borderRadius, shadow, width, maxWidth, minWidth, height, minHeight, position, textAlign, overflow, overflowY, overflowX, style={}, children, className, ...rest }) => {
+  const Tag = as;
+  const css = {
+    display: display || (as==='span'?'inline-block':'block'),
+    padding: space(padding), margin: space(margin),
+    background: background ? BG[background] : undefined,
+    borderWidth: borderWidth ? BORDER_W[borderWidth] : undefined,
+    borderStyle: borderWidth && borderWidth!=='none' ? 'solid' : undefined,
+    borderColor: borderWidth && borderWidth!=='none' ? BORDER_COLOR[borderColor] : undefined,
+    borderRadius: borderRadius ? (RADIUS[borderRadius] || borderRadius) : undefined,
+    boxShadow: shadow ? SHADOW[shadow] : undefined,
+    width, maxWidth, minWidth, height, minHeight, position, textAlign, overflow, overflowY, overflowX,
+    ...style,
+  };
+  return <Tag className={className} style={css} {...rest}>{children}</Tag>;
+};
+
+const Flex = ({ as='div', direction='row', gap, alignItems, justifyItems, wrap, padding, margin, width, height, background, style={}, children, className, ...rest }) => {
+  const Tag = as;
+  const css = {
+    display:'flex', flexDirection:direction, gap:space(gap), alignItems, justifyContent:justifyItems, flexWrap:wrap,
+    padding:space(padding), margin:space(margin), width, height,
+    background: background ? BG[background] : undefined,
+    ...style,
+  };
+  return <Tag className={className} style={css} {...rest}>{children}</Tag>;
+};
+Flex.Item = ({ shouldGrow, shouldShrink, size, align, padding, margin, style={}, children, className, ...rest }) => {
+  const css = { flexGrow: shouldGrow?1:0, flexShrink: shouldShrink?1:0, flexBasis:size, alignSelf:align, padding:space(padding), margin:space(margin), minWidth:0, ...style };
+  return <div className={className} style={css} {...rest}>{children}</div>;
+};
+
+const Heading = ({ level='h2', children, color, margin, style={}, ...rest }) => {
+  const Tag = level;
+  const sizes = {
+    h1: { fontSize:'var(--instui-title-page)',    lineHeight:'var(--instui-lh-condensed)' },
+    h2: { fontSize:'var(--instui-title-section)', lineHeight:'var(--instui-lh-condensed)' },
+    h3: { fontSize:'var(--instui-title-module)',  lineHeight:'var(--instui-lh-condensed)' },
+    h4: { fontSize:'var(--instui-title-card-rg)', lineHeight:'var(--instui-lh-condensed)' },
+    h5: { fontSize:'var(--instui-title-card-mn)', lineHeight:'var(--instui-lh-condensed)' },
+  };
+  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-blue-57)', inverse:'var(--instui-white)' };
+  return <Tag style={{ ...sizes[level], fontWeight:'var(--instui-fw-bold)', color: colors[color]||colors.primary, margin: space(margin)||0, ...style }} {...rest}>{children}</Tag>;
+};
+
+const Text = ({ as='span', size='medium', weight='normal', color='primary', transform, letterSpacing, lineHeight, children, style={}, ...rest }) => {
+  const Tag = as;
+  const sizes = {'x-small':'var(--instui-fs-xsmall)','small':'var(--instui-fs-small)','medium':'var(--instui-fs-medium)','large':'var(--instui-fs-large)','x-large':'var(--instui-fs-xlarge)','xx-large':'var(--instui-fs-xxlarge)'};
+  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-blue-57)', success:'var(--instui-text-success)', warning:'var(--instui-text-warning)', danger:'var(--instui-text-error)', placeholder:'var(--instui-text-placeholder)', inverse:'var(--instui-white)' };
+  return <Tag style={{ fontSize:sizes[size], fontWeight: weight==='bold'?'var(--instui-fw-bold)':'var(--instui-fw-normal)', color:colors[color], textTransform:transform, letterSpacing, lineHeight, ...style }} {...rest}>{children}</Tag>;
+};
+
+const Button = ({ children, color='primary', size='md', isLoading, disabled, renderIcon, style={}, className='', ...rest }) => (
+  <button className={`instui-button instui-button-${size} instui-button-${color} ${className}`} disabled={isLoading||disabled} style={style} {...rest}>
+    {isLoading && <svg width="14" height="14" viewBox="0 0 24 24" style={{animation:'spin 1s linear infinite'}}><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray="40 40" strokeLinecap="round"/></svg>}
+    {renderIcon}
+    {children}
+  </button>
+);
+
+const Pill = ({ children, color='info', style={}, ...rest }) => {
+  const palette = {
+    info:    { bg:'var(--instui-blue-12)',   fg:'var(--instui-blue-57)',   bd:'var(--instui-blue-45)' },
+    success: { bg:'var(--instui-green-12)',  fg:'var(--instui-green-57)',  bd:'var(--instui-green-45)' },
+    warning: { bg:'var(--instui-orange-12)', fg:'var(--instui-orange-57)', bd:'var(--instui-orange-45)' },
+    danger:  { bg:'var(--instui-red-12)',    fg:'var(--instui-red-57)',    bd:'var(--instui-red-45)' },
+    violet:  { bg:'var(--instui-violet-12)', fg:'var(--instui-violet-57)', bd:'var(--instui-violet-45)' },
+    sea:     { bg:'var(--instui-sea-12)',    fg:'var(--instui-sea-57)',    bd:'var(--instui-sea-57)' },
+    neutral: { bg:'var(--instui-grey-11)',   fg:'var(--instui-grey-57)',   bd:'var(--instui-grey-14)' },
+  };
+  const p = palette[color]||palette.info;
+  return <span className="instui-pill" style={{ background:p.bg, color:p.fg, borderColor:p.bd, ...style }} {...rest}>{children}</span>;
+};
+
+const Card = ({ padding='medium', children, hover=false, className='', style={}, ...rest }) => (
+  <View background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" padding={padding} className={hover?`card-hover ${className}`:className} style={style} {...rest}>{children}</View>
+);
+
+// ═════════════════════ MOCK DATA ═════════════════════
 const MOCK_CREDENTIALS = [
   {id:'c1', name:'B.S. in Chemical Engineering', issuer:'Mount Elbert University', date:'2024-05-22', type:'Degree', skills:['Chemical Engineering','Process Control','Thermodynamics','Data Analysis','Lab Research'], imageUrl:'https://picsum.photos/seed/degree1/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
   {id:'c2', name:'High School Diploma', issuer:'Appletree High School', date:'2019-05-22', type:'Degree', skills:['Mathematics','Writing','Critical Thinking'], imageUrl:'https://picsum.photos/seed/degree2/200/200', isVerified:true, publicUrl:'https://www.parchment.com'},
@@ -79,21 +229,9 @@ const MOCK_ORDERS = [
   {id:'ord-5', date:'2023-06-18', status:'Delivered', statusDetail:'Available for download', document:'Official Transcript', purpose:'Scholarship Application', from:'West Valley Community College', to:'National Merit Scholarship Corp.', subtotal:8.50, fee:1.00, total:9.50},
 ];
 
-const INITIAL_LER = {
-  id:'ler-1',
-  title:'Senior Frontend Engineering Portfolio',
-  executiveSummary:'Experienced front-end developer with expertise in React, TypeScript, and cloud infrastructure. Holds verified credentials from leading institutions and an AWS certification, demonstrating a strong foundation in building and deploying scalable web applications. Co-curricular records document broad experiential learning across leadership, research, and professional development.',
-  skillsProfile:['React','TypeScript','AWS','Cloud Computing','Web Development','Performance Optimization','UI Design','Data Analysis'],
-  customSkills:['GraphQL','Tailwind CSS','Next.js'],
-  softSkills:['Communication','Mentorship','Agile'],
-  employmentHistory:[],
-  credentialIds:['c3','c4','c7','c8'],
-  status:'Published',
-  createdAt:new Date().toISOString(),
-  targetRole:'Cloud Architect / Senior Engineer',
-};
+const INITIAL_LER = { id:'ler-1', title:'Senior Frontend Engineering Portfolio', executiveSummary:'Experienced front-end developer with expertise in React, TypeScript, and cloud infrastructure. Holds verified credentials from leading institutions and an AWS certification, demonstrating a strong foundation in building and deploying scalable web applications. Co-curricular records document broad experiential learning across leadership, research, and professional development.', skillsProfile:['React','TypeScript','AWS','Cloud Computing','Web Development','Performance Optimization','UI Design','Data Analysis'], customSkills:['GraphQL','Tailwind CSS','Next.js'], softSkills:['Communication','Mentorship','Agile'], employmentHistory:[], credentialIds:['c3','c4','c7','c8'], status:'Published', createdAt:new Date().toISOString(), targetRole:'Cloud Architect / Senior Engineer' };
 
-// ─── AI SERVICE ──────────────────────────────────────────────
+// ═════════════════════ Utilities ═════════════════════
 async function generateLERSummary(credentials, customSkills) {
   await new Promise(r => setTimeout(r, 1400));
   const allSkills = [...new Set([...credentials.flatMap(c=>c.skills), ...customSkills])].slice(0,12);
@@ -116,949 +254,1094 @@ function matchOpportunities(ler) {
   return MOCK_OPPORTUNITIES.filter(opp=>opp.requirements.some(req=>skills.some(s=>s.includes(req.toLowerCase())||req.toLowerCase().includes(s))));
 }
 
-// ─── UTILITIES ───────────────────────────────────────────────
 const talentNeuronUrl = skill => `https://www.talentneuron.com/portal/market-data/skills/${skill.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`;
 const lerShareUrl = ler => `${window.location.origin}${window.location.pathname}?lerView=${ler.id}`;
-function scoreColor(s){return s>=90?'text-[#027634] bg-[#DCEEE4] border-[#B8DEC6]':s>=80?'text-[#0E68B3] bg-[#E0EBF5] border-[#C0D9EE]':s>=70?'text-[#B34000] bg-[#FCE5D9] border-[#F5C4A8]':'text-[#586874] bg-[#F2F4F4] border-[#D7DADE]';}
-function scoreBar(s){return s>=90?'bg-[#03893D]':s>=80?'bg-[#2B7ABC]':s>=70?'bg-[#CF4A00]':'bg-[#9EA6AD]';}
+const formatDate = d => new Date(d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'});
 
-// ─── BUTTON ──────────────────────────────────────────────────
-const Button = ({children,variant='primary',size='md',isLoading,className='',...props}) => {
-  const variants={primary:'bg-[#2B7ABC] text-white border-[#2B7ABC] hover:bg-[#0E68B3] hover:border-[#0E68B3]',success:'bg-[#03893D] text-white border-[#03893D] hover:bg-[#027634] hover:border-[#027634]',outline:'bg-[#F2F4F4] text-[#273540] border-[#D7DADE] hover:bg-[#E8EAEC] hover:border-[#9EA6AD]',ghost:'bg-transparent text-[#0E68B3] border-transparent hover:bg-[#E0EBF5]',danger:'bg-[#E62429] text-white border-[#E62429] hover:bg-[#C71F23] hover:border-[#C71F23]'};
-  const sizes={sm:'px-3 py-1.5 text-sm min-h-[1.875rem]',md:'px-4 py-2 text-sm min-h-[2.375rem]',lg:'px-5 py-2.5 text-base min-h-[2.875rem]'};
-  return <button className={`instui-btn ${variants[variant]} ${sizes[size]} ${className}`} disabled={isLoading||props.disabled} {...props}>{isLoading&&<svg className="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-current" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>}{children}</button>;
-};
+const TYPE_PILL = { Degree:'info', Certification:'success', Badge:'warning', Course:'sea', CLR:'violet' };
+const TYPE_LABEL = { Degree:'Diploma', Certification:'Certificate', Badge:'Badge', Course:'Course', CLR:'Learner Record' };
+const OPP_PILL = { Job:'info', Scholarship:'warning', Program:'violet', Internship:'success' };
+const scoreColor = s => s>=90?'success':s>=80?'info':s>=70?'warning':'neutral';
+const scoreBarColor = s => s>=90?'var(--instui-green-45)':s>=80?'var(--instui-blue-45)':s>=70?'var(--instui-orange-45)':'var(--instui-grey-45)';
 
-// ─── CREDENTIAL CARD ─────────────────────────────────────────
-const TYPE_COLORS = {Degree:'bg-[#E0EBF5] text-[#0E68B3] border-[#C0D9EE]',Certification:'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]',Badge:'bg-[#FCE5D9] text-[#B34000] border-[#F5C4A8]',Course:'bg-[#DAEEEF] text-[#00717B] border-[#A8D8DB]',CLR:'bg-[#F1E6F5] text-[#9242B4] border-[#D8B8E8]'};
-const TYPE_LABELS = {Degree:'Diploma',Certification:'Certificate',Badge:'Badge',Course:'Course',CLR:'Learner Record'};
-
-const CredentialCard = ({credential:c,isSelected=false,onToggle,onView,selectable=false}) => {
-  const isBadge=c.type==='Badge', isCLR=c.type==='CLR';
+// ═════════════════════ Credential Card ═════════════════════
+const CredentialCard = ({ credential:c, isSelected=false, onToggle, onView, selectable=false }) => {
+  const isBadge = c.type==='Badge';
+  const isCLR = c.type==='CLR';
+  const interactive = (isCLR && onView) || onToggle;
   return (
-    <div onClick={()=>{if(isCLR&&onView)onView(c.id);else if(onToggle)onToggle(c.id);}} className={`relative bg-white rounded-lg border transition-all card-hover flex gap-4 p-4 h-full ${selectable||onToggle?'cursor-pointer':''} ${isSelected?'border-[#2B7ABC] ring-2 ring-[#2B7ABC]/10 bg-[#E0EBF5]/30':'border-[#D7DADE]'}`}>
-      <div className={`shrink-0 overflow-hidden border border-[#E8EAEC] bg-[#F2F4F4] flex items-center justify-center ${isBadge?'w-16 h-16 rounded-full':'w-20 h-16 rounded-md'}`}>
-        {c.imageUrl?<img src={c.imageUrl} className="w-full h-full object-cover" alt={c.name}/>:<span className="text-xl font-bold text-[#9EA6AD]">{c.name.charAt(0)}</span>}
-      </div>
-      <div className="flex-1 min-w-0 flex flex-col justify-center gap-1">
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${TYPE_COLORS[c.type]}`}>{TYPE_LABELS[c.type]}</span>
-          {c.isVerified?<span className="text-[10px] font-bold text-[#027634] bg-[#DCEEE4] px-1.5 py-0.5 rounded border border-[#B8DEC6]">✓ Verified</span>:<span className="text-[10px] font-bold text-[#B34000] bg-[#FCE5D9] px-1.5 py-0.5 rounded border border-[#F5C4A8]">Self-Declared</span>}
-        </div>
-        <h3 className="font-bold text-[#273540] text-sm leading-tight">{c.name}</h3>
-        <p className="text-xs text-[#586874] truncate">{c.issuer}</p>
-        <p className="text-xs text-[#9EA6AD]">{new Date(c.date).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</p>
-        {isCLR&&onView&&<button onClick={e=>{e.stopPropagation();onView(c.id);}} className="mt-1 text-xs font-bold text-[#2B7ABC] hover:text-[#0E68B3] hover:underline text-left">View Full Record →</button>}
-        {!isCLR&&c.publicUrl&&!selectable&&<a href={c.publicUrl} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="mt-1 text-xs font-bold text-[#2B7ABC] hover:text-[#0E68B3] hover:underline">View Credential →</a>}
-      </div>
-      {isSelected&&<div className="absolute top-3 right-3 text-[#2B7ABC]"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg></div>}
-    </div>
+    <View background={isSelected?'info':'primary'} borderWidth="small" borderColor={isSelected?'brand':'primary'} borderRadius="medium" shadow="resting" padding="small" className={interactive?'card-hover':''} style={{cursor:interactive?'pointer':'default',position:'relative',height:'100%'}} onClick={()=>{ if(isCLR&&onView) onView(c.id); else if(onToggle) onToggle(c.id); }}>
+      <Flex gap="small" alignItems="center">
+        <View background="secondary" borderWidth="small" borderColor="primary" borderRadius={isBadge?'circle':'medium'} style={{width:isBadge?'4rem':'5rem',height:'4rem',overflow:'hidden',flexShrink:0}}>
+          {c.imageUrl
+            ? <img src={c.imageUrl} alt={c.name} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
+            : <Flex alignItems="center" justifyItems="center" style={{height:'100%'}}><Text size="large" weight="bold" color="placeholder">{c.name.charAt(0)}</Text></Flex>}
+        </View>
+        <Flex.Item shouldGrow shouldShrink>
+          <Flex gap="x-small" wrap="wrap" margin="0 0 xx-small">
+            <Pill color={TYPE_PILL[c.type]}>{TYPE_LABEL[c.type]}</Pill>
+            {c.isVerified ? <Pill color="success">✓ Verified</Pill> : <Pill color="warning">Self-Declared</Pill>}
+          </Flex>
+          <Text as="div" size="small" weight="bold" lineHeight="var(--instui-lh-fit)" style={{marginBottom:'2px'}}>{c.name}</Text>
+          <Text as="div" size="x-small" color="secondary" className="truncate">{c.issuer}</Text>
+          <Text as="div" size="x-small" color="placeholder">{formatDate(c.date)}</Text>
+          {isCLR && onView && <a href="#" onClick={e=>{e.preventDefault();e.stopPropagation();onView(c.id);}} className="instui-link" style={{fontSize:'var(--instui-fs-xsmall)',marginTop:'4px',display:'inline-block'}}>View Full Record →</a>}
+          {!isCLR && c.publicUrl && !selectable && <a href={c.publicUrl} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="instui-link" style={{fontSize:'var(--instui-fs-xsmall)',marginTop:'4px',display:'inline-block'}}>View Credential →</a>}
+        </Flex.Item>
+      </Flex>
+      {isSelected && (
+        <View style={{position:'absolute',top:'0.5rem',right:'0.5rem',color:'var(--instui-blue-45)'}}>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/></svg>
+        </View>
+      )}
+    </View>
   );
 };
 
-// ─── OPPORTUNITY CARD ────────────────────────────────────────
-const OPP_TYPE_COLORS = {Job:'bg-[#E0EBF5] text-[#0E68B3] border-[#C0D9EE]',Scholarship:'bg-[#FCE5D9] text-[#B34000] border-[#F5C4A8]',Program:'bg-[#F1E6F5] text-[#9242B4] border-[#D8B8E8]',Internship:'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]'};
-
-const OpportunityCard = ({opp}) => (
-  <div className="bg-white rounded-lg border border-[#D7DADE] p-5 card-hover group">
-    <div className="flex flex-col md:flex-row gap-5">
-      <div className="w-14 h-14 bg-[#F2F4F4] rounded-lg border border-[#E8EAEC] flex items-center justify-center shrink-0">
-        <span className="text-xl font-bold text-[#9EA6AD]">{opp.organization.charAt(0)}</span>
-      </div>
-      <div className="flex-1 min-w-0">
-        <div className="flex flex-wrap items-center gap-2 mb-1.5">
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${OPP_TYPE_COLORS[opp.type]}`}>{opp.type}</span>
-          <span className="text-sm text-[#586874]">{opp.organization}</span>
-          <span className="text-sm text-[#9EA6AD]">·</span>
-          <span className="text-sm text-[#9EA6AD]">{opp.location}</span>
-        </div>
-        <h3 className="text-base font-bold text-[#273540] group-hover:text-[#2B7ABC] transition-colors leading-snug mb-1.5">{opp.title}</h3>
-        <p className="text-sm text-[#586874] leading-relaxed mb-3 line-clamp-2">{opp.description}</p>
-        <div className="flex flex-wrap gap-1.5 mb-3">{opp.requirements.map((r,i)=><span key={i} className="px-2.5 py-1 bg-[#F2F4F4] border border-[#D7DADE] text-[#586874] text-xs font-bold rounded">{r}</span>)}</div>
-        <div className="flex flex-wrap items-center gap-4 text-sm">
-          {opp.compensation&&<span className="font-bold text-[#03893D]">{opp.compensation}</span>}
-          {opp.deadline&&<span className="text-[#9EA6AD]">Deadline: {opp.deadline}</span>}
-        </div>
-      </div>
-      <div className="md:w-44 flex flex-col items-end justify-between gap-3 shrink-0 md:border-l md:border-[#E8EAEC] md:pl-5">
-        <div className="text-right">
-          <div className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded border text-sm font-bold ${scoreColor(opp.matchScore)}`}>{opp.matchScore}%<span className="text-xs">Match</span></div>
-          <div className="mt-2 w-full bg-[#E8EAEC] rounded-full h-1.5 overflow-hidden"><div className={`h-full rounded-full ${scoreBar(opp.matchScore)}`} style={{width:`${opp.matchScore}%`}}/></div>
-          <p className="text-xs text-[#9EA6AD] mt-2 leading-relaxed italic line-clamp-3 text-right">"{opp.matchReason}"</p>
-        </div>
-        <button className="inline-flex items-center gap-1 text-sm font-bold text-[#2B7ABC] hover:text-[#0E68B3]">Apply with LER <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7-7 7"/></svg></button>
-      </div>
-    </div>
-  </div>
+// ═════════════════════ Opportunity Card ═════════════════════
+const OpportunityCard = ({ opp }) => (
+  <Card hover padding="medium">
+    <Flex gap="medium" alignItems="flex-start" wrap="wrap">
+      <View background="secondary" borderWidth="small" borderColor="primary" borderRadius="medium" style={{width:'3.5rem',height:'3.5rem',flexShrink:0}}>
+        <Flex alignItems="center" justifyItems="center" style={{height:'100%'}}><Text size="large" weight="bold" color="placeholder">{opp.organization.charAt(0)}</Text></Flex>
+      </View>
+      <Flex.Item shouldGrow shouldShrink>
+        <Flex gap="x-small" alignItems="center" wrap="wrap" margin="0 0 xx-small">
+          <Pill color={OPP_PILL[opp.type]}>{opp.type}</Pill>
+          <Text size="small" color="secondary">{opp.organization}</Text>
+          <Text size="small" color="placeholder">·</Text>
+          <Text size="small" color="placeholder">{opp.location}</Text>
+        </Flex>
+        <Heading level="h4" margin="0 0 x-small">{opp.title}</Heading>
+        <Text as="p" size="small" color="secondary" className="clamp-2" style={{margin:'0 0 var(--instui-space-sm)'}}>{opp.description}</Text>
+        <Flex gap="x-small" wrap="wrap" margin="0 0 small">
+          {opp.requirements.map((r,i)=><Pill key={i} color="neutral">{r}</Pill>)}
+        </Flex>
+        <Flex gap="medium" alignItems="center" wrap="wrap">
+          {opp.compensation && <Text size="small" weight="bold" color="success">{opp.compensation}</Text>}
+          {opp.deadline && <Text size="small" color="placeholder">Deadline: {opp.deadline}</Text>}
+        </Flex>
+      </Flex.Item>
+      <Flex.Item size="11rem" style={{borderLeft:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingLeft:'var(--instui-space-md)',alignSelf:'stretch'}}>
+        <Flex direction="column" gap="x-small" alignItems="flex-end" justifyItems="space-between" style={{height:'100%'}}>
+          <View style={{textAlign:'right'}}>
+            <Pill color={scoreColor(opp.matchScore)}>{opp.matchScore}% Match</Pill>
+            <View margin="x-small 0 xx-small" style={{width:'100%',height:'0.375rem',background:'var(--instui-grey-12)',borderRadius:'var(--instui-br-small)',overflow:'hidden'}}>
+              <View style={{width:`${opp.matchScore}%`,height:'100%',background:scoreBarColor(opp.matchScore)}}/>
+            </View>
+            <Text as="p" size="x-small" color="placeholder" className="clamp-3" style={{margin:'var(--instui-space-xxs) 0 0',fontStyle:'italic'}}>"{opp.matchReason}"</Text>
+          </View>
+          <a href="#" className="instui-link" style={{fontSize:'var(--instui-fs-small)'}} onClick={e=>e.preventDefault()}>Apply with LER →</a>
+        </Flex>
+      </Flex.Item>
+    </Flex>
+  </Card>
 );
 
-// ─── LER CARD ────────────────────────────────────────────────
-const LERCard = ({ler,isActive,onSelect,onView,onToggleStatus,onDelete}) => {
-  const [menu,setMenu]=React.useState(false);
-  const [copied,setCopied]=React.useState(false);
-  const total=(ler.skillsProfile?.length||0)+(ler.customSkills?.length||0)+(ler.softSkills?.length||0);
-  const copyLink=e=>{e.stopPropagation();navigator.clipboard.writeText(lerShareUrl(ler));setCopied(true);setTimeout(()=>setCopied(false),2000);};
+// ═════════════════════ LER Card ═════════════════════
+const LERCard = ({ ler, isActive, onSelect, onView, onToggleStatus, onDelete }) => {
+  const [menu,setMenu] = React.useState(false);
+  const [copied,setCopied] = React.useState(false);
+  const total = (ler.skillsProfile?.length||0)+(ler.customSkills?.length||0)+(ler.softSkills?.length||0);
+  const copyLink = e => { e.stopPropagation(); navigator.clipboard.writeText(lerShareUrl(ler)); setCopied(true); setTimeout(()=>setCopied(false),2000); };
   return (
-    <div onClick={onSelect} className={`relative bg-white rounded-lg border transition-all card-hover flex flex-col cursor-pointer ${isActive?'border-[#2B7ABC] shadow-sm':'border-[#D7DADE]'}`}>
-      {isActive&&<div className="absolute top-0 left-0 right-0 h-0.5 bg-[#2B7ABC] rounded-t-lg"/>}
-      <div className="p-5">
-        <div className="flex justify-between items-start mb-3">
-          <button onClick={e=>{e.stopPropagation();onView();}} className="text-left font-bold text-[#2B7ABC] text-sm leading-snug hover:text-[#0E68B3] hover:underline line-clamp-2 flex-1 pr-2">{ler.title}</button>
-          <div className="relative shrink-0">
-            <button onClick={e=>{e.stopPropagation();setMenu(m=>!m);}} className="p-1.5 text-[#9EA6AD] hover:text-[#586874] rounded hover:bg-[#F2F4F4] transition-colors"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg></button>
-            {menu&&(<><div className="fixed inset-0 z-10" onClick={()=>setMenu(false)}/>
-              <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-[#D7DADE] z-20 overflow-hidden py-1">
-                <button onClick={e=>{e.stopPropagation();onView();setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#273540] hover:bg-[#F2F4F4]">View Record</button>
-                <button onClick={e=>{copyLink(e);setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#273540] hover:bg-[#F2F4F4]">{copied?'✓ Link Copied!':'Copy Share Link'}</button>
-                <button onClick={e=>{e.stopPropagation();onDelete();setMenu(false);}} className="w-full text-left px-4 py-2.5 text-sm text-[#E62429] hover:bg-[#FCE4E5]">Delete Record</button>
-              </div>
+    <View onClick={onSelect} background="primary" borderWidth={isActive?'medium':'small'} borderColor={isActive?'brand':'primary'} borderRadius="medium" shadow="resting" className="card-hover" style={{cursor:'pointer',position:'relative',display:'flex',flexDirection:'column',height:'100%'}}>
+      <View padding="medium">
+        <Flex justifyItems="space-between" alignItems="flex-start" gap="x-small" margin="0 0 small">
+          <Flex.Item shouldGrow shouldShrink>
+            <a href="#" onClick={e=>{e.preventDefault();e.stopPropagation();onView();}} className="instui-link clamp-2" style={{fontSize:'var(--instui-fs-medium)',lineHeight:'var(--instui-lh-condensed)',display:'-webkit-box'}}>{ler.title}</a>
+          </Flex.Item>
+          <View style={{position:'relative'}}>
+            <button onClick={e=>{e.stopPropagation();setMenu(m=>!m);}} style={{padding:'4px',width:'1.875rem',height:'1.875rem',background:'transparent',border:0,color:'var(--instui-grey-45)',cursor:'pointer',borderRadius:'var(--instui-br-medium)'}}>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+            </button>
+            {menu && (<>
+              <div style={{position:'fixed',inset:0,zIndex:10}} onClick={()=>setMenu(false)}/>
+              <View background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="above" style={{position:'absolute',right:0,top:'calc(100% + 4px)',width:'12rem',zIndex:20,overflow:'hidden'}}>
+                <button onClick={e=>{e.stopPropagation();onView();setMenu(false);}} style={{display:'block',width:'100%',textAlign:'left',padding:'var(--instui-space-xs) var(--instui-space-sm)',fontSize:'var(--instui-fs-small)',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-text-body)'}}>View Record</button>
+                <button onClick={e=>{copyLink(e);setMenu(false);}} style={{display:'block',width:'100%',textAlign:'left',padding:'var(--instui-space-xs) var(--instui-space-sm)',fontSize:'var(--instui-fs-small)',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-text-body)'}}>{copied?'✓ Link Copied!':'Copy Share Link'}</button>
+                <button onClick={e=>{e.stopPropagation();onDelete();setMenu(false);}} style={{display:'block',width:'100%',textAlign:'left',padding:'var(--instui-space-xs) var(--instui-space-sm)',fontSize:'var(--instui-fs-small)',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-red-57)'}}>Delete Record</button>
+              </View>
             </>)}
-          </div>
-        </div>
-        <div className="flex items-center gap-2 mb-4">
-          <span className={`px-2 py-0.5 text-xs font-bold rounded border ${ler.status==='Published'?'bg-[#DCEEE4] text-[#027634] border-[#B8DEC6]':'bg-[#FCE4E5] text-[#C71F23] border-[#F0B8BB]'}`}>{ler.status==='Published'?'● Public':'● Private'}</span>
-          <span className="text-xs text-[#9EA6AD]">{new Date(ler.createdAt).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</span>
-        </div>
-        <div className="flex gap-5 mb-4">
-          <div className="text-center"><div className="text-xl font-bold text-[#273540]">{ler.credentialIds.length}</div><div className="text-xs text-[#9EA6AD] uppercase tracking-wide">Credentials</div></div>
-          <div className="text-center"><div className="text-xl font-bold text-[#273540]">{total}</div><div className="text-xs text-[#9EA6AD] uppercase tracking-wide">Skills</div></div>
-        </div>
-        <p className="text-sm text-[#586874] line-clamp-2 leading-relaxed italic border-l-2 border-[#E8EAEC] pl-3">"{ler.executiveSummary}"</p>
-      </div>
-      <div className="px-5 pb-4 mt-auto flex gap-2">
-        <Button variant={ler.status==='Published'?'success':'outline'} size="sm" onClick={e=>{e.stopPropagation();onToggleStatus();}} className="flex-1">{ler.status==='Published'?'Published':'Set Public'}</Button>
-        <Button variant="outline" size="sm" onClick={e=>{e.stopPropagation();onView();}}>View</Button>
-      </div>
-    </div>
+          </View>
+        </Flex>
+        <Flex gap="x-small" alignItems="center" margin="0 0 medium">
+          <Pill color={ler.status==='Published'?'success':'danger'}>{ler.status==='Published'?'● Public':'● Private'}</Pill>
+          <Text size="x-small" color="placeholder">{formatDate(ler.createdAt)}</Text>
+        </Flex>
+        <Flex gap="medium" margin="0 0 medium">
+          <View><Text as="div" size="large" weight="bold">{ler.credentialIds.length}</Text><Text as="div" size="x-small" color="placeholder" transform="uppercase" letterSpacing="0.0625rem">Credentials</Text></View>
+          <View><Text as="div" size="large" weight="bold">{total}</Text><Text as="div" size="x-small" color="placeholder" transform="uppercase" letterSpacing="0.0625rem">Skills</Text></View>
+        </Flex>
+        <View style={{borderLeft:'var(--instui-bw-medium) solid var(--instui-line-divider)',paddingLeft:'var(--instui-space-sm)'}}>
+          <Text as="p" size="small" color="secondary" className="clamp-2" style={{margin:0,fontStyle:'italic',lineHeight:'var(--instui-lh-default)'}}>"{ler.executiveSummary}"</Text>
+        </View>
+      </View>
+      <View padding="0 medium medium" style={{marginTop:'auto'}}>
+        <Flex gap="x-small">
+          <Flex.Item shouldGrow shouldShrink>
+            <Button color={ler.status==='Published'?'success':'secondary'} size="sm" onClick={e=>{e.stopPropagation();onToggleStatus();}} style={{width:'100%'}}>{ler.status==='Published'?'Published':'Set Public'}</Button>
+          </Flex.Item>
+          <Button color="secondary" size="sm" onClick={e=>{e.stopPropagation();onView();}}>View</Button>
+        </Flex>
+      </View>
+    </View>
   );
 };
 
-// ─── CLR PREVIEW MODAL ───────────────────────────────────────
-const CLRPreviewModal = ({credential:c,onClose}) => {
-  const isUF=c.issuer.toLowerCase().includes('florida');
-  const isAlabama=c.issuer.toLowerCase().includes('alabama');
+// ═════════════════════ CLR Preview Modal ═════════════════════
+const CLRPreviewModal = ({ credential:c, onClose }) => {
+  const isUF = c.issuer.toLowerCase().includes('florida');
+  const isAlabama = c.issuer.toLowerCase().includes('alabama');
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md overflow-y-auto">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl min-h-[80vh] my-8 flex flex-col relative overflow-hidden">
-        <button onClick={onClose} className="absolute top-4 right-4 z-10 p-2 bg-black/20 hover:bg-black/30 text-white rounded-full transition-all"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        {isUF&&(
-          <div className="flex-1 flex flex-col">
-            <div className="bg-[#0021A5] px-10 py-8 text-white flex justify-between items-start">
-              <div><div className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">University of Florida</div><h1 className="text-3xl font-black tracking-tight uppercase">Gator Experience Record</h1><p className="text-lg font-bold opacity-90 mt-1">Jordan K. Anderson</p></div>
-              <div className="text-right text-[10px] font-black uppercase tracking-widest opacity-70 space-y-1"><p>Issued: Feb 10, 2026</p><p>ID: 250210MKL1I3</p></div>
-            </div>
-            <div className="flex-1 p-10 space-y-10 bg-white">
-              <div className="grid grid-cols-7 gap-4">
+    <Flex alignItems="center" justifyItems="center" padding="medium" style={{position:'fixed',inset:0,zIndex:100,background:'rgba(39,53,64,0.85)',backdropFilter:'blur(4px)',overflowY:'auto'}}>
+      <View background="primary" borderRadius="large" shadow="topmost" style={{width:'100%',maxWidth:'56rem',minHeight:'80vh',display:'flex',flexDirection:'column',position:'relative',overflow:'hidden'}}>
+        <button onClick={onClose} style={{position:'absolute',top:'1rem',right:'1rem',zIndex:10,padding:'0.5rem',background:'rgba(0,0,0,0.25)',border:0,borderRadius:'50%',color:'#fff',cursor:'pointer'}}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        {isUF && (
+          <Flex direction="column" style={{flex:1}}>
+            <Flex justifyItems="space-between" alignItems="flex-start" padding="x-large" style={{background:'#0021A5',color:'#fff'}}>
+              <View>
+                <Text as="div" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,marginBottom:'0.5rem'}}>University of Florida</Text>
+                <Heading level="h1" color="inverse" style={{textTransform:'uppercase',letterSpacing:'-0.0625rem'}}>Gator Experience Record</Heading>
+                <Text as="div" size="large" weight="bold" color="inverse" style={{opacity:0.9,marginTop:'0.25rem'}}>Jordan K. Anderson</Text>
+              </View>
+              <View style={{textAlign:'right'}}>
+                <Text as="p" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,margin:'0 0 0.25rem'}}>Issued: Feb 10, 2026</Text>
+                <Text as="p" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,margin:0}}>ID: 250210MKL1I3</Text>
+              </View>
+            </Flex>
+            <View padding="x-large" background="primary" style={{flex:1}}>
+              <View style={{display:'grid',gridTemplateColumns:'repeat(7, 1fr)',gap:'1rem',marginBottom:'2.25rem'}}>
                 {[{l:'Community-Based',v:'23',u:'Hours',i:'👥'},{l:'Creative & Entrepreneurial',v:'8',u:'Hours',i:'💡'},{l:'Global & Sociocultural',v:'8',u:'Activities',i:'🌍'},{l:'Leadership',v:'2',u:'Activities',i:'⚓'},{l:'Professional Exploration',v:'4',u:'Activities',i:'🧭'},{l:'Research',v:'16',u:'Hours',i:'📚'},{l:'Work-Based',v:'144',u:'Hours',i:'🤝'}].map((s,i)=>(
-                  <div key={i} className="text-center"><div className="text-3xl mb-2">{s.i}</div><p className="text-[9px] font-black uppercase leading-tight text-slate-500 mb-1">{s.l}</p><div className="text-2xl font-black text-[#0021A5]">{s.v}</div><p className="text-[9px] font-black text-slate-400">{s.u}</p></div>
+                  <View key={i} textAlign="center">
+                    <View style={{fontSize:'1.875rem',marginBottom:'0.5rem'}}>{s.i}</View>
+                    <Text as="p" size="x-small" weight="bold" color="placeholder" transform="uppercase" style={{margin:'0 0 0.25rem'}}>{s.l}</Text>
+                    <Text as="div" weight="bold" style={{fontSize:'1.5rem',color:'#0021A5'}}>{s.v}</Text>
+                    <Text as="div" size="x-small" weight="bold" color="placeholder">{s.u}</Text>
+                  </View>
                 ))}
-              </div>
-              <div><h2 className="text-[#0021A5] font-black uppercase tracking-tight text-lg mb-4 border-b-2 border-slate-100 pb-2">Alternative Credentials</h2>
-                <div className="flex gap-4">{['Mastery','Proficiency','Knowledge','Experience','Fundamentals'].map((b,i)=>(
-                  <div key={i} className="flex flex-col items-center gap-1.5"><div className={`w-14 h-14 rounded-full flex items-center justify-center text-white font-black text-xl shadow ${['bg-amber-500','bg-orange-600','bg-blue-800','bg-emerald-600','bg-teal-700'][i]}`}>1</div><span className="text-[9px] font-black uppercase text-slate-400">{b}</span></div>
-                ))}</div>
-              </div>
-            </div>
-            <div className="px-10 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-              <span className="text-[10px] font-black uppercase tracking-widest" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure</span>
-              <p className="text-[10px] text-slate-400 font-bold uppercase">Page 1 of 9</p>
-            </div>
-          </div>
+              </View>
+              <Heading level="h4" style={{color:'#0021A5',textTransform:'uppercase',borderBottom:'2px solid var(--instui-line-divider)',paddingBottom:'0.5rem',marginBottom:'1rem'}}>Alternative Credentials</Heading>
+              <Flex gap="medium">
+                {['Mastery','Proficiency','Knowledge','Experience','Fundamentals'].map((b,i)=>(
+                  <Flex direction="column" alignItems="center" gap="xx-small" key={i}>
+                    <View style={{width:'3.5rem',height:'3.5rem',borderRadius:'50%',background:['#F59E0B','#EA580C','#1E3A8A','#059669','#0F766E'][i],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:'1.25rem'}}>1</View>
+                    <Text size="x-small" weight="bold" color="placeholder" transform="uppercase">{b}</Text>
+                  </Flex>
+                ))}
+              </Flex>
+            </View>
+            <Flex justifyItems="space-between" alignItems="center" padding="medium x-large" background="secondary" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.125rem">Verified by Parchment by Instructure</Text>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase">Page 1 of 9</Text>
+            </Flex>
+          </Flex>
         )}
-        {isAlabama&&(
-          <div className="flex-1 flex flex-col">
-            <div className="bg-[#9E1B32] px-10 py-8 text-white">
-              <div className="text-xs font-black uppercase tracking-widest opacity-70 mb-2">The University of Alabama</div>
-              <h1 className="text-3xl font-black tracking-tight uppercase">REAL Tide Summary of Experiences</h1>
-              <div className="flex justify-between items-end mt-4">
-                <div><p className="text-xl font-black">Anjali Kurse</p><p className="text-sm opacity-80 font-medium">Junior · Chemistry & History · Minor: Global Health</p></div>
-                <div className="bg-white/20 rounded-xl px-6 py-4 text-center"><div className="text-3xl font-black">$2,500</div><div className="text-[10px] font-black uppercase tracking-widest opacity-80 mt-1">Economic Impact</div></div>
-              </div>
-            </div>
-            <div className="flex-1 p-10 bg-white">
-              <div className="grid grid-cols-5 gap-6">{[{l:'Community Service',v:'4',i:'❤️'},{l:'Leadership Development',v:'5',i:'🏃'},{l:'Professional Development',v:'13',i:'⚙️'},{l:'Holistic Development',v:'4',i:'🧘'},{l:'Global & Intercultural',v:'3',i:'🌍'}].map((s,i)=>(
-                <div key={i} className="text-center p-4 bg-slate-50 rounded-xl"><div className="text-3xl mb-2">{s.i}</div><p className="text-[9px] font-black uppercase leading-tight text-slate-500 mb-1">{s.l}</p><div className="text-2xl font-black text-[#9E1B32]">{s.v}</div><p className="text-[9px] font-black text-slate-400">Hours</p></div>
-              ))}</div>
-            </div>
-            <div className="px-10 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center">
-              <span className="text-[10px] font-black uppercase tracking-widest" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure</span>
-              <p className="text-[10px] text-slate-400 font-bold uppercase">Page 1 of 7</p>
-            </div>
-          </div>
+        {isAlabama && (
+          <Flex direction="column" style={{flex:1}}>
+            <View padding="x-large" style={{background:'#9E1B32',color:'#fff'}}>
+              <Text as="div" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,marginBottom:'0.5rem'}}>The University of Alabama</Text>
+              <Heading level="h1" color="inverse" style={{textTransform:'uppercase',letterSpacing:'-0.0625rem'}}>REAL Tide Summary of Experiences</Heading>
+              <Flex justifyItems="space-between" alignItems="flex-end" margin="medium 0 0">
+                <View><Text as="p" size="large" weight="bold" color="inverse" style={{margin:0}}>Anjali Kurse</Text><Text as="p" size="small" color="inverse" style={{margin:0,opacity:0.85}}>Junior · Chemistry & History · Minor: Global Health</Text></View>
+                <View padding="medium" borderRadius="large" style={{background:'rgba(255,255,255,0.2)',textAlign:'center'}}>
+                  <Text as="div" weight="bold" color="inverse" style={{fontSize:'1.75rem'}}>$2,500</Text>
+                  <Text as="div" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.85}}>Economic Impact</Text>
+                </View>
+              </Flex>
+            </View>
+            <View padding="x-large" background="primary" style={{flex:1}}>
+              <View style={{display:'grid',gridTemplateColumns:'repeat(5, 1fr)',gap:'1.5rem'}}>
+                {[{l:'Community Service',v:'4',i:'❤️'},{l:'Leadership Development',v:'5',i:'🏃'},{l:'Professional Development',v:'13',i:'⚙️'},{l:'Holistic Development',v:'4',i:'🧘'},{l:'Global & Intercultural',v:'3',i:'🌍'}].map((s,i)=>(
+                  <View key={i} padding="medium" borderRadius="medium" textAlign="center" style={{background:'var(--instui-grey-11)'}}>
+                    <View style={{fontSize:'1.875rem',marginBottom:'0.5rem'}}>{s.i}</View>
+                    <Text as="p" size="x-small" weight="bold" color="placeholder" transform="uppercase" style={{margin:'0 0 0.25rem'}}>{s.l}</Text>
+                    <Text as="div" weight="bold" style={{fontSize:'1.5rem',color:'#9E1B32'}}>{s.v}</Text>
+                    <Text as="div" size="x-small" weight="bold" color="placeholder">Hours</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+            <Flex justifyItems="space-between" alignItems="center" padding="medium x-large" background="secondary" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.125rem">Verified by Parchment by Instructure</Text>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase">Page 1 of 7</Text>
+            </Flex>
+          </Flex>
         )}
-        {!isUF&&!isAlabama&&(
-          <div className="flex-1 flex flex-col items-center justify-center p-16 text-center">
-            <div className="text-6xl mb-6">📄</div>
-            <h2 className="text-2xl font-black text-slate-900 mb-2">{c.name}</h2>
-            <p className="text-slate-500 font-medium mb-6">{c.issuer}</p>
-            <div className="flex flex-wrap gap-2 justify-center">{c.skills.map(s=><span key={s} className="px-3 py-1 text-xs font-bold rounded border" style={{background:'#E0EBF5',color:'#0E68B3',borderColor:'#C0D9EE'}}>{s}</span>)}</div>
-          </div>
+        {!isUF && !isAlabama && (
+          <Flex direction="column" alignItems="center" justifyItems="center" padding="x-large" style={{flex:1,textAlign:'center'}}>
+            <View style={{fontSize:'4rem',marginBottom:'1.5rem'}}>📄</View>
+            <Heading level="h2" margin="0 0 x-small">{c.name}</Heading>
+            <Text as="p" color="secondary" margin="0 0 medium">{c.issuer}</Text>
+            <Flex gap="x-small" wrap="wrap" justifyItems="center">{c.skills.map(s=><Pill key={s} color="info">{s}</Pill>)}</Flex>
+          </Flex>
         )}
-      </div>
-    </div>
+      </View>
+    </Flex>
   );
 };
 
-// ─── ADD CREDENTIAL MODAL ────────────────────────────────────
-const AddCredentialModal = ({onSave,onCancel}) => {
-  const [name,setName]=React.useState('');
-  const [issuer,setIssuer]=React.useState('');
-  const [date,setDate]=React.useState(new Date().toISOString().split('T')[0]);
-  const [type,setType]=React.useState('Certification');
-  const iStyle={borderColor:'#D7DADE',color:'#273540',background:'#fff'};
+// ═════════════════════ Add Credential Modal ═════════════════════
+const AddCredentialModal = ({ onSave, onCancel }) => {
+  const [name,setName] = React.useState('');
+  const [issuer,setIssuer] = React.useState('');
+  const [date,setDate] = React.useState(new Date().toISOString().split('T')[0]);
+  const [type,setType] = React.useState('Certification');
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4" style={{background:'rgba(39,53,64,0.75)'}}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden border" style={{borderColor:'#D7DADE'}}>
-        <div className="px-5 py-4 flex justify-between items-center" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}>
-          <h3 className="font-bold text-sm" style={{color:'#273540'}}>Add Self-Declared Achievement</h3>
-          <button onClick={onCancel} className="p-1.5 rounded hover:bg-[#E8EAEC]"><svg className="w-5 h-5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>
-        <div className="p-5 space-y-4">
-          <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Achievement Name</label><input autoFocus type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Graphic Design Certificate" className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
-          <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Issuing Organization</label><input type="text" value={issuer} onChange={e=>setIssuer(e.target.value)} placeholder="e.g. Coursera" className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
-          <div className="grid grid-cols-2 gap-4">
-            <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Date Earned</label><input type="date" value={date} onChange={e=>setDate(e.target.value)} className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}/></div>
-            <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>Type</label>
-              <select value={type} onChange={e=>setType(e.target.value)} className="instui-input w-full px-3 py-2.5 border rounded text-sm" style={iStyle}>
-                <option value="Certification">Certificate</option><option value="Badge">Badge</option><option value="Course">Course</option><option value="Degree">Degree</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div className="px-5 py-4 flex justify-end gap-3" style={{background:'#F2F4F4',borderTop:'1px solid #D7DADE'}}>
-          <Button variant="outline" size="sm" onClick={onCancel}>Cancel</Button>
-          <Button variant="primary" size="sm" onClick={()=>onSave({id:Math.random().toString(36).slice(2,11),name,issuer,date,type,skills:[],isVerified:false})} disabled={!name.trim()||!issuer.trim()}>Save Achievement</Button>
-        </div>
-      </div>
-    </div>
+    <Flex alignItems="center" justifyItems="center" padding="medium" style={{position:'fixed',inset:0,zIndex:60,background:'rgba(39,53,64,0.75)'}}>
+      <View background="primary" borderRadius="medium" shadow="topmost" borderWidth="small" borderColor="primary" style={{width:'100%',maxWidth:'28rem',overflow:'hidden'}}>
+        <Flex justifyItems="space-between" alignItems="center" padding="small medium" background="secondary" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+          <Heading level="h4">Add Self-Declared Achievement</Heading>
+          <button onClick={onCancel} style={{padding:'0.25rem',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-grey-45)'}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </Flex>
+        <View padding="medium">
+          <Flex direction="column" gap="medium">
+            <View>
+              <label className="instui-label">Achievement Name</label>
+              <input autoFocus type="text" value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Graphic Design Certificate" className="instui-input"/>
+            </View>
+            <View>
+              <label className="instui-label">Issuing Organization</label>
+              <input type="text" value={issuer} onChange={e=>setIssuer(e.target.value)} placeholder="e.g. Coursera" className="instui-input"/>
+            </View>
+            <Flex gap="small">
+              <Flex.Item shouldGrow>
+                <label className="instui-label">Date Earned</label>
+                <input type="date" value={date} onChange={e=>setDate(e.target.value)} className="instui-input"/>
+              </Flex.Item>
+              <Flex.Item shouldGrow>
+                <label className="instui-label">Type</label>
+                <select value={type} onChange={e=>setType(e.target.value)} className="instui-input">
+                  <option value="Certification">Certificate</option>
+                  <option value="Badge">Badge</option>
+                  <option value="Course">Course</option>
+                  <option value="Degree">Degree</option>
+                </select>
+              </Flex.Item>
+            </Flex>
+          </Flex>
+        </View>
+        <Flex gap="x-small" justifyItems="flex-end" padding="small medium" background="secondary" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+          <Button color="secondary" size="md" onClick={onCancel}>Cancel</Button>
+          <Button color="primary" size="md" onClick={()=>onSave({id:Math.random().toString(36).slice(2,11),name,issuer,date,type,skills:[],isVerified:false})} disabled={!name.trim()||!issuer.trim()}>Save Achievement</Button>
+        </Flex>
+      </View>
+    </Flex>
   );
 };
 
-// ─── OPPORTUNITIES MODAL ─────────────────────────────────────
-const OpportunitiesModal = ({opps,lerTitle,onClose}) => {
-  const [filter,setFilter]=React.useState('All');
-  const filtered=filter==='All'?opps:opps.filter(o=>o.type===filter);
+// ═════════════════════ Opportunities Modal ═════════════════════
+const OpportunitiesModal = ({ opps, lerTitle, onClose }) => {
+  const [filter,setFilter] = React.useState('All');
+  const filtered = filter==='All' ? opps : opps.filter(o=>o.type===filter);
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:'rgba(39,53,64,0.75)'}}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col border" style={{borderColor:'#D7DADE'}}>
-        <div className="px-6 py-4 flex items-center justify-between shrink-0" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}>
-          <div>
-            <h3 className="font-bold text-sm" style={{color:'#273540'}}>All Matched Opportunities ({opps.length})</h3>
-            {lerTitle&&<p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>Based on: {lerTitle}</p>}
-          </div>
-          <button onClick={onClose} className="p-1.5 rounded hover:bg-[#E8EAEC] transition-colors" style={{color:'#9EA6AD'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>
-        <div className="px-6 py-3 flex gap-2 shrink-0" style={{borderBottom:'1px solid #E8EAEC'}}>
+    <Flex alignItems="center" justifyItems="center" padding="medium" style={{position:'fixed',inset:0,zIndex:50,background:'rgba(39,53,64,0.75)'}}>
+      <View background="primary" borderRadius="medium" shadow="topmost" borderWidth="small" borderColor="primary" style={{width:'100%',maxWidth:'56rem',maxHeight:'90vh',display:'flex',flexDirection:'column'}}>
+        <Flex justifyItems="space-between" alignItems="center" padding="small medium" background="secondary" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+          <View>
+            <Heading level="h4">All Matched Opportunities ({opps.length})</Heading>
+            {lerTitle && <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 0'}}>Based on: {lerTitle}</Text>}
+          </View>
+          <button onClick={onClose} style={{padding:'0.25rem',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-grey-45)'}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </Flex>
+        <Flex gap="x-small" padding="x-small medium" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
           {['All','Job','Internship','Scholarship','Program'].map(t=>(
-            <button key={t} onClick={()=>setFilter(t)} className="instui-btn px-3 py-1.5 text-xs transition-all" style={filter===t?{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}:{background:'#F2F4F4',color:'#586874',borderColor:'#D7DADE'}}>{t}</button>
+            <Button key={t} size="sm" color={filter===t?'primary':'secondary'} onClick={()=>setFilter(t)}>{t}</Button>
           ))}
-        </div>
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {filtered.length>0?filtered.map(opp=><OpportunityCard key={opp.id} opp={opp}/>):<div className="text-center py-12"><p className="text-sm" style={{color:'#9EA6AD'}}>No opportunities match this filter.</p></div>}
-        </div>
-      </div>
-    </div>
+        </Flex>
+        <View padding="medium" overflowY="auto" style={{flex:1}}>
+          <Flex direction="column" gap="small">
+            {filtered.length>0 ? filtered.map(opp=><OpportunityCard key={opp.id} opp={opp}/>) : <Text as="p" color="placeholder" style={{textAlign:'center',padding:'3rem 0'}}>No opportunities match this filter.</Text>}
+          </Flex>
+        </View>
+      </View>
+    </Flex>
   );
 };
 
-// ─── SHARE MENU ───────────────────────────────────────────────
-const ShareMenu = ({ler}) => {
-  const [open,setOpen]=React.useState(false);
-  const [copied,setCopied]=React.useState(false);
-  const url=lerShareUrl(ler);
-  if(ler.status!=='Published') return <Button variant="outline" size="md" disabled>Share</Button>;
+// ═════════════════════ Share Menu ═════════════════════
+const ShareMenu = ({ ler }) => {
+  const [open,setOpen] = React.useState(false);
+  const [copied,setCopied] = React.useState(false);
+  const url = lerShareUrl(ler);
+  if (ler.status!=='Published') return <Button color="secondary" size="md" disabled>Share</Button>;
   return (
-    <div className="relative">
-      <Button variant="primary" size="md" onClick={()=>setOpen(o=>!o)}>Share Record <svg className={`ml-2 w-3.5 h-3.5 transition-transform ${open?'rotate-180':''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7"/></svg></Button>
-      {open&&(<>
-        <div className="fixed inset-0 z-10" onClick={()=>setOpen(false)}/>
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border z-20 overflow-hidden" style={{borderColor:'#D7DADE'}}>
-          <div className="px-4 py-2.5" style={{background:'#F2F4F4',borderBottom:'1px solid #D7DADE'}}><p className="text-xs font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Share to</p></div>
-          <div className="p-1.5 space-y-0.5">
+    <View style={{position:'relative'}}>
+      <Button color="primary" size="md" onClick={()=>setOpen(o=>!o)}>Share Record ▾</Button>
+      {open && (<>
+        <div style={{position:'fixed',inset:0,zIndex:10}} onClick={()=>setOpen(false)}/>
+        <View background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="above" style={{position:'absolute',right:0,top:'calc(100% + 4px)',width:'14rem',zIndex:20,overflow:'hidden'}}>
+          <View padding="x-small medium" background="secondary" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+            <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem">Share to</Text>
+          </View>
+          <View padding="xx-small">
             {[{name:'LinkedIn',href:`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`},{name:'X (Twitter)',href:`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent('My LER: '+ler.title)}`},{name:'Facebook',href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`}].map(l=>(
-              <a key={l.name} href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-3 py-2 text-sm font-bold rounded hover:bg-[#F2F4F4] transition-colors" style={{color:'#273540'}} onClick={()=>setOpen(false)}>{l.name}</a>
+              <a key={l.name} href={l.href} target="_blank" rel="noopener noreferrer" onClick={()=>setOpen(false)} style={{display:'block',padding:'var(--instui-space-xs) var(--instui-space-sm)',fontSize:'var(--instui-fs-small)',fontWeight:700,color:'var(--instui-text-body)',textDecoration:'none',borderRadius:'var(--instui-br-medium)'}} onMouseEnter={e=>e.currentTarget.style.background='var(--instui-grey-11)'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>{l.name}</a>
             ))}
-            <button onClick={()=>{navigator.clipboard.writeText(url);setCopied(true);setTimeout(()=>setCopied(false),2000);setOpen(false);}} className="w-full flex items-center gap-3 px-3 py-2 text-sm font-bold rounded transition-colors" style={{color:'#2B7ABC',borderTop:'1px solid #E8EAEC',marginTop:'4px'}} onMouseEnter={e=>e.currentTarget.style.background='#E0EBF5'} onMouseLeave={e=>e.currentTarget.style.background='transparent'}>{copied?'✓ Copied!':'Copy Link'}</button>
-          </div>
-        </div>
+            <View style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-divider)',marginTop:'4px',paddingTop:'4px'}}>
+              <button onClick={()=>{navigator.clipboard.writeText(url);setCopied(true);setTimeout(()=>setCopied(false),2000);setOpen(false);}} style={{display:'block',width:'100%',textAlign:'left',padding:'var(--instui-space-xs) var(--instui-space-sm)',fontSize:'var(--instui-fs-small)',fontWeight:700,color:'var(--instui-text-link)',background:'transparent',border:0,borderRadius:'var(--instui-br-medium)',cursor:'pointer'}}>{copied?'✓ Copied!':'Copy Link'}</button>
+            </View>
+          </View>
+        </View>
       </>)}
-    </div>
+    </View>
   );
 };
 
-// ─── LER BUILDER ─────────────────────────────────────────────
-const LERBuilder = ({credentials,onSave,onCancel,initialLer=null,initialSelectedIds=[]}) => {
-  const [step,setStep]=React.useState(initialLer?2:1);
-  const [title,setTitle]=React.useState(initialLer?.title||'');
-  const [targetRole,setTargetRole]=React.useState(initialLer?.targetRole||'');
-  const [selectedIds,setSelectedIds]=React.useState(initialLer?.credentialIds||initialSelectedIds);
-  const [summary,setSummary]=React.useState(initialLer?.executiveSummary||'');
-  const [skills,setSkills]=React.useState(initialLer?.skillsProfile||[]);
-  const [customSkills,setCustomSkills]=React.useState(initialLer?.customSkills||[]);
-  const [newSkill,setNewSkill]=React.useState('');
-  const [isGenerating,setIsGenerating]=React.useState(false);
-  const [editingSkill,setEditingSkill]=React.useState(null);
-  const [status,setStatus]=React.useState(initialLer?.status||'Published');
-  const [search,setSearch]=React.useState('');
+// ═════════════════════ LER Builder ═════════════════════
+const LERBuilder = ({ credentials, onSave, onCancel, initialLer=null, initialSelectedIds=[] }) => {
+  const [step,setStep] = React.useState(initialLer?2:1);
+  const [title,setTitle] = React.useState(initialLer?.title||'');
+  const [targetRole,setTargetRole] = React.useState(initialLer?.targetRole||'');
+  const [selectedIds,setSelectedIds] = React.useState(initialLer?.credentialIds||initialSelectedIds);
+  const [summary,setSummary] = React.useState(initialLer?.executiveSummary||'');
+  const [skills,setSkills] = React.useState(initialLer?.skillsProfile||[]);
+  const [customSkills,setCustomSkills] = React.useState(initialLer?.customSkills||[]);
+  const [newSkill,setNewSkill] = React.useState('');
+  const [isGenerating,setIsGenerating] = React.useState(false);
+  const [status,setStatus] = React.useState(initialLer?.status||'Published');
+  const [search,setSearch] = React.useState('');
 
-  const filteredCreds=React.useMemo(()=>credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())||c.skills.some(s=>s.toLowerCase().includes(search.toLowerCase()))),[credentials,search]);
-  const grouped=React.useMemo(()=>({'Comprehensive Learner Records':filteredCreds.filter(c=>c.type==='CLR'),'Diplomas':filteredCreds.filter(c=>c.type==='Degree'),'Certificates & Courses':filteredCreds.filter(c=>c.type==='Certification'||c.type==='Course'),'Digital Badges':filteredCreds.filter(c=>c.type==='Badge')}),[filteredCreds]);
-  const toggle=id=>setSelectedIds(prev=>prev.includes(id)?prev.filter(i=>i!==id):[...prev,id]);
+  const filteredCreds = React.useMemo(()=>credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())),[credentials,search]);
+  const grouped = React.useMemo(()=>({'Comprehensive Learner Records':filteredCreds.filter(c=>c.type==='CLR'),'Diplomas':filteredCreds.filter(c=>c.type==='Degree'),'Certificates & Courses':filteredCreds.filter(c=>c.type==='Certification'||c.type==='Course'),'Digital Badges':filteredCreds.filter(c=>c.type==='Badge')}),[filteredCreds]);
+  const toggle = id => setSelectedIds(prev=>prev.includes(id)?prev.filter(i=>i!==id):[...prev,id]);
 
-  const handleGenerate=async(regen=false)=>{
-    if(!title.trim())return;
+  const handleGenerate = async (regen=false) => {
+    if (!title.trim()) return;
     setIsGenerating(true);
-    try{const creds=credentials.filter(c=>selectedIds.includes(c.id));const result=await generateLERSummary(creds,customSkills);setSummary(result.executiveSummary);if(!regen){setSkills(result.skillsProfile);setStep(2);}}
-    catch(e){console.error(e);}finally{setIsGenerating(false);}
+    try {
+      const creds = credentials.filter(c=>selectedIds.includes(c.id));
+      const result = await generateLERSummary(creds,customSkills);
+      setSummary(result.executiveSummary);
+      if (!regen) { setSkills(result.skillsProfile); setStep(2); }
+    } catch(e){ console.error(e); }
+    finally { setIsGenerating(false); }
   };
 
-  const addSkill=()=>{const t=newSkill.trim();if(t&&!customSkills.includes(t)&&!skills.includes(t)){setCustomSkills(p=>[...p,t]);setNewSkill('');}};
-  const saveEdit=()=>{if(!editingSkill)return;const{type,index,value}=editingSkill;if(value.trim()){if(type==='verified')setSkills(p=>p.map((s,i)=>i===index?value.trim():s));else setCustomSkills(p=>p.map((s,i)=>i===index?value.trim():s));}setEditingSkill(null);};
+  const addSkill = () => { const t=newSkill.trim(); if(t&&!customSkills.includes(t)&&!skills.includes(t)){ setCustomSkills(p=>[...p,t]); setNewSkill(''); } };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto" style={{background:'rgba(39,53,64,0.75)'}}>
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-[1040px] max-h-[94vh] flex flex-col border my-4" style={{borderColor:'#D7DADE'}}>
-        <div className="px-7 py-5 flex items-center justify-between shrink-0" style={{borderBottom:'1px solid #D7DADE'}}>
-          <div>
-            <h2 className="text-lg font-bold" style={{color:'#273540'}}>{initialLer?'Edit Learning & Employment Record':'Build a Learning & Employment Record'}</h2>
-            <div className="flex items-center gap-2 mt-2">
+    <Flex alignItems="flex-start" justifyItems="center" padding="medium" style={{position:'fixed',inset:0,zIndex:50,background:'rgba(39,53,64,0.75)',overflowY:'auto'}}>
+      <View background="primary" borderRadius="medium" shadow="topmost" borderWidth="small" borderColor="primary" style={{width:'100%',maxWidth:'65rem',maxHeight:'94vh',display:'flex',flexDirection:'column',margin:'1rem 0'}}>
+        <Flex justifyItems="space-between" alignItems="center" padding="medium x-large" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+          <View>
+            <Heading level="h3">{initialLer?'Edit Learning & Employment Record':'Build a Learning & Employment Record'}</Heading>
+            <Flex gap="x-small" alignItems="center" margin="x-small 0 0">
               {[1,2].map(s=>(
                 <React.Fragment key={s}>
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all" style={step===s?{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}:step>s?{background:'#03893D',color:'#fff',borderColor:'#03893D'}:{background:'#fff',color:'#9EA6AD',borderColor:'#D7DADE'}}>
-                    {step>s?<svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>:s}
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wide" style={{color:step===s?'#273540':'#9EA6AD'}}>{s===1?'Select Evidence':'Refine Profile'}</span>
-                  {s<2&&<div className="w-8 h-px" style={{background:'#D7DADE'}}/>}
+                  <View style={{width:'1.5rem',height:'1.5rem',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'var(--instui-fs-xsmall)',fontWeight:700,border:'2px solid',...(step===s?{background:'var(--instui-blue-45)',color:'#fff',borderColor:'var(--instui-blue-45)'}:step>s?{background:'var(--instui-green-45)',color:'#fff',borderColor:'var(--instui-green-45)'}:{background:'#fff',color:'var(--instui-grey-24)',borderColor:'var(--instui-grey-14)'})}}>{step>s?'✓':s}</View>
+                  <Text size="x-small" weight="bold" color={step===s?'primary':'placeholder'} transform="uppercase" letterSpacing="0.0625rem">{s===1?'Select Evidence':'Refine Profile'}</Text>
+                  {s<2 && <View style={{width:'2rem',height:'1px',background:'var(--instui-line-stroke)'}}/>}
                 </React.Fragment>
               ))}
-            </div>
-          </div>
-          <button onClick={onCancel} className="p-2 rounded hover:bg-[#F2F4F4] transition-colors" style={{color:'#9EA6AD'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>
+            </Flex>
+          </View>
+          <button onClick={onCancel} style={{padding:'0.5rem',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-grey-45)'}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </Flex>
 
-        <div className="flex-1 overflow-y-auto p-7" style={{background:'#F2F4F4'}}>
-          {step===1&&(
-            <div className="space-y-6 fade-in">
-              <div className="bg-white rounded-lg border p-5 space-y-4" style={{borderColor:'#D7DADE'}}>
-                <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#2B7ABC'}}>Record Title *</label><input autoFocus type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Software Engineering Portfolio" className="instui-input w-full px-3 py-2.5 rounded border text-base font-bold" style={{borderColor:'#D7DADE',color:'#273540'}}/></div>
-                <div><label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#9EA6AD'}}>Target Role or Goal <span className="font-normal">(optional)</span></label><input type="text" value={targetRole} onChange={e=>setTargetRole(e.target.value)} placeholder="e.g. Cloud Architect, Graduate School, Product Manager" className="instui-input w-full px-3 py-2.5 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/></div>
-              </div>
-              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
-                <div className="flex items-center justify-between mb-4">
-                  <div><h3 className="text-sm font-bold uppercase tracking-wide" style={{color:'#273540'}}>Select Credentials</h3><p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{selectedIds.length} selected</p></div>
-                  <div className="relative"><svg className="w-4 h-4 absolute left-3 top-2.5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input type="text" placeholder="Search..." value={search} onChange={e=>setSearch(e.target.value)} className="instui-input pl-9 pr-4 py-2 text-sm border rounded w-52" style={{background:'#F2F4F4',borderColor:'#D7DADE',color:'#273540'}}/></div>
-                </div>
-                <div className="space-y-6 max-h-[480px] overflow-y-auto pr-1">
+        <View padding="x-large" background="secondary" overflowY="auto" style={{flex:1}}>
+          {step===1 && (
+            <Flex direction="column" gap="medium" className="fade-in">
+              <Card padding="medium">
+                <Flex direction="column" gap="medium">
+                  <View>
+                    <label className="instui-label">Record Title *</label>
+                    <input autoFocus type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="e.g. Software Engineering Portfolio" className="instui-input" style={{fontSize:'var(--instui-fs-medium)',fontWeight:700}}/>
+                  </View>
+                  <View>
+                    <label className="instui-label">Target Role or Goal <Text size="x-small" color="placeholder" weight="normal">(optional)</Text></label>
+                    <input type="text" value={targetRole} onChange={e=>setTargetRole(e.target.value)} placeholder="e.g. Cloud Architect, Graduate School, Product Manager" className="instui-input"/>
+                  </View>
+                </Flex>
+              </Card>
+              <Card padding="medium">
+                <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium">
+                  <View>
+                    <Heading level="h4">Select Credentials</Heading>
+                    <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 0'}}>{selectedIds.length} selected</Text>
+                  </View>
+                  <View style={{position:'relative',width:'14rem'}}>
+                    <input type="text" placeholder="Search…" value={search} onChange={e=>setSearch(e.target.value)} className="instui-input" style={{paddingLeft:'2rem'}}/>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{position:'absolute',left:'0.625rem',top:'0.7rem',color:'var(--instui-grey-24)'}}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                  </View>
+                </Flex>
+                <Flex direction="column" gap="medium" style={{maxHeight:'30rem',overflowY:'auto',paddingRight:'0.25rem'}}>
                   {Object.entries(grouped).map(([group,items])=>{
-                    if(!items.length)return null;
+                    if(!items.length) return null;
                     return (
-                      <div key={group}>
-                        <h4 className="text-xs font-bold uppercase tracking-wide mb-3" style={{color:'#9EA6AD'}}>{group} ({items.length})</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                          {items.map(cred=>{const sel=selectedIds.includes(cred.id);return (
-                            <div key={cred.id} onClick={()=>toggle(cred.id)} className="flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all" style={sel?{borderColor:'#2B7ABC',background:'#E0EBF5'}:{borderColor:'#E8EAEC',background:'#fff'}}>
-                              <div className="w-10 h-10 rounded bg-[#F2F4F4] border border-[#E8EAEC] overflow-hidden shrink-0">{cred.imageUrl&&<img src={cred.imageUrl} className="w-full h-full object-cover" alt=""/>}</div>
-                              <div className="flex-1 min-w-0"><p className="text-xs font-bold truncate" style={{color:'#273540'}}>{cred.name}</p><p className="text-xs truncate" style={{color:'#9EA6AD'}}>{cred.issuer}</p></div>
-                              <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all" style={sel?{background:'#2B7ABC',borderColor:'#2B7ABC'}:{borderColor:'#D7DADE'}}>{sel&&<svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"/></svg>}</div>
-                            </div>
-                          );})}
-                        </div>
-                      </div>
+                      <View key={group}>
+                        <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>{group} ({items.length})</Text>
+                        <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-xs)'}}>
+                          {items.map(cred=>{
+                            const sel = selectedIds.includes(cred.id);
+                            return (
+                              <View key={cred.id} onClick={()=>toggle(cred.id)} background={sel?'info':'primary'} borderWidth="small" borderColor={sel?'brand':'primary'} borderRadius="medium" padding="small" style={{cursor:'pointer'}}>
+                                <Flex gap="x-small" alignItems="center">
+                                  <View style={{width:'2.5rem',height:'2.5rem',background:'var(--instui-grey-11)',border:'var(--instui-bw-small) solid var(--instui-line-divider)',borderRadius:'var(--instui-br-medium)',overflow:'hidden',flexShrink:0}}>
+                                    {cred.imageUrl && <img src={cred.imageUrl} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} alt=""/>}
+                                  </View>
+                                  <Flex.Item shouldGrow shouldShrink>
+                                    <Text as="div" size="x-small" weight="bold" className="truncate">{cred.name}</Text>
+                                    <Text as="div" size="x-small" color="placeholder" className="truncate">{cred.issuer}</Text>
+                                  </Flex.Item>
+                                  <View style={{width:'1.25rem',height:'1.25rem',borderRadius:'50%',border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,...(sel?{background:'var(--instui-blue-45)',borderColor:'var(--instui-blue-45)'}:{borderColor:'var(--instui-grey-14)'})}}>
+                                    {sel && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/></svg>}
+                                  </View>
+                                </Flex>
+                              </View>
+                            );
+                          })}
+                        </View>
+                      </View>
                     );
                   })}
-                </div>
-              </div>
-            </div>
+                </Flex>
+              </Card>
+            </Flex>
           )}
 
-          {step===2&&(
-            <div className="space-y-5 fade-in">
-              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded flex items-center justify-center" style={{background:'#2B7ABC'}}><svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
-                    <div><h3 className="font-bold" style={{color:'#273540'}}>AI-Generated Summary</h3><p className="text-xs" style={{color:'#9EA6AD'}}>Powered by Claude · Edit freely to match your voice</p></div>
-                  </div>
-                  {isGenerating&&<span className="flex items-center gap-2 text-xs font-bold animate-pulse" style={{color:'#2B7ABC'}}><div className="w-2 h-2 bg-current rounded-full"/>Generating…</span>}
-                </div>
-                <textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-input w-full p-3 rounded border resize-none text-sm leading-relaxed" style={{borderColor:'#D7DADE',color:'#273540',background:'#F2F4F4'}}/>
-                <div className="flex justify-end mt-3"><Button variant="ghost" size="sm" onClick={()=>handleGenerate(true)} isLoading={isGenerating}>↻ Regenerate</Button></div>
-              </div>
+          {step===2 && (
+            <Flex direction="column" gap="medium" className="fade-in">
+              <Card padding="medium">
+                <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium">
+                  <Flex gap="small" alignItems="center">
+                    <View style={{width:'2.25rem',height:'2.25rem',borderRadius:'var(--instui-br-medium)',background:'linear-gradient(135deg, var(--instui-violet-45), var(--instui-blue-45))',display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </View>
+                    <View>
+                      <Heading level="h4">AI-Generated Summary</Heading>
+                      <Text as="p" size="x-small" color="placeholder" style={{margin:0}}>Powered by Claude · Edit freely to match your voice</Text>
+                    </View>
+                  </Flex>
+                  {isGenerating && <Text size="x-small" weight="bold" color="brand">● Generating…</Text>}
+                </Flex>
+                <textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-textarea" style={{background:'var(--instui-grey-11)'}}/>
+                <Flex justifyItems="flex-end" margin="small 0 0">
+                  <Button color="ghost" size="sm" onClick={()=>handleGenerate(true)} isLoading={isGenerating}>↻ Regenerate</Button>
+                </Flex>
+              </Card>
 
-              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-bold" style={{color:'#273540'}}>Skills Portfolio</h3>
-                  <span className="text-xs italic" style={{color:'#9EA6AD'}}>Edit or add skills to improve your match score</span>
-                </div>
-                <div className="flex gap-2 mb-4">
-                  <input type="text" value={newSkill} onChange={e=>setNewSkill(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addSkill()} placeholder="Add a skill…" className="instui-input flex-1 px-3 py-2 border rounded text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/>
-                  <Button variant="primary" size="sm" onClick={addSkill}>+ Add</Button>
-                </div>
-                {skills.length>0&&(
-                  <div className="mb-4">
-                    <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Verified Skills ({skills.length})</p>
-                    <div className="flex flex-wrap gap-2">{skills.map((skill,idx)=>(
-                      <div key={`v-${idx}`} className="group flex items-center gap-1.5 px-2.5 py-1 rounded skill-pill" style={{background:'#E0EBF5',border:'1px solid #C0D9EE'}}>
-                        {editingSkill?.type==='verified'&&editingSkill.index===idx?<input autoFocus value={editingSkill.value} onChange={e=>setEditingSkill({...editingSkill,value:e.target.value})} onBlur={saveEdit} onKeyDown={e=>e.key==='Enter'&&saveEdit()} className="bg-transparent outline-none text-xs font-bold w-24" style={{color:'#0E68B3'}}/>:<span className="text-xs font-bold" style={{color:'#0E68B3'}}>{skill}</span>}
-                        <div className="hidden group-hover:flex items-center gap-1">
-                          <button onClick={()=>setEditingSkill({type:'verified',index:idx,value:skill})} style={{color:'#2B7ABC'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
-                          <button onClick={()=>setSkills(p=>p.filter((_,i)=>i!==idx))} style={{color:'#E62429'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-                        </div>
-                      </div>
-                    ))}</div>
-                  </div>
+              <Card padding="medium">
+                <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium">
+                  <Heading level="h4">Skills Portfolio</Heading>
+                  <Text size="x-small" color="placeholder" style={{fontStyle:'italic'}}>Edit or add skills to improve your match score</Text>
+                </Flex>
+                <Flex gap="x-small" margin="0 0 medium">
+                  <Flex.Item shouldGrow><input type="text" value={newSkill} onChange={e=>setNewSkill(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addSkill()} placeholder="Add a skill…" className="instui-input"/></Flex.Item>
+                  <Button color="primary" size="md" onClick={addSkill}>+ Add</Button>
+                </Flex>
+                {skills.length>0 && (
+                  <View margin="0 0 medium">
+                    <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Verified Skills ({skills.length})</Text>
+                    <Flex gap="x-small" wrap="wrap">
+                      {skills.map((skill,idx)=>(
+                        <Pill key={idx} color="info">
+                          {skill}
+                          <button onClick={()=>setSkills(p=>p.filter((_,i)=>i!==idx))} style={{background:'none',border:0,cursor:'pointer',color:'var(--instui-red-45)',padding:0,marginLeft:'4px',fontSize:'12px'}}>✕</button>
+                        </Pill>
+                      ))}
+                    </Flex>
+                  </View>
                 )}
-                {customSkills.length>0&&(
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Self-Declared Skills ({customSkills.length})</p>
-                    <div className="flex flex-wrap gap-2">{customSkills.map((skill,idx)=>(
-                      <div key={`c-${idx}`} className="group flex items-center gap-1.5 px-2.5 py-1 rounded skill-pill" style={{background:'#FCE5D9',border:'1px dashed #F5C4A8'}}>
-                        {editingSkill?.type==='custom'&&editingSkill.index===idx?<input autoFocus value={editingSkill.value} onChange={e=>setEditingSkill({...editingSkill,value:e.target.value})} onBlur={saveEdit} onKeyDown={e=>e.key==='Enter'&&saveEdit()} className="bg-transparent outline-none text-xs font-bold w-24" style={{color:'#B34000'}}/>:<span className="text-xs font-bold" style={{color:'#B34000'}}>{skill}</span>}
-                        <div className="hidden group-hover:flex items-center gap-1">
-                          <button onClick={()=>setEditingSkill({type:'custom',index:idx,value:skill})} style={{color:'#CF4A00'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
-                          <button onClick={()=>setCustomSkills(p=>p.filter((_,i)=>i!==idx))} style={{color:'#E62429'}}><svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-                        </div>
-                      </div>
-                    ))}</div>
-                  </div>
+                {customSkills.length>0 && (
+                  <View>
+                    <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Self-Declared Skills ({customSkills.length})</Text>
+                    <Flex gap="x-small" wrap="wrap">
+                      {customSkills.map((skill,idx)=>(
+                        <Pill key={idx} color="warning">
+                          {skill}
+                          <button onClick={()=>setCustomSkills(p=>p.filter((_,i)=>i!==idx))} style={{background:'none',border:0,cursor:'pointer',color:'var(--instui-red-45)',padding:0,marginLeft:'4px',fontSize:'12px'}}>✕</button>
+                        </Pill>
+                      ))}
+                    </Flex>
+                  </View>
                 )}
-              </div>
+              </Card>
 
-              <div className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
-                <h3 className="font-bold mb-3" style={{color:'#273540'}}>Visibility</h3>
-                <div className="flex gap-3">{['Published','Private'].map(s=>(
-                  <button key={s} onClick={()=>setStatus(s)} className="instui-btn flex-1 py-2.5 text-sm font-bold transition-all" style={status===s?s==='Published'?{borderColor:'#03893D',background:'#DCEEE4',color:'#027634'}:{borderColor:'#586874',background:'#F2F4F4',color:'#273540'}:{borderColor:'#D7DADE',background:'#fff',color:'#9EA6AD'}}>{s==='Published'?'🌐 Public':'🔒 Private'}</button>
-                ))}</div>
-                <p className="text-xs mt-2" style={{color:'#9EA6AD'}}>{status==='Published'?'Anyone with the link can view this record.':'Only you can see this record.'}</p>
-              </div>
-            </div>
+              <Card padding="medium">
+                <Heading level="h4" margin="0 0 small">Visibility</Heading>
+                <Flex gap="x-small">
+                  {['Published','Private'].map(s=>(
+                    <Flex.Item key={s} shouldGrow>
+                      <Button color={status===s?(s==='Published'?'success':'secondary'):'secondary'} size="md" onClick={()=>setStatus(s)} style={{width:'100%'}}>{s==='Published'?'🌐 Public':'🔒 Private'}</Button>
+                    </Flex.Item>
+                  ))}
+                </Flex>
+                <Text as="p" size="x-small" color="placeholder" style={{margin:'var(--instui-space-xs) 0 0'}}>{status==='Published'?'Anyone with the link can view this record.':'Only you can see this record.'}</Text>
+              </Card>
+            </Flex>
           )}
-        </div>
+        </View>
 
-        <div className="px-7 py-4 bg-white flex justify-between items-center shrink-0 rounded-b-lg" style={{borderTop:'1px solid #D7DADE'}}>
-          <Button variant="outline" size="sm" onClick={()=>step>1?setStep(1):onCancel()}>{step===1?'Cancel':'← Back'}</Button>
-          <div className="flex items-center gap-3">
-            {step===1&&selectedIds.length>0&&<span className="text-xs" style={{color:'#9EA6AD'}}>{selectedIds.length} credential{selectedIds.length!==1?'s':''} selected</span>}
-            {step===1&&<Button variant="primary" size="sm" onClick={()=>handleGenerate()} isLoading={isGenerating} disabled={!title.trim()}>Generate LER →</Button>}
-            {step===2&&<Button variant="success" size="sm" onClick={()=>onSave({id:initialLer?.id||Math.random().toString(36).slice(2,11),title,targetRole,executiveSummary:summary,skillsProfile:skills,customSkills,softSkills:initialLer?.softSkills||[],employmentHistory:initialLer?.employmentHistory||[],credentialIds:selectedIds,status,createdAt:initialLer?.createdAt||new Date().toISOString()})} disabled={!summary.trim()}>Save &amp; Publish Record</Button>}
-          </div>
-        </div>
-      </div>
-    </div>
+        <Flex justifyItems="space-between" alignItems="center" padding="small x-large" background="primary" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+          <Button color="secondary" size="md" onClick={()=>step>1?setStep(1):onCancel()}>{step===1?'Cancel':'← Back'}</Button>
+          <Flex gap="small" alignItems="center">
+            {step===1 && selectedIds.length>0 && <Text size="x-small" color="placeholder">{selectedIds.length} credential{selectedIds.length!==1?'s':''} selected</Text>}
+            {step===1 && <Button color="ai" size="md" onClick={()=>handleGenerate()} isLoading={isGenerating} disabled={!title.trim()}>✨ Generate LER →</Button>}
+            {step===2 && <Button color="success" size="md" onClick={()=>onSave({id:initialLer?.id||Math.random().toString(36).slice(2,11),title,targetRole,executiveSummary:summary,skillsProfile:skills,customSkills,softSkills:initialLer?.softSkills||[],employmentHistory:initialLer?.employmentHistory||[],credentialIds:selectedIds,status,createdAt:initialLer?.createdAt||new Date().toISOString()})} disabled={!summary.trim()}>Save & Publish Record</Button>}
+          </Flex>
+        </Flex>
+      </View>
+    </Flex>
   );
 };
 
-// ─── LER DETAIL VIEW ─────────────────────────────────────────
-const LERDetailView = ({ler,credentials,onBack,onEdit,onUpdate,isOwner}) => {
-  const [editingSummary,setEditingSummary]=React.useState(false);
-  const [summary,setSummary]=React.useState(ler.executiveSummary);
-  const [clrPreviewId,setClrPreviewId]=React.useState(null);
-  const [copied,setCopied]=React.useState(false);
-  const lerCreds=credentials.filter(c=>ler.credentialIds.includes(c.id));
-  const matched=React.useMemo(()=>matchOpportunities(ler),[ler]);
-
-  const copyLink=()=>{navigator.clipboard.writeText(lerShareUrl(ler));setCopied(true);setTimeout(()=>setCopied(false),2500);};
+// ═════════════════════ LER Detail View ═════════════════════
+const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) => {
+  const [editingSummary,setEditingSummary] = React.useState(false);
+  const [summary,setSummary] = React.useState(ler.executiveSummary);
+  const [clrPreviewId,setClrPreviewId] = React.useState(null);
+  const [copied,setCopied] = React.useState(false);
+  const lerCreds = credentials.filter(c=>ler.credentialIds.includes(c.id));
+  const matched = React.useMemo(()=>matchOpportunities(ler),[ler]);
+  const copyLink = () => { navigator.clipboard.writeText(lerShareUrl(ler)); setCopied(true); setTimeout(()=>setCopied(false),2500); };
 
   return (
-    <div className="slide-up pb-20">
-      {clrPreviewId&&<CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
-      <div className="bg-white rounded-lg border p-5 mb-7 flex flex-col md:flex-row md:items-center gap-4" style={{borderColor:'#D7DADE'}}>
-        {isOwner&&<button onClick={onBack} className="p-2.5 rounded hover:bg-[#F2F4F4] transition-colors shrink-0 no-print w-fit" style={{color:'#586874'}}><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg></button>}
-        <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Learning &amp; Employment Record</p>
-          <h2 className="text-xl font-bold leading-tight" style={{color:'#273540'}}>{ler.title}</h2>
-          {ler.targetRole&&<p className="text-sm mt-1" style={{color:'#586874'}}>Target: {ler.targetRole}</p>}
-          <div className="flex items-center gap-3 mt-2">
-            <span className="px-2.5 py-0.5 text-xs font-bold rounded border" style={ler.status==='Published'?{background:'#DCEEE4',color:'#027634',borderColor:'#B8DEC6'}:{background:'#FCE4E5',color:'#C71F23',borderColor:'#F0B8BB'}}>{ler.status==='Published'?'● Public':'● Private'}</span>
-            <span className="text-xs" style={{color:'#9EA6AD'}}>Updated {new Date(ler.createdAt).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</span>
-          </div>
-        </div>
-        {isOwner&&(
-          <div className="flex gap-2 no-print flex-wrap">
-            <Button variant="outline" size="md" onClick={onEdit}>Edit</Button>
-            <button onClick={copyLink} className="instui-btn px-4 py-2 text-sm min-h-[2.375rem]" style={copied?{background:'#DCEEE4',color:'#027634',borderColor:'#B8DEC6'}:{background:'#F2F4F4',color:'#273540',borderColor:'#D7DADE'}}>
-              {copied?'✓ Link Copied!':'Copy Public Link'}
+    <View className="slide-up" padding="0 0 x-large">
+      {clrPreviewId && <CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+      <Card padding="medium" style={{marginBottom:'var(--instui-space-lg)'}}>
+        <Flex gap="medium" alignItems="center" wrap="wrap">
+          {isOwner && (
+            <button onClick={onBack} className="no-print" style={{padding:'0.5rem',background:'transparent',border:0,cursor:'pointer',color:'var(--instui-grey-57)',borderRadius:'var(--instui-br-medium)'}}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
             </button>
-            <ShareMenu ler={ler}/>
-          </div>
-        )}
-      </div>
+          )}
+          <Flex.Item shouldGrow shouldShrink>
+            <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem" as="div" style={{marginBottom:'var(--instui-space-xxxs)'}}>Learning & Employment Record</Text>
+            <Heading level="h2">{ler.title}</Heading>
+            {ler.targetRole && <Text as="p" size="small" color="secondary" style={{margin:'var(--instui-space-xxs) 0 0'}}>Target: {ler.targetRole}</Text>}
+            <Flex gap="x-small" alignItems="center" margin="x-small 0 0">
+              <Pill color={ler.status==='Published'?'success':'danger'}>{ler.status==='Published'?'● Public':'● Private'}</Pill>
+              <Text size="x-small" color="placeholder">Updated {new Date(ler.createdAt).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</Text>
+            </Flex>
+          </Flex.Item>
+          {isOwner && (
+            <Flex gap="x-small" wrap="wrap" className="no-print">
+              <Button color="secondary" size="md" onClick={onEdit}>Edit</Button>
+              <Button color={copied?'success':'secondary'} size="md" onClick={copyLink}>{copied?'✓ Link Copied!':'Copy Public Link'}</Button>
+              <ShareMenu ler={ler}/>
+            </Flex>
+          )}
+        </Flex>
+      </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          <section className="bg-white rounded-lg border p-6 relative overflow-hidden" style={{borderColor:'#D7DADE'}}>
-            <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-lg" style={{background:'#2B7ABC'}}/>
-            <div className="flex justify-between items-center mb-3">
-              <h3 className="text-xs font-bold uppercase tracking-widest" style={{color:'#2B7ABC'}}>Executive Summary</h3>
-              {isOwner&&<button onClick={()=>{if(editingSummary)onUpdate({...ler,executiveSummary:summary});setEditingSummary(e=>!e);}} className="text-xs font-bold hover:underline" style={{color:'#2B7ABC'}}>{editingSummary?'Save':'Edit'}</button>}
-            </div>
-            {editingSummary?<textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-input w-full p-3 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540'}}/>:<p className="text-sm leading-relaxed italic pl-4" style={{color:'#586874',borderLeft:'2px solid #E8EAEC'}}>"{ler.executiveSummary}"</p>}
-          </section>
+      <View style={{display:'grid',gridTemplateColumns:'minmax(0, 2fr) minmax(0, 1fr)',gap:'var(--instui-space-lg)'}}>
+        <Flex direction="column" gap="large">
+          <View background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" padding="medium" style={{position:'relative',overflow:'hidden'}}>
+            <View style={{position:'absolute',left:0,top:0,bottom:0,width:'4px',background:'var(--instui-blue-45)'}}/>
+            <Flex justifyItems="space-between" alignItems="center" margin="0 0 small">
+              <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem">Executive Summary</Text>
+              {isOwner && <button onClick={()=>{ if(editingSummary) onUpdate({...ler,executiveSummary:summary}); setEditingSummary(e=>!e); }} className="instui-link" style={{fontSize:'var(--instui-fs-small)',background:'none',border:0,cursor:'pointer'}}>{editingSummary?'Save':'Edit'}</button>}
+            </Flex>
+            {editingSummary
+              ? <textarea value={summary} onChange={e=>setSummary(e.target.value)} rows={5} className="instui-textarea"/>
+              : <View style={{borderLeft:'2px solid var(--instui-line-divider)',paddingLeft:'var(--instui-space-msm)'}}>
+                  <Text as="p" size="small" color="secondary" style={{margin:0,fontStyle:'italic',lineHeight:'var(--instui-lh-default)'}}>"{ler.executiveSummary}"</Text>
+                </View>}
+          </View>
 
-          <section>
-            <h3 className="text-xs font-bold uppercase tracking-wide mb-4 pb-3" style={{color:'#9EA6AD',borderBottom:'1px solid #E8EAEC'}}>Evidence &amp; Credentials ({lerCreds.length})</h3>
-            {lerCreds.length>0?<div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={id=>setClrPreviewId(id)}/>)}</div>:<p className="text-sm italic" style={{color:'#9EA6AD'}}>No credentials attached to this record.</p>}
-          </section>
-        </div>
+          <View>
+            <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-msm)'}}>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem">Evidence & Credentials ({lerCreds.length})</Text>
+            </View>
+            {lerCreds.length>0
+              ? <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)'}}>{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={id=>setClrPreviewId(id)}/>)}</View>
+              : <Text as="p" size="small" color="placeholder" style={{fontStyle:'italic'}}>No credentials attached to this record.</Text>}
+          </View>
+        </Flex>
 
-        <div className="space-y-6">
-          <section className="bg-white rounded-lg border p-5" style={{borderColor:'#D7DADE'}}>
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Skills Portfolio</h3>
-            <p className="text-[10px] mb-4" style={{color:'#9EA6AD'}}>Click any skill to explore market data</p>
-            {ler.skillsProfile.length>0&&(
-              <div className="mb-4">
-                <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Verified Skills</p>
-                <div className="flex flex-wrap gap-2">{ler.skillsProfile.map(skill=>(
-                  <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded skill-pill" style={{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE',textDecoration:'none'}}>{skill} ↗</a>
-                ))}</div>
-              </div>
+        <Flex direction="column" gap="medium">
+          <Card padding="medium">
+            <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem" as="div">Skills Portfolio</Text>
+            <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 var(--instui-space-msm)'}}>Click any skill to explore market data</Text>
+            {ler.skillsProfile.length>0 && (
+              <View margin="0 0 medium">
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Verified Skills</Text>
+                <Flex gap="x-small" wrap="wrap">
+                  {ler.skillsProfile.map(skill=>(
+                    <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
+                      <Pill color="info">{skill} ↗</Pill>
+                    </a>
+                  ))}
+                </Flex>
+              </View>
             )}
-            {ler.customSkills?.length>0&&(
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wide mb-2" style={{color:'#9EA6AD'}}>Self-Declared Skills</p>
-                <div className="flex flex-wrap gap-2">{ler.customSkills.map(skill=>(
-                  <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded skill-pill" style={{background:'#FCE5D9',color:'#B34000',border:'1px dashed #F5C4A8',textDecoration:'none'}}>{skill} ↗</a>
-                ))}</div>
-              </div>
+            {ler.customSkills?.length>0 && (
+              <View>
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Self-Declared Skills</Text>
+                <Flex gap="x-small" wrap="wrap">
+                  {ler.customSkills.map(skill=>(
+                    <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
+                      <Pill color="warning">{skill} ↗</Pill>
+                    </a>
+                  ))}
+                </Flex>
+              </View>
             )}
-          </section>
-          <section className="rounded-lg p-5 text-white" style={{background:'#334451'}}>
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'rgba(255,255,255,0.6)'}}>Record at a Glance</h3>
-            <div className="space-y-3">
+          </Card>
+          <View background="primary-inverse" borderRadius="medium" padding="medium" style={{color:'#fff'}}>
+            <Text size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" as="div" style={{opacity:0.6,marginBottom:'var(--instui-space-msm)'}}>Record at a Glance</Text>
+            <Flex direction="column" gap="x-small">
               {[{label:'Credentials',value:lerCreds.length},{label:'Verified Skills',value:ler.skillsProfile.length},{label:'Self-Declared Skills',value:ler.customSkills.length},{label:'Opportunities Matched',value:matched.length}].map(item=>(
-                <div key={item.label} className="flex justify-between items-center">
-                  <span className="text-sm" style={{color:'rgba(255,255,255,0.75)'}}>{item.label}</span>
-                  <span className="text-xl font-bold">{item.value}</span>
-                </div>
+                <Flex key={item.label} justifyItems="space-between" alignItems="center">
+                  <Text size="small" color="inverse" style={{opacity:0.75}}>{item.label}</Text>
+                  <Text size="large" weight="bold" color="inverse">{item.value}</Text>
+                </Flex>
               ))}
-            </div>
-          </section>
-        </div>
-      </div>
-    </div>
+            </Flex>
+          </View>
+        </Flex>
+      </View>
+    </View>
   );
 };
 
-// ─── DASHBOARD PAGE (institution-grouped) ────────────────────
+// ═════════════════════ Dashboard Page ═════════════════════
 const INDUSTRY_ISSUERS = ['Amazon Web Services','Frontend Masters','MIT Department of Computer Science','Coursera / Johns Hopkins','Project Management Institute','National Student Leadership Conference'];
 const INST_COLORS = {
-  'Mount Elbert University':{bar:'#1a5c8a',text:'#1a5c8a'},
-  'Appletree High School':{bar:'#2d6a4f',text:'#2d6a4f'},
-  'West Valley Community College':{bar:'#c95e1e',text:'#c95e1e'},
-  'University of Florida':{bar:'#0021A5',text:'#0021A5'},
-  'The University of Alabama':{bar:'#9E1B32',text:'#9E1B32'},
-  'Professional & Industry':{bar:'#9242B4',text:'#9242B4'},
+  'Mount Elbert University':'#1a5c8a',
+  'Appletree High School':'#2d6a4f',
+  'West Valley Community College':'#c95e1e',
+  'University of Florida':'#0021A5',
+  'The University of Alabama':'#9E1B32',
+  'Professional & Industry':'#9242B4',
 };
 
-const DashboardPage = ({credentials,onViewCLR,onAddCred}) => {
-  const [search,setSearch]=React.useState('');
-  const filtered=React.useMemo(()=>search?credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())):credentials,[credentials,search]);
-
-  const groups=React.useMemo(()=>{
-    const g={};
-    filtered.forEach(c=>{
-      const key=INDUSTRY_ISSUERS.includes(c.issuer)?'Professional & Industry':c.issuer;
-      if(!g[key])g[key]=[];
-      g[key].push(c);
-    });
-    return Object.entries(g).sort(([a],[b])=>{
-      if(a==='Professional & Industry')return 1;
-      if(b==='Professional & Industry')return-1;
-      return a.localeCompare(b);
-    });
+const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
+  const [search,setSearch] = React.useState('');
+  const filtered = React.useMemo(()=>search?credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())):credentials,[credentials,search]);
+  const groups = React.useMemo(()=>{
+    const g = {};
+    filtered.forEach(c=>{ const k=INDUSTRY_ISSUERS.includes(c.issuer)?'Professional & Industry':c.issuer; if(!g[k])g[k]=[]; g[k].push(c); });
+    return Object.entries(g).sort(([a],[b])=>a==='Professional & Industry'?1:b==='Professional & Industry'?-1:a.localeCompare(b));
   },[filtered]);
 
   return (
-    <div className="fade-in space-y-7">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Dashboard</h1>
-          <p className="text-sm mt-0.5" style={{color:'#586874'}}>{credentials.length} credentials from {groups.length} institution{groups.length!==1?'s':''}</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <svg className="w-4 h-4 absolute left-3 top-2.5" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input type="text" placeholder="Search credentials…" value={search} onChange={e=>setSearch(e.target.value)} className="instui-input pl-9 pr-4 py-2 text-sm border rounded w-52" style={{background:'#fff',borderColor:'#D7DADE',color:'#273540'}}/>
-          </div>
-          <Button variant="outline" size="md" onClick={onAddCred}>+ Add Credential</Button>
-        </div>
-      </div>
+    <Flex direction="column" gap="large" className="fade-in">
+      <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap">
+        <View>
+          <Heading level="h1">Dashboard</Heading>
+          <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>{credentials.length} credentials from {groups.length} institution{groups.length!==1?'s':''}</Text>
+        </View>
+        <Flex gap="x-small" alignItems="center">
+          <View style={{position:'relative',width:'14rem'}}>
+            <input type="text" placeholder="Search credentials…" value={search} onChange={e=>setSearch(e.target.value)} className="instui-input" style={{paddingLeft:'2rem'}}/>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{position:'absolute',left:'0.625rem',top:'0.7rem',color:'var(--instui-grey-24)'}}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </View>
+          <Button color="secondary" size="md" onClick={onAddCred}>+ Add Credential</Button>
+        </Flex>
+      </Flex>
 
-      {groups.length===0&&<div className="bg-white border-2 border-dashed rounded-lg p-12 text-center" style={{borderColor:'#D7DADE'}}><p className="font-bold" style={{color:'#9EA6AD'}}>No credentials match your search.</p></div>}
+      {groups.length===0 && (
+        <View background="primary" borderWidth="medium" borderColor="primary" borderRadius="medium" padding="x-large" style={{borderStyle:'dashed',textAlign:'center'}}>
+          <Text as="p" weight="bold" color="placeholder">No credentials match your search.</Text>
+        </View>
+      )}
 
       {groups.map(([institution,creds])=>{
-        const color=INST_COLORS[institution]||{bar:'#2B7ABC',text:'#2B7ABC'};
-        const hasCLR=creds.some(c=>c.type==='CLR');
+        const color = INST_COLORS[institution] || 'var(--instui-blue-45)';
+        const hasCLR = creds.some(c=>c.type==='CLR');
         return (
-          <div key={institution} className="bg-white rounded-lg border overflow-hidden" style={{borderColor:'#D7DADE'}}>
-            <div className="h-1.5" style={{background:color.bar}}/>
-            <div className="px-6 pt-5 pb-6">
-              <div className="flex items-center justify-between mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-lg border flex items-center justify-center shrink-0" style={{background:'#F2F4F4',borderColor:'#E8EAEC'}}>
-                    <span className="text-lg font-black" style={{color:color.text}}>{institution.charAt(0)}</span>
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-base" style={{color:'#273540'}}>{institution}</h2>
-                    <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{creds.length} credential{creds.length!==1?'s':''}{hasCLR?' · Includes Co-curricular Record':''}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <View key={institution} background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" style={{overflow:'hidden'}}>
+            <View style={{height:'0.375rem',background:color}}/>
+            <View padding="medium">
+              <Flex gap="small" alignItems="center" margin="0 0 medium">
+                <View background="secondary" borderWidth="small" borderColor="primary" borderRadius="medium" style={{width:'2.75rem',height:'2.75rem',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                  <Text size="large" weight="bold" style={{color}}>{institution.charAt(0)}</Text>
+                </View>
+                <View>
+                  <Heading level="h4">{institution}</Heading>
+                  <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 0'}}>{creds.length} credential{creds.length!==1?'s':''}{hasCLR?' · Includes Co-curricular Record':''}</Text>
+                </View>
+              </Flex>
+              <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)'}}>
                 {creds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
-              </div>
-            </div>
-          </div>
+              </View>
+            </View>
+          </View>
         );
       })}
-    </div>
+    </Flex>
   );
 };
 
-// ─── OPPORTUNITIES PAGE ───────────────────────────────────────
-const OpportunitiesPage = ({lers,activeLerId,credentials,onSetActiveLer,onViewLer,onNewLer,onEditLer,onDeleteLer,onToggleLerStatus}) => {
-  const [showAllOpps,setShowAllOpps]=React.useState(false);
-  const activeLer=lers.find(l=>l.id===activeLerId)||null;
-  const matchedOpps=React.useMemo(()=>activeLer?matchOpportunities(activeLer):[],[activeLer]);
+// ═════════════════════ Opportunities Page ═════════════════════
+const OpportunitiesPage = ({ lers, activeLerId, credentials, onSetActiveLer, onViewLer, onNewLer, onEditLer, onDeleteLer, onToggleLerStatus }) => {
+  const [showAllOpps,setShowAllOpps] = React.useState(false);
+  const activeLer = lers.find(l=>l.id===activeLerId) || null;
+  const matchedOpps = React.useMemo(()=>activeLer?matchOpportunities(activeLer):[],[activeLer]);
 
   return (
-    <div className="fade-in space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Opportunities</h1>
-          {activeLer?<p className="text-sm mt-0.5" style={{color:'#586874'}}>{matchedOpps.length} opportunities matched to <strong style={{color:'#273540'}}>{activeLer.title}</strong></p>:<p className="text-sm mt-0.5" style={{color:'#586874'}}>Select or build a record to see matched opportunities.</p>}
-        </div>
-        <div className="flex gap-3 items-center">
-          {lers.length>0&&(
-            <div className="relative">
-              <select value={activeLerId||''} onChange={e=>onSetActiveLer(e.target.value)} className="instui-input appearance-none pr-8 pl-3 py-2 text-sm border rounded font-bold" style={{borderColor:'#D7DADE',color:'#273540',background:'#fff',minWidth:'220px'}}>
+    <Flex direction="column" gap="large" className="fade-in">
+      <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap">
+        <View>
+          <Heading level="h1">Opportunities</Heading>
+          {activeLer
+            ? <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>{matchedOpps.length} opportunities matched to <Text weight="bold">{activeLer.title}</Text></Text>
+            : <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>Select or build a record to see matched opportunities.</Text>}
+        </View>
+        <Flex gap="x-small" alignItems="center">
+          {lers.length>0 && (
+            <View style={{position:'relative'}}>
+              <select value={activeLerId||''} onChange={e=>onSetActiveLer(e.target.value)} className="instui-input" style={{paddingRight:'2rem',fontWeight:700,minWidth:'14rem',appearance:'none'}}>
                 {lers.map(l=><option key={l.id} value={l.id}>{l.title}</option>)}
               </select>
-              <svg className="w-4 h-4 absolute right-2.5 top-2.5 pointer-events-none" style={{color:'#9EA6AD'}} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg>
-            </div>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{position:'absolute',right:'0.625rem',top:'0.7rem',color:'var(--instui-grey-45)',pointerEvents:'none'}}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </View>
           )}
-          <Button variant="primary" size="md" onClick={onNewLer}>+ New LER</Button>
-        </div>
-      </div>
+          <Button color="primary" size="md" onClick={onNewLer}>+ New LER</Button>
+        </Flex>
+      </Flex>
 
-      {/* Active LER hero */}
-      {activeLer&&(
-        <div className="rounded-lg p-6 text-white" style={{background:'linear-gradient(135deg,#334451 0%,#273540 100%)'}}>
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold uppercase tracking-widest mb-2" style={{color:'rgba(255,255,255,0.6)'}}>Active Learning &amp; Employment Record</p>
-              <h2 className="text-xl font-bold leading-tight mb-2">{activeLer.title}</h2>
-              <p className="text-sm leading-relaxed line-clamp-2 mb-4" style={{color:'rgba(255,255,255,0.8)'}}>{activeLer.executiveSummary}</p>
-              <div className="flex flex-wrap gap-4 text-sm font-bold">
-                <span>{activeLer.credentialIds.length} Credentials</span>
-                <span style={{color:'rgba(255,255,255,0.4)'}}>·</span>
-                <span>{(activeLer.skillsProfile.length+activeLer.customSkills.length)} Skills</span>
-                <span style={{color:'rgba(255,255,255,0.4)'}}>·</span>
-                <span>{matchedOpps.length} Opportunities Matched</span>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 shrink-0 no-print">
-              <button onClick={()=>onViewLer(activeLer.id)} className="instui-btn px-3 py-1.5 text-sm min-h-[1.875rem]" style={{background:'rgba(255,255,255,0.12)',border:'1px solid rgba(255,255,255,0.25)',color:'#fff'}}>View Record</button>
-              <button onClick={()=>onEditLer(activeLer)} className="instui-btn px-3 py-1.5 text-sm min-h-[1.875rem]" style={{background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.2)',color:'#fff'}}>Edit</button>
-            </div>
-          </div>
-          <div className="mt-5 pt-5" style={{borderTop:'1px solid rgba(255,255,255,0.15)'}}>
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'rgba(255,255,255,0.5)'}}>Top Skills</p>
-            <div className="flex flex-wrap gap-2">
-              {activeLer.skillsProfile.slice(0,6).map(skill=><span key={skill} className="px-3 py-1 text-xs font-bold rounded" style={{background:'rgba(255,255,255,0.12)',color:'#fff',border:'1px solid rgba(255,255,255,0.18)'}}>{skill}</span>)}
-              {activeLer.skillsProfile.length>6&&<span className="px-3 py-1 text-xs font-bold rounded" style={{background:'rgba(255,255,255,0.07)',color:'rgba(255,255,255,0.6)'}}>+{activeLer.skillsProfile.length-6} more</span>}
-            </div>
-          </div>
-        </div>
+      {activeLer && (
+        <View borderRadius="medium" padding="medium" shadow="resting" style={{background:'linear-gradient(135deg, var(--instui-grey-100) 0%, var(--instui-grey-125) 100%)',color:'#fff'}}>
+          <Flex justifyItems="space-between" alignItems="flex-start" gap="medium">
+            <Flex.Item shouldGrow shouldShrink>
+              <Text size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" as="div" style={{opacity:0.6,marginBottom:'var(--instui-space-xs)'}}>Active Learning & Employment Record</Text>
+              <Heading level="h2" color="inverse" margin="0 0 x-small">{activeLer.title}</Heading>
+              <Text as="p" size="small" color="inverse" className="clamp-2" style={{margin:'0 0 var(--instui-space-msm)',opacity:0.85}}>{activeLer.executiveSummary}</Text>
+              <Flex gap="medium" wrap="wrap">
+                <Text size="small" weight="bold" color="inverse">{activeLer.credentialIds.length} Credentials</Text>
+                <Text size="small" color="inverse" style={{opacity:0.4}}>·</Text>
+                <Text size="small" weight="bold" color="inverse">{activeLer.skillsProfile.length+activeLer.customSkills.length} Skills</Text>
+                <Text size="small" color="inverse" style={{opacity:0.4}}>·</Text>
+                <Text size="small" weight="bold" color="inverse">{matchedOpps.length} Opportunities Matched</Text>
+              </Flex>
+            </Flex.Item>
+            <Flex direction="column" gap="x-small" className="no-print">
+              <Button color="inverse" size="sm" onClick={()=>onViewLer(activeLer.id)}>View Record</Button>
+              <Button color="inverse" size="sm" onClick={()=>onEditLer(activeLer)}>Edit</Button>
+            </Flex>
+          </Flex>
+          <View style={{borderTop:'var(--instui-bw-small) solid rgba(255,255,255,0.15)',marginTop:'var(--instui-space-md)',paddingTop:'var(--instui-space-md)'}}>
+            <Text size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" as="div" style={{opacity:0.5,marginBottom:'var(--instui-space-xs)'}}>Top Skills</Text>
+            <Flex gap="x-small" wrap="wrap">
+              {activeLer.skillsProfile.slice(0,6).map(skill=>(
+                <span key={skill} className="instui-pill" style={{background:'rgba(255,255,255,0.12)',color:'#fff',borderColor:'rgba(255,255,255,0.18)'}}>{skill}</span>
+              ))}
+              {activeLer.skillsProfile.length>6 && <span className="instui-pill" style={{background:'rgba(255,255,255,0.07)',color:'rgba(255,255,255,0.6)',borderColor:'transparent'}}>+{activeLer.skillsProfile.length-6} more</span>}
+            </Flex>
+          </View>
+        </View>
       )}
 
-      {/* My Records */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-base font-bold uppercase tracking-wide" style={{color:'#273540'}}>My Records ({lers.length})</h2>
-        </div>
+      <View>
+        <Text size="medium" weight="bold" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-msm)'}}>My Records ({lers.length})</Text>
         {lers.length===0
-          ?<div className="bg-white border-2 border-dashed rounded-lg p-12 text-center" style={{borderColor:'#D7DADE'}}><div className="text-5xl mb-4">📋</div><p className="text-sm mb-4 font-bold" style={{color:'#586874'}}>You haven't built any records yet.</p><Button variant="primary" size="md" onClick={onNewLer}>Build Your First LER</Button></div>
-          :<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">{lers.map(ler=><LERCard key={ler.id} ler={ler} isActive={activeLerId===ler.id} onSelect={()=>onSetActiveLer(ler.id)} onView={()=>onViewLer(ler.id)} onToggleStatus={()=>onToggleLerStatus(ler.id)} onDelete={()=>onDeleteLer(ler.id)}/>)}</div>}
-      </div>
+          ? <View background="primary" borderWidth="medium" borderColor="primary" borderRadius="medium" padding="x-large" style={{borderStyle:'dashed',textAlign:'center'}}>
+              <View style={{fontSize:'3rem',marginBottom:'var(--instui-space-msm)'}}>📋</View>
+              <Text as="p" weight="bold" color="secondary" style={{margin:'0 0 var(--instui-space-msm)'}}>You haven't built any records yet.</Text>
+              <Button color="primary" size="md" onClick={onNewLer}>Build Your First LER</Button>
+            </View>
+          : <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-msm)'}}>
+              {lers.map(ler=><LERCard key={ler.id} ler={ler} isActive={activeLerId===ler.id} onSelect={()=>onSetActiveLer(ler.id)} onView={()=>onViewLer(ler.id)} onToggleStatus={()=>onToggleLerStatus(ler.id)} onDelete={()=>onDeleteLer(ler.id)}/>)}
+            </View>}
+      </View>
 
-      {/* Top Matched Opportunities */}
-      {matchedOpps.length>0&&(
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-base font-bold uppercase tracking-wide" style={{color:'#273540'}}>Top Matched Opportunities</h2>
-            <button onClick={()=>setShowAllOpps(true)} className="text-sm font-bold hover:underline" style={{color:'#2B7ABC'}}>View All ({matchedOpps.length}) →</button>
-          </div>
-          <div className="space-y-3">{matchedOpps.slice(0,3).map(opp=><OpportunityCard key={opp.id} opp={opp}/>)}</div>
-        </div>
+      {matchedOpps.length>0 && (
+        <View>
+          <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium-small">
+            <Text size="medium" weight="bold" transform="uppercase" letterSpacing="0.0625rem">Top Matched Opportunities</Text>
+            <button onClick={()=>setShowAllOpps(true)} className="instui-link" style={{fontSize:'var(--instui-fs-small)',background:'none',border:0,cursor:'pointer'}}>View All ({matchedOpps.length}) →</button>
+          </Flex>
+          <Flex direction="column" gap="small">{matchedOpps.slice(0,3).map(opp=><OpportunityCard key={opp.id} opp={opp}/>)}</Flex>
+        </View>
       )}
 
-      {showAllOpps&&<OpportunitiesModal opps={matchedOpps} lerTitle={activeLer?.title} onClose={()=>setShowAllOpps(false)}/>}
-    </div>
+      {showAllOpps && <OpportunitiesModal opps={matchedOpps} lerTitle={activeLer?.title} onClose={()=>setShowAllOpps(false)}/>}
+    </Flex>
   );
 };
 
-// ─── ORDERS PAGE ─────────────────────────────────────────────
+// ═════════════════════ Orders Page ═════════════════════
 const OrdersPage = () => {
-  const statusStyle = s => s==='Delivered'?{background:'#DCEEE4',color:'#027634',border:'1px solid #B8DEC6'}:s==='Processing'?{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE'}:{background:'#FCE4E5',color:'#C71F23',border:'1px solid #F0B8BB'};
+  const statusPill = s => s==='Delivered'?'success':s==='Processing'?'info':'danger';
   const statusIcon = s => s==='Delivered'?'✓ Delivered':s==='Processing'?'⟳ Processing':'✕ Cancelled';
   return (
-    <div className="fade-in space-y-7">
-      <div>
-        <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Orders</h1>
-        <p className="text-sm mt-0.5" style={{color:'#586874'}}>Your credential request history</p>
-      </div>
+    <Flex direction="column" gap="large" className="fade-in">
+      <View>
+        <Heading level="h1">Orders</Heading>
+        <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>Your credential request history</Text>
+      </View>
       {MOCK_ORDERS.map(order=>(
-        <div key={order.id} className="bg-white rounded-lg border overflow-hidden" style={{borderColor:'#D7DADE'}}>
-          <div className="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{background:'#F2F4F4',borderBottom:'1px solid #E8EAEC'}}>
-            <div className="flex flex-wrap items-center gap-4">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Order Date</p>
-                <p className="text-sm font-bold" style={{color:'#273540'}}>{new Date(order.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</p>
-              </div>
-              <div className="h-8 w-px hidden sm:block" style={{background:'#D7DADE'}}/>
-              <div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded" style={statusStyle(order.status)}>{statusIcon(order.status)}</span>
-                <p className="text-xs mt-1" style={{color:'#9EA6AD'}}>{order.statusDetail}</p>
-              </div>
-            </div>
-            <div className="text-right shrink-0">
-              <p className="text-[10px] font-bold uppercase tracking-wide" style={{color:'#9EA6AD'}}>Total</p>
-              <p className="text-xl font-bold" style={{color:'#273540'}}>{order.total===0?'Free':'$'+order.total.toFixed(2)}</p>
-            </div>
-          </div>
-          <div className="px-6 py-5">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>Document</p>
-                <p className="text-sm font-bold" style={{color:'#273540'}}>{order.document}</p>
-                <p className="text-xs mt-0.5" style={{color:'#586874'}}>For: {order.purpose}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>From</p>
-                <p className="text-sm" style={{color:'#273540'}}>{order.from}</p>
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-wide mb-1" style={{color:'#9EA6AD'}}>To</p>
-                <p className="text-sm" style={{color:'#273540'}}>{order.to}</p>
-              </div>
-            </div>
-            {order.total>0&&(
-              <div className="flex gap-6 text-xs pt-4" style={{borderTop:'1px solid #E8EAEC'}}>
-                <span style={{color:'#9EA6AD'}}>Subtotal: <strong style={{color:'#273540'}}>${order.subtotal.toFixed(2)}</strong></span>
-                <span style={{color:'#9EA6AD'}}>Processing fee: <strong style={{color:'#273540'}}>${order.fee.toFixed(2)}</strong></span>
-              </div>
+        <View key={order.id} background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" style={{overflow:'hidden'}}>
+          <Flex justifyItems="space-between" alignItems="center" padding="small medium" background="secondary" gap="medium" wrap="wrap" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
+            <Flex gap="medium" alignItems="center" wrap="wrap">
+              <View>
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div">Order Date</Text>
+                <Text size="small" weight="bold" as="div">{new Date(order.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</Text>
+              </View>
+              <View style={{height:'2rem',width:'1px',background:'var(--instui-line-stroke)'}}/>
+              <View>
+                <Pill color={statusPill(order.status)}>{statusIcon(order.status)}</Pill>
+                <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{order.statusDetail}</Text>
+              </View>
+            </Flex>
+            <View style={{textAlign:'right'}}>
+              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div">Total</Text>
+              <Text size="large" weight="bold" as="div">{order.total===0?'Free':'$'+order.total.toFixed(2)}</Text>
+            </View>
+          </Flex>
+          <View padding="medium">
+            <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:'var(--instui-space-md)',marginBottom:'var(--instui-space-msm)'}}>
+              <View>
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>Document</Text>
+                <Text size="small" weight="bold" as="div">{order.document}</Text>
+                <Text size="x-small" color="secondary" as="div" style={{marginTop:'2px'}}>For: {order.purpose}</Text>
+              </View>
+              <View>
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>From</Text>
+                <Text size="small" as="div">{order.from}</Text>
+              </View>
+              <View>
+                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>To</Text>
+                <Text size="small" as="div">{order.to}</Text>
+              </View>
+            </View>
+            {order.total>0 && (
+              <Flex gap="medium" wrap="wrap" padding="x-small 0 0" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
+                <Text size="x-small" color="placeholder">Subtotal: <Text weight="bold">${order.subtotal.toFixed(2)}</Text></Text>
+                <Text size="x-small" color="placeholder">Processing fee: <Text weight="bold">${order.fee.toFixed(2)}</Text></Text>
+              </Flex>
             )}
-          </div>
-          {order.status==='Delivered'&&(
-            <div className="px-6 pb-4 flex justify-end"><Button variant="outline" size="sm">⬇ Download Document</Button></div>
+          </View>
+          {order.status==='Delivered' && (
+            <Flex justifyItems="flex-end" padding="0 medium small">
+              <Button color="secondary" size="sm">⬇ Download Document</Button>
+            </Flex>
           )}
-        </div>
+        </View>
       ))}
-    </div>
+    </Flex>
   );
 };
 
-// ─── SETTINGS PAGE ───────────────────────────────────────────
+// ═════════════════════ Settings Page ═════════════════════
 const SettingsPage = () => (
-  <div className="fade-in space-y-7 max-w-2xl">
-    <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Settings</h1>
+  <Flex direction="column" gap="large" className="fade-in" style={{maxWidth:'42rem'}}>
+    <Heading level="h1">Settings</Heading>
 
-    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
-      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Profile</h2>
-      <div className="flex items-center gap-5 mb-6">
-        <img src="https://picsum.photos/seed/jessica/80/80" className="w-20 h-20 rounded-full border-2" style={{borderColor:'#D7DADE'}} alt="Profile photo"/>
-        <div><Button variant="outline" size="sm">Change Photo</Button><p className="text-xs mt-1.5" style={{color:'#9EA6AD'}}>JPG or PNG, max 5 MB</p></div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <Card padding="medium">
+      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
+        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Profile</Text>
+      </View>
+      <Flex gap="medium" alignItems="center" margin="0 0 medium">
+        <img src="https://picsum.photos/seed/jessica/80/80" style={{width:'5rem',height:'5rem',borderRadius:'50%',border:'2px solid var(--instui-line-stroke)',display:'block'}} alt="Profile photo"/>
+        <View>
+          <Button color="secondary" size="sm">Change Photo</Button>
+          <Text as="p" size="x-small" color="placeholder" style={{margin:'var(--instui-space-xxs) 0 0'}}>JPG or PNG, max 5 MB</Text>
+        </View>
+      </Flex>
+      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',gap:'var(--instui-space-msm)'}}>
         {[['First Name','Jordan'],['Last Name','Anderson'],['Email','jordan.anderson@email.com'],['Phone','(555) 867-5309']].map(([label,val])=>(
-          <div key={label}>
-            <label className="block text-xs font-bold uppercase tracking-wide mb-1.5" style={{color:'#586874'}}>{label}</label>
-            <div className="px-3 py-2.5 rounded border text-sm" style={{borderColor:'#D7DADE',color:'#273540',background:'#F2F4F4'}}>{val}</div>
-          </div>
+          <View key={label}>
+            <label className="instui-label">{label}</label>
+            <View background="secondary" borderWidth="small" borderColor="primary" borderRadius="medium" padding="x-small small" style={{height:'var(--instui-input-h-md)',display:'flex',alignItems:'center'}}>
+              <Text size="small">{val}</Text>
+            </View>
+          </View>
         ))}
-      </div>
-      <div className="mt-5 flex justify-end"><Button variant="primary" size="sm">Save Changes</Button></div>
-    </div>
+      </View>
+      <Flex justifyItems="flex-end" margin="medium 0 0">
+        <Button color="primary" size="md">Save Changes</Button>
+      </Flex>
+    </Card>
 
-    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
-      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Schools Attended</h2>
+    <Card padding="medium">
+      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
+        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Schools Attended</Text>
+      </View>
       {[{name:'Mount Elbert University',enrolled:'2020 – 2024',status:'Alumni'},{name:'West Valley Community College',enrolled:'2018 – 2020',status:'Alumni'},{name:'Appletree High School',enrolled:'2015 – 2019',status:'Graduate'}].map((school,i,arr)=>(
-        <div key={i} className="flex items-center justify-between py-3.5" style={i<arr.length-1?{borderBottom:'1px solid #E8EAEC'}:{}}>
-          <div>
-            <p className="text-sm font-bold" style={{color:'#273540'}}>{school.name}</p>
-            <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{school.enrolled} · {school.status}</p>
-          </div>
-          <Button variant="ghost" size="sm">Request Credentials</Button>
-        </div>
+        <Flex key={i} justifyItems="space-between" alignItems="center" padding="x-small 0" style={i<arr.length-1?{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)'}:{}}>
+          <View>
+            <Text size="small" weight="bold" as="div">{school.name}</Text>
+            <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{school.enrolled} · {school.status}</Text>
+          </View>
+          <Button color="ghost" size="sm">Request Credentials</Button>
+        </Flex>
       ))}
-    </div>
+    </Card>
 
-    <div className="bg-white rounded-lg border p-6" style={{borderColor:'#D7DADE'}}>
-      <h2 className="text-xs font-bold uppercase tracking-widest mb-5 pb-3" style={{color:'#273540',borderBottom:'1px solid #E8EAEC'}}>Account</h2>
-      <div className="space-y-3">
+    <Card padding="medium">
+      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
+        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Account</Text>
+      </View>
+      <Flex direction="column" gap="x-small">
         {[{title:'Authentication Settings',desc:'Password, two-factor authentication, and sign-in options'},{title:'Privacy Settings',desc:'Control who can view and share your records'}].map(item=>(
-          <div key={item.title} className="flex items-center justify-between p-4 rounded-lg" style={{background:'#F2F4F4'}}>
-            <div>
-              <p className="text-sm font-bold" style={{color:'#273540'}}>{item.title}</p>
-              <p className="text-xs mt-0.5" style={{color:'#9EA6AD'}}>{item.desc}</p>
-            </div>
-            <Button variant="outline" size="sm">Manage →</Button>
-          </div>
+          <Flex key={item.title} justifyItems="space-between" alignItems="center" padding="small medium-small" background="secondary" borderRadius="medium">
+            <View>
+              <Text size="small" weight="bold" as="div">{item.title}</Text>
+              <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{item.desc}</Text>
+            </View>
+            <Button color="secondary" size="sm">Manage →</Button>
+          </Flex>
         ))}
-      </div>
-    </div>
-  </div>
+      </Flex>
+    </Card>
+  </Flex>
 );
 
-// ─── PUBLIC LER VIEW ─────────────────────────────────────────
-const PublicLERView = ({ler,credentials}) => {
-  const lerCreds=credentials.filter(c=>ler.credentialIds.includes(c.id));
-  const allSkills=[...(ler.skillsProfile||[]),...(ler.customSkills||[])];
+// ═════════════════════ Public LER View ═════════════════════
+const PublicLERView = ({ ler, credentials }) => {
+  const lerCreds = credentials.filter(c=>ler.credentialIds.includes(c.id));
+  const allSkills = [...(ler.skillsProfile||[]),...(ler.customSkills||[])];
   return (
-    <div className="min-h-screen" style={{background:'#F2F4F4'}}>
-      <div className="no-print" style={{background:'#334451',height:'3.5rem',display:'flex',alignItems:'center',padding:'0 1.5rem'}}>
-        <div style={{display:'flex',alignItems:'center',gap:'10px'}}>
-          <div style={{width:'28px',height:'28px',background:'#2B7ABC',borderRadius:'4px',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{color:'#fff',fontWeight:'700',fontSize:'14px'}}>P</span></div>
-          <span style={{color:'#fff',fontWeight:'700',fontSize:'15px'}}>Parchment</span>
-          <span style={{color:'rgba(255,255,255,0.5)',fontSize:'10px',fontWeight:'400',textTransform:'uppercase',letterSpacing:'0.1em'}}>by Instructure</span>
-        </div>
-      </div>
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        <div className="bg-white rounded-lg border p-8 mb-7 text-center" style={{borderColor:'#D7DADE'}}>
-          <img src="https://picsum.photos/seed/jessica/80/80" className="w-20 h-20 rounded-full mx-auto mb-4 border-2" style={{borderColor:'#D7DADE'}} alt="Jordan K. Anderson"/>
-          <h1 className="text-2xl font-bold" style={{color:'#273540'}}>Jordan K. Anderson</h1>
-          <p className="text-xs font-bold uppercase tracking-widest mt-1 mb-4" style={{color:'#9EA6AD'}}>Learning &amp; Employment Record</p>
-          <h2 className="text-xl font-bold" style={{color:'#2B7ABC'}}>{ler.title}</h2>
-          {ler.targetRole&&<p className="text-sm mt-2" style={{color:'#586874'}}>Looking for: <strong style={{color:'#273540'}}>{ler.targetRole}</strong></p>}
-          <div className="mt-5">
-            <button onClick={()=>window.print()} className="instui-btn px-5 py-2.5 text-sm min-h-[2.375rem]" style={{background:'#2B7ABC',color:'#fff',borderColor:'#2B7ABC'}}>⬇ Download PDF</button>
-          </div>
-        </div>
+    <View background="secondary" minHeight="100vh">
+      <Flex alignItems="center" padding="0 large" className="no-print" style={{background:'var(--instui-grey-100)',height:'3.5rem'}}>
+        <Flex gap="x-small" alignItems="center">
+          <View style={{width:'1.75rem',height:'1.75rem',background:'var(--instui-blue-45)',borderRadius:'var(--instui-br-medium)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <Text size="small" weight="bold" color="inverse">P</Text>
+          </View>
+          <Text weight="bold" color="inverse">Parchment</Text>
+          <Text size="x-small" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.5}}>by Instructure</Text>
+        </Flex>
+      </Flex>
+      <View padding="large medium" maxWidth="48rem" margin="0 auto">
+        <Card padding="x-large" style={{textAlign:'center',marginBottom:'var(--instui-space-lg)'}}>
+          <img src="https://picsum.photos/seed/jessica/80/80" style={{width:'5rem',height:'5rem',borderRadius:'50%',margin:'0 auto var(--instui-space-msm)',border:'2px solid var(--instui-line-stroke)',display:'block'}} alt="Jordan K. Anderson"/>
+          <Heading level="h2" margin="0 0 xx-small">Jordan K. Anderson</Heading>
+          <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.125rem" as="div" style={{marginBottom:'var(--instui-space-md)'}}>Learning & Employment Record</Text>
+          <Heading level="h3" color="brand" margin="0 0 x-small">{ler.title}</Heading>
+          {ler.targetRole && <Text as="p" size="small" color="secondary" style={{margin:'var(--instui-space-xs) 0 0'}}>Looking for: <Text weight="bold">{ler.targetRole}</Text></Text>}
+          <View margin="medium 0 0">
+            <Button color="primary" size="md" onClick={()=>window.print()}>⬇ Download PDF</Button>
+          </View>
+        </Card>
 
-        <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
-          <h3 className="text-xs font-bold uppercase tracking-widest mb-3" style={{color:'#2B7ABC'}}>Summary</h3>
-          <p className="text-sm leading-relaxed italic pl-4" style={{color:'#586874',borderLeft:'2px solid #E8EAEC'}}>"{ler.executiveSummary}"</p>
-        </div>
+        <Card padding="medium" style={{marginBottom:'var(--instui-space-msm)'}}>
+          <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Summary</Text>
+          <View style={{borderLeft:'2px solid var(--instui-line-divider)',paddingLeft:'var(--instui-space-msm)'}}>
+            <Text as="p" size="small" color="secondary" style={{margin:0,fontStyle:'italic',lineHeight:'var(--instui-lh-default)'}}>"{ler.executiveSummary}"</Text>
+          </View>
+        </Card>
 
-        {allSkills.length>0&&(
-          <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-1" style={{color:'#2B7ABC'}}>Skills</h3>
-            <p className="text-[10px] mb-4" style={{color:'#9EA6AD'}}>Click any skill to view market data on Talent Neuron</p>
-            <div className="flex flex-wrap gap-2">{allSkills.map(skill=>(
-              <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="px-2.5 py-1 text-xs font-bold rounded" style={{background:'#E0EBF5',color:'#0E68B3',border:'1px solid #C0D9EE',textDecoration:'none'}}>{skill} ↗</a>
-            ))}</div>
-          </div>
+        {allSkills.length>0 && (
+          <Card padding="medium" style={{marginBottom:'var(--instui-space-msm)'}}>
+            <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem" as="div">Skills</Text>
+            <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 var(--instui-space-msm)'}}>Click any skill to view market data on Talent Neuron</Text>
+            <Flex gap="x-small" wrap="wrap">
+              {allSkills.map(skill=>(
+                <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
+                  <Pill color="info">{skill} ↗</Pill>
+                </a>
+              ))}
+            </Flex>
+          </Card>
         )}
 
-        {lerCreds.length>0&&(
-          <div className="bg-white rounded-lg border p-6 mb-5" style={{borderColor:'#D7DADE'}}>
-            <h3 className="text-xs font-bold uppercase tracking-widest mb-4" style={{color:'#2B7ABC'}}>Credentials ({lerCreds.length})</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred}/>)}</div>
-          </div>
+        {lerCreds.length>0 && (
+          <Card padding="medium" style={{marginBottom:'var(--instui-space-msm)'}}>
+            <Text size="x-small" weight="bold" color="brand" transform="uppercase" letterSpacing="0.125rem" as="div" style={{marginBottom:'var(--instui-space-msm)'}}>Credentials ({lerCreds.length})</Text>
+            <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-xs)'}}>
+              {lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred}/>)}
+            </View>
+          </Card>
         )}
 
-        <div className="text-center pt-4">
-          <p className="text-xs" style={{color:'#9EA6AD'}}>Verified by Parchment by Instructure · {new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}</p>
-        </div>
-      </div>
-    </div>
+        <View padding="medium 0" style={{textAlign:'center'}}>
+          <Text size="x-small" color="placeholder">Verified by Parchment by Instructure · {new Date().toLocaleDateString(undefined,{month:'long',year:'numeric'})}</Text>
+        </View>
+      </View>
+    </View>
   );
 };
 
-// ─── APP ─────────────────────────────────────────────────────
-const App = () => {
-  const lerViewId=React.useMemo(()=>new URLSearchParams(window.location.search).get('lerView'),[]);
-  const [tab,setTab]=React.useState('Dashboard');
-  const [lers,setLers]=React.useState([INITIAL_LER]);
-  const [credentials,setCredentials]=React.useState(MOCK_CREDENTIALS);
-  const [activeLerId,setActiveLerId]=React.useState('ler-1');
-  const [viewingLerId,setViewingLerId]=React.useState(null);
-  const [showBuilder,setShowBuilder]=React.useState(false);
-  const [editingLer,setEditingLer]=React.useState(null);
-  const [showAddCred,setShowAddCred]=React.useState(false);
-  const [clrPreviewId,setClrPreviewId]=React.useState(null);
+// ═════════════════════ TopNavBar / Tabs ═════════════════════
+const TopNavBar = ({ onLogoClick }) => (
+  <View as="header" background="primary-inverse" className="no-print" style={{position:'sticky',top:0,zIndex:40,height:'4rem',borderBottom:'var(--instui-bw-small) solid rgba(0,0,0,0.2)'}}>
+    <View maxWidth="80rem" margin="0 auto" padding="0 medium" style={{height:'100%'}}>
+      <Flex alignItems="center" justifyItems="space-between" style={{height:'100%'}}>
+        <Flex gap="x-small" alignItems="center" onClick={onLogoClick} style={{cursor:'pointer'}}>
+          <View style={{width:'2rem',height:'2rem',background:'var(--instui-blue-45)',borderRadius:'var(--instui-br-medium)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <Text size="medium" weight="bold" color="inverse">P</Text>
+          </View>
+          <Flex direction="column" style={{lineHeight:1}}>
+            <Text size="large" weight="bold" color="inverse">Parchment</Text>
+            <Text size="x-small" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.6}}>by Instructure</Text>
+          </Flex>
+        </Flex>
+        <Flex gap="x-small" alignItems="center">
+          <img src="https://picsum.photos/seed/jessica/32/32" style={{width:'2rem',height:'2rem',borderRadius:'50%',border:'2px solid rgba(255,255,255,0.3)'}} alt=""/>
+          <Text size="small" color="inverse" style={{opacity:0.9}}>Hello, <Text weight="bold" color="inverse">Jessica</Text></Text>
+        </Flex>
+      </Flex>
+    </View>
+  </View>
+);
 
-  // Public view
-  if(lerViewId){
-    const publicLer=lers.find(l=>l.id===lerViewId)||(lerViewId===INITIAL_LER.id?INITIAL_LER:null);
-    if(!publicLer)return <div className="min-h-screen flex items-center justify-center" style={{background:'#F2F4F4'}}><div className="text-center"><p className="text-5xl mb-4">🔍</p><p className="font-bold" style={{color:'#273540'}}>Learning &amp; Employment Record not found.</p></div></div>;
+const TabNav = ({ tabs, value, onChange }) => (
+  <View background="primary" className="no-print" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+    <View maxWidth="80rem" margin="0 auto" padding="0 medium">
+      <div className="instui-tabs" role="tablist">
+        {tabs.map(t=>(
+          <button key={t} role="tab" aria-selected={value===t} className="instui-tab" onClick={()=>onChange(t)}>{t}</button>
+        ))}
+      </div>
+    </View>
+  </View>
+);
+
+// ═════════════════════ App ═════════════════════
+const App = () => {
+  const lerViewId = React.useMemo(()=>new URLSearchParams(window.location.search).get('lerView'),[]);
+  const [tab,setTab] = React.useState('Dashboard');
+  const [lers,setLers] = React.useState([INITIAL_LER]);
+  const [credentials,setCredentials] = React.useState(MOCK_CREDENTIALS);
+  const [activeLerId,setActiveLerId] = React.useState('ler-1');
+  const [viewingLerId,setViewingLerId] = React.useState(null);
+  const [showBuilder,setShowBuilder] = React.useState(false);
+  const [editingLer,setEditingLer] = React.useState(null);
+  const [showAddCred,setShowAddCred] = React.useState(false);
+  const [clrPreviewId,setClrPreviewId] = React.useState(null);
+
+  if (lerViewId) {
+    const publicLer = lers.find(l=>l.id===lerViewId) || (lerViewId===INITIAL_LER.id?INITIAL_LER:null);
+    if (!publicLer) return (
+      <Flex alignItems="center" justifyItems="center" style={{minHeight:'100vh'}} background="secondary">
+        <View style={{textAlign:'center'}}>
+          <Text as="p" style={{fontSize:'3rem',marginBottom:'var(--instui-space-msm)'}}>🔍</Text>
+          <Heading level="h3">Learning & Employment Record not found.</Heading>
+        </View>
+      </Flex>
+    );
     return <PublicLERView ler={publicLer} credentials={credentials}/>;
   }
 
-  const viewingLer=lers.find(l=>l.id===viewingLerId)||null;
-  const saveLer=ler=>{setLers(prev=>{const ex=prev.find(l=>l.id===ler.id);return ex?prev.map(l=>l.id===ler.id?ler:l):[ler,...prev];});setActiveLerId(ler.id);setShowBuilder(false);setEditingLer(null);};
-  const deleteLer=id=>{if(!confirm('Delete this Learning & Employment Record? This cannot be undone.'))return;setLers(prev=>prev.filter(l=>l.id!==id));if(activeLerId===id)setActiveLerId(lers.find(l=>l.id!==id)?.id||'');if(viewingLerId===id)setViewingLerId(null);};
+  const viewingLer = lers.find(l=>l.id===viewingLerId) || null;
+  const saveLer = ler => { setLers(prev=>{const ex=prev.find(l=>l.id===ler.id);return ex?prev.map(l=>l.id===ler.id?ler:l):[ler,...prev];}); setActiveLerId(ler.id); setShowBuilder(false); setEditingLer(null); };
+  const deleteLer = id => { if(!confirm('Delete this Learning & Employment Record? This cannot be undone.')) return; setLers(prev=>prev.filter(l=>l.id!==id)); if(activeLerId===id) setActiveLerId(lers.find(l=>l.id!==id)?.id||''); if(viewingLerId===id) setViewingLerId(null); };
 
-  const TABS=['Dashboard','Opportunities','Orders','Settings'];
+  const TABS = ['Dashboard','Opportunities','Orders','Settings'];
 
   return (
-    <div className="min-h-screen flex flex-col" style={{background:'#F2F4F4'}}>
-      <nav className="sticky top-0 z-40 no-print" style={{background:'#334451',height:'4rem'}}>
-        <div className="max-w-[1280px] mx-auto h-full flex justify-between items-center px-6">
-          <div className="flex items-center gap-3 cursor-pointer select-none" onClick={()=>{setViewingLerId(null);setTab('Dashboard');}}>
-            <div className="w-8 h-8 bg-[#2B7ABC] rounded flex items-center justify-center"><span className="text-white font-bold text-base">P</span></div>
-            <div className="flex flex-col leading-none">
-              <span className="text-white font-bold text-lg">Parchment</span>
-              <span className="text-white/60 text-[10px] font-normal uppercase tracking-widest">by Instructure</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-2.5">
-            <img src="https://picsum.photos/seed/jessica/32/32" className="w-8 h-8 rounded-full border-2 border-white/30" alt=""/>
-            <span className="text-white/90 text-sm">Hello, <strong className="text-white font-bold">Jessica</strong></span>
-          </div>
-        </div>
-      </nav>
+    <View background="secondary" minHeight="100vh" style={{display:'flex',flexDirection:'column'}}>
+      <TopNavBar onLogoClick={()=>{setViewingLerId(null);setTab('Dashboard');}}/>
+      {!viewingLerId && <TabNav tabs={TABS} value={tab} onChange={setTab}/>}
 
-      {!viewingLerId&&(
-        <div className="bg-white border-b px-6 no-print" style={{borderColor:'#D7DADE'}}>
-          <div className="max-w-[1280px] mx-auto flex gap-1">
-            {TABS.map(t=>(
-              <button key={t} onClick={()=>setTab(t)} className="relative h-14 px-4 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2B7ABC]" style={{color:tab===t?'#2B7ABC':'#6A7883'}}>
-                {t}
-                {tab===t&&<div className="absolute bottom-0 left-0 w-full h-0.5 rounded-t" style={{background:'#2B7ABC'}}/>}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <View as="main" maxWidth="80rem" width="100%" margin="0 auto" padding="large medium" style={{flex:1}}>
+        {clrPreviewId && <CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+        {viewingLerId && viewingLer && <LERDetailView ler={viewingLer} credentials={credentials} onBack={()=>setViewingLerId(null)} onEdit={()=>{setEditingLer(viewingLer);setShowBuilder(true);}} onUpdate={u=>setLers(prev=>prev.map(l=>l.id===u.id?u:l))} isOwner={true}/>}
+        {!viewingLerId && tab==='Dashboard' && <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>}
+        {!viewingLerId && tab==='Opportunities' && <OpportunitiesPage lers={lers} activeLerId={activeLerId} credentials={credentials} onSetActiveLer={setActiveLerId} onViewLer={id=>setViewingLerId(id)} onNewLer={()=>setShowBuilder(true)} onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}} onDeleteLer={deleteLer} onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}/>}
+        {!viewingLerId && tab==='Orders' && <OrdersPage/>}
+        {!viewingLerId && tab==='Settings' && <SettingsPage/>}
+      </View>
 
-      <main className="flex-1 max-w-[1280px] w-full mx-auto px-6 py-8">
-        {clrPreviewId&&<CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
-
-        {viewingLerId&&viewingLer&&(
-          <LERDetailView ler={viewingLer} credentials={credentials} onBack={()=>setViewingLerId(null)} onEdit={()=>{setEditingLer(viewingLer);setShowBuilder(true);}} onUpdate={u=>setLers(prev=>prev.map(l=>l.id===u.id?u:l))} isOwner={true}/>
-        )}
-
-        {!viewingLerId&&tab==='Dashboard'&&(
-          <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>
-        )}
-
-        {!viewingLerId&&tab==='Opportunities'&&(
-          <OpportunitiesPage
-            lers={lers}
-            activeLerId={activeLerId}
-            credentials={credentials}
-            onSetActiveLer={setActiveLerId}
-            onViewLer={id=>setViewingLerId(id)}
-            onNewLer={()=>setShowBuilder(true)}
-            onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}}
-            onDeleteLer={deleteLer}
-            onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}
-          />
-        )}
-
-        {!viewingLerId&&tab==='Orders'&&<OrdersPage/>}
-        {!viewingLerId&&tab==='Settings'&&<SettingsPage/>}
-      </main>
-
-      {showBuilder&&<LERBuilder credentials={credentials} initialLer={editingLer} initialSelectedIds={[]} onSave={saveLer} onCancel={()=>{setShowBuilder(false);setEditingLer(null);}}/>}
-      {showAddCred&&<AddCredentialModal onSave={cred=>{setCredentials(prev=>[cred,...prev]);setShowAddCred(false);}} onCancel={()=>setShowAddCred(false)}/>}
-    </div>
+      {showBuilder && <LERBuilder credentials={credentials} initialLer={editingLer} initialSelectedIds={[]} onSave={saveLer} onCancel={()=>{setShowBuilder(false);setEditingLer(null);}}/>}
+      {showAddCred && <AddCredentialModal onSave={cred=>{setCredentials(prev=>[cred,...prev]);setShowAddCred(false);}} onCancel={()=>setShowAddCred(false)}/>}
+    </View>
   );
 };
 
-const root=ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App/>);
 </script>
 </body>
