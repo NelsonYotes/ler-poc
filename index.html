@@ -390,9 +390,16 @@ const scoreBarColor = s => s>=90?'var(--instui-green-45)':s>=80?'var(--instui-bl
 const CredentialCard = ({ credential:c, isSelected=false, onToggle, onView, selectable=false }) => {
   const isBadge = c.type==='Badge';
   const isCLR = c.type==='CLR';
-  const interactive = (isCLR && onView) || onToggle;
+  // Whole tile is interactive if: selectable (LER builder), CLR with preview, or has a publicUrl to open
+  const hasPublic = !isCLR && c.publicUrl && !selectable;
+  const interactive = (isCLR && onView) || onToggle || hasPublic;
+  const handleClick = e => {
+    if (onToggle) { onToggle(c.id); return; }
+    if (isCLR && onView) { onView(c.id); return; }
+    if (hasPublic) { window.open(c.publicUrl, '_blank', 'noopener,noreferrer'); }
+  };
   return (
-    <View background={isSelected?'info':'primary'} borderWidth="small" borderColor={isSelected?'brand':'primary'} borderRadius="medium" shadow="resting" padding="small" className={interactive?'card-hover':''} style={{cursor:interactive?'pointer':'default',position:'relative',height:'100%'}} onClick={()=>{ if(isCLR&&onView) onView(c.id); else if(onToggle) onToggle(c.id); }}>
+    <View background={isSelected?'info':'primary'} borderWidth="small" borderColor={isSelected?'brand':'primary'} borderRadius="medium" shadow="resting" padding="small" className={interactive?'card-hover':''} style={{cursor:interactive?'pointer':'default',position:'relative',height:'100%'}} onClick={interactive?handleClick:undefined} role={interactive?'button':undefined} tabIndex={interactive?0:undefined} onKeyDown={interactive?(e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleClick(e); } }):undefined}>
       <Flex gap="small" alignItems="center">
         <View background="secondary" borderWidth="small" borderColor="primary" borderRadius={isBadge?'circle':'medium'} style={{width:isBadge?'4rem':'5rem',height:'4rem',overflow:'hidden',flexShrink:0}}>
           {c.imageUrl
@@ -411,8 +418,6 @@ const CredentialCard = ({ credential:c, isSelected=false, onToggle, onView, sele
           <Text as="div" size="small" weight="bold" lineHeight="var(--instui-lh-fit)" style={{marginBottom:'2px'}}>{c.name}</Text>
           <Text as="div" size="x-small" color="secondary" className="truncate">{c.issuer}</Text>
           <Text as="div" size="x-small" color="placeholder">{formatDate(c.date)}</Text>
-          {isCLR && onView && <a href="#" onClick={e=>{e.preventDefault();e.stopPropagation();onView(c.id);}} className="instui-link" style={{fontSize:'var(--instui-fs-xsmall)',marginTop:'4px',display:'inline-block'}}>View Full Record →</a>}
-          {!isCLR && c.publicUrl && !selectable && <a href={c.publicUrl} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} className="instui-link" style={{fontSize:'var(--instui-fs-xsmall)',marginTop:'4px',display:'inline-block'}}>View Credential →</a>}
         </Flex.Item>
       </Flex>
       {isSelected && (
