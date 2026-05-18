@@ -389,9 +389,13 @@ const CredentialCard = ({ credential:c, isSelected=false, onToggle, onView, sele
             : <Flex alignItems="center" justifyItems="center" style={{height:'100%'}}><Text size="large" weight="bold" color="placeholder">{c.name.charAt(0)}</Text></Flex>}
         </View>
         <Flex.Item shouldGrow shouldShrink>
-          <Flex gap="x-small" wrap="wrap" margin="0 0 xx-small">
+          <Flex gap="x-small" wrap="wrap" alignItems="center" margin="0 0 xx-small">
             <Pill color={TYPE_PILL[c.type]}>{TYPE_LABEL[c.type]}</Pill>
-            {c.isVerified ? <Pill color="success">✓ Verified</Pill> : <Pill color="warning">Self-Declared</Pill>}
+            {c.isVerified
+              ? <span title="Verified by Parchment" aria-label="Verified by Parchment" style={{display:'inline-flex',alignItems:'center',color:'var(--instui-green-57)'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 2.55 3.45-.62.62 3.45L21 9.61l-2.55 2.39.62 3.45-3.45.62L13.61 18 12 21l-1.61-3-2.39 2.55-3.45-.62.62-3.45L3 14.39 5.55 12 3 9.61l3.55-.62.62-3.45 3.45.62L12 2z"/><path d="M10.5 13.5l-2-2-1 1 3 3 5-5-1-1-4 4z" fill="#fff"/></svg>
+                </span>
+              : <Pill color="warning">Self-Declared</Pill>}
           </Flex>
           <Text as="div" size="small" weight="bold" lineHeight="var(--instui-lh-fit)" style={{marginBottom:'2px'}}>{c.name}</Text>
           <Text as="div" size="x-small" color="secondary" className="truncate">{c.issuer}</Text>
@@ -1231,9 +1235,9 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
         return (
           <View key={institution} background="primary" borderRadius="card" shadow="resting" style={{overflow:'hidden'}}>
             <View style={{height:'0.5rem',background:color}}/>
-            <View padding="medium">
+            <View padding="large">
               {/* Institution header row */}
-              <Flex justifyItems="space-between" alignItems="flex-start" gap="small" margin="0 0 medium" wrap="wrap">
+              <Flex justifyItems="space-between" alignItems="flex-start" gap="small" margin="0 0 large" wrap="wrap">
                 <Flex gap="small" alignItems="center">
                   <View background="secondary" borderRadius="medium" style={{width:'3.5rem',height:'3.5rem',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid var(--instui-line-stroke)'}}>
                     <Text size="x-large" weight="bold" style={{color,fontFamily:'var(--instui-font-heading)'}}>{institution.charAt(0)}</Text>
@@ -1255,23 +1259,23 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
 
               {/* Documents grid */}
               {docs.length > 0 && (
-                <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
+                <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-msm)',marginBottom:'var(--instui-space-lg)'}}>
                   {docs.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
                 </View>
               )}
 
               {/* Badges section */}
               {badges.length > 0 && (
-                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)',marginBottom:'var(--instui-space-md)'}}>
-                  <Heading level="h4" margin="0 0 small">Digital Badges</Heading>
-                  <Flex gap="medium" alignItems="center" wrap="wrap">
+                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)',marginBottom:'var(--instui-space-lg)'}}>
+                  <Heading level="h4" margin="0 0 medium">Digital Badges</Heading>
+                  <Flex gap="large" alignItems="center" wrap="wrap">
                     <Flex.Item shouldGrow shouldShrink style={{minWidth:'18rem'}}>
-                      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-xs)'}}>
+                      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-msm)'}}>
                         {badges.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
                       </View>
                     </Flex.Item>
                     <View style={{minWidth:'14rem'}}>
-                      <Text as="p" size="medium" weight="semibold" style={{margin:'0 0 var(--instui-space-xs)'}}>View and manage all of your digital badges.</Text>
+                      <Text as="p" size="medium" weight="semibold" style={{margin:'0 0 var(--instui-space-sm)'}}>View and manage all of your digital badges.</Text>
                       <Button color="secondary" size="sm">Show All</Button>
                     </View>
                   </Flex>
@@ -1280,18 +1284,18 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
 
               {/* Bottom action rows — only for academic institutions */}
               {!isProfessional && (
-                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)'}}>
-                  <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap" margin="0 0 medium">
+                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)'}}>
+                  <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap" margin="0 0 large">
                     <View>
                       <Text as="div" size="medium" weight="semibold">Create Collections, Explore Pathways, View Record</Text>
-                      <Text as="div" size="small" color="secondary">and more in Parchment Digital Badges</Text>
+                      <Text as="div" size="small" color="secondary" style={{marginTop:'var(--instui-space-xxs)'}}>and more in Parchment Digital Badges</Text>
                     </View>
                     <Button color="secondary" size="sm">Go To Digital Badges</Button>
                   </Flex>
-                  <Flex justifyItems="space-between" alignItems="flex-start" gap="medium" wrap="wrap" padding="medium 0 0" style={{borderTop:'1px solid var(--instui-line-divider)'}}>
+                  <Flex justifyItems="space-between" alignItems="flex-start" gap="medium" wrap="wrap" padding="large 0 0" style={{borderTop:'1px solid var(--instui-line-divider)'}}>
                     <View>
-                      <Heading level="h4" margin="0 0 xx-small">Order A Credential</Heading>
-                      <Text as="div" size="small" color="secondary" style={{marginBottom:'var(--instui-space-xs)'}}>{institution} offers:</Text>
+                      <Heading level="h4" margin="0 0 x-small">Order A Credential</Heading>
+                      <Text as="div" size="small" color="secondary" style={{marginBottom:'var(--instui-space-sm)'}}>{institution} offers:</Text>
                       <Flex gap="x-small" wrap="wrap">
                         {['Transcripts','Diplomas','Verifications','And More!'].map(t => (
                           <span key={t} className="instui-pill" style={{background:'var(--instui-brand-light)',color:'var(--instui-brand)',borderColor:'var(--instui-brand-light)'}}>{t}</span>
