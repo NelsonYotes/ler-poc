@@ -4,89 +4,183 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Parchment — Learning & Employment Records</title>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Inclusive+Sans:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <style>
-  /* ─── InstUI Canvas theme tokens ─── */
+  /* ─── Parchment / InstUI tokens (synced from Figma file qzOsWyVB3tTflsztOiDn3a) ─── */
   :root {
-    --instui-space-xxxs: 0.125rem; --instui-space-xxs: 0.375rem; --instui-space-xs: 0.5rem;
-    --instui-space-sm: 0.75rem; --instui-space-msm: 1rem; --instui-space-md: 1.5rem;
-    --instui-space-lg: 2.25rem; --instui-space-xl: 3rem; --instui-space-xxl: 3.75rem;
-    --instui-fs-xsmall: 0.75rem; --instui-fs-small: 0.875rem; --instui-fs-medium: 1rem;
-    --instui-fs-large: 1.375rem; --instui-fs-xlarge: 1.75rem; --instui-fs-xxlarge: 2.375rem;
-    --instui-title-page: 2.25rem; --instui-title-section: 1.75rem; --instui-title-module: 1.5rem;
-    --instui-title-card-lg: 1.5rem; --instui-title-card-rg: 1.25rem; --instui-title-card-mn: 1rem;
-    --instui-fw-normal: 400; --instui-fw-bold: 700;
-    --instui-lh-fit: 1.125; --instui-lh-condensed: 1.25; --instui-lh-default: 1.5;
-    --instui-bw-small: 0.0625rem; --instui-bw-medium: 0.125rem; --instui-bw-large: 0.25rem;
-    --instui-br-small: 0.125rem; --instui-br-medium: 0.25rem; --instui-br-large: 0.5rem;
-    --instui-white: #FFFFFF; --instui-grey-11: #F2F4F4; --instui-grey-12: #E8EAEC;
-    --instui-grey-14: #D7DADE; --instui-grey-24: #9EA6AD; --instui-grey-45: #6A7883;
-    --instui-grey-57: #586874; --instui-grey-100: #334451; --instui-grey-125: #273540;
-    --instui-blue-12: #E0EBF5; --instui-blue-45: #2B7ABC; --instui-blue-57: #0E68B3; --instui-blue-82: #09508C;
-    --instui-green-12: #DCEEE4; --instui-green-45: #03893D; --instui-green-57: #027634;
-    --instui-orange-12: #FCE5D9; --instui-orange-45: #CF4A00; --instui-orange-57: #B34000;
-    --instui-red-12: #FCE4E5; --instui-red-45: #E62429; --instui-red-57: #C71F23;
-    --instui-violet-12: #F1E6F5; --instui-violet-45: #9E58BD; --instui-violet-57: #9242B4;
-    --instui-sea-12: #DAEEEF; --instui-sea-57: #00717B;
-    --instui-surface-page-primary: var(--instui-white);
+    /* Brand palette — REAL Parchment, not Canvas blue */
+    --instui-brand:           #1D354F;  /* primary navy — buttons, side nav active */
+    --instui-brand-hover:     #094A70;  /* darker navy for hover */
+    --instui-brand-light:     #D5E2F6;  /* secondary button bg, tags */
+    --instui-action-blue:     #006AA8;  /* action default */
+    --instui-link:            #2369A4;  /* inline links */
+    --instui-logo-accent:     #4279B6;
+    --instui-logo-main:       #0E1721;
+
+    /* Greys & surfaces */
+    --instui-white:           #FFFFFF;
+    --instui-grey-11:         #F2F4F5;  /* page bg (note: F5 not F4) */
+    --instui-grey-12:         #E8EAEC;  /* dividers */
+    --instui-grey-14:         #D7DADE;  /* legacy stroke */
+    --instui-grey-24:         #C7CACD;
+    --instui-grey-45:         #8D959F;  /* placeholder/secondary stroke */
+    --instui-grey-57:         #6A7883;
+    --instui-grey-text-muted: #576773;  /* muted text */
+    --instui-grey-timestamp:  #586874;
+    --instui-grey-input:      #334450;  /* input text */
+    --instui-grey-100:        #334450;
+    --instui-grey-125:        #273540;  /* body text */
+
+    /* Status colors */
+    --instui-blue-12:         #E0EBF5;
+    --instui-blue-45:         #2B7ABC;
+    --instui-blue-57:         #0E68B3;
+    --instui-info:            #2871AF;
+    --instui-green-12:        #F0FCEB;  /* success bg */
+    --instui-green-45:        #03893D;
+    --instui-green-57:        #037D37;
+    --instui-orange-12:       #FFFAEA;  /* warning bg */
+    --instui-orange-45:       #CF4A00;
+    --instui-orange-57:       #856803;
+    --instui-red-12:          #FCE4E5;
+    --instui-red-45:          #E62429;
+    --instui-red-57:          #B51A14;
+    --instui-violet-12:       #F1E6F5;
+    --instui-violet-45:       #9E58BD;
+    --instui-violet-57:       #9242B4;
+    --instui-sea-12:          #F0FCFF;
+    --instui-sea-57:          #067A91;
+
+    /* Surfaces */
+    --instui-surface-page-primary:   var(--instui-white);
     --instui-surface-page-secondary: var(--instui-grey-11);
-    --instui-surface-card-primary: var(--instui-white);
+    --instui-surface-card-primary:   var(--instui-white);
     --instui-surface-card-secondary: var(--instui-grey-11);
-    --instui-surface-dark: var(--instui-grey-100);
-    --instui-line-stroke: var(--instui-grey-14);
+    --instui-surface-dark:           var(--instui-brand);
+
+    /* Lines */
+    --instui-line-stroke:  var(--instui-grey-12);
     --instui-line-divider: var(--instui-grey-12);
-    --instui-text-body: var(--instui-grey-125);
-    --instui-text-secondary: var(--instui-grey-57);
-    --instui-text-placeholder: var(--instui-grey-24);
-    --instui-text-link: var(--instui-blue-57);
-    --instui-text-success: var(--instui-green-57);
-    --instui-text-warning: var(--instui-orange-57);
-    --instui-text-error: var(--instui-red-57);
-    --instui-shadow-resting: 0 0.0625rem 0.125rem rgba(0,0,0,0.10), 0 0.0625rem 0.1875rem rgba(0,0,0,0.10);
-    --instui-shadow-above: 0 0.1875rem 0.375rem rgba(0,0,0,0.10), 0 0.1875rem 0.375rem rgba(0,0,0,0.15);
-    --instui-shadow-topmost: 0 0.375rem 0.4375rem rgba(0,0,0,0.10), 0 0.625rem 1.75rem rgba(0,0,0,0.25);
-    --instui-input-h-sm: 1.75rem; --instui-input-h-md: 2.375rem; --instui-input-h-lg: 3rem;
+
+    /* Text */
+    --instui-text-body:        var(--instui-grey-125);
+    --instui-text-secondary:   var(--instui-grey-text-muted);
+    --instui-text-placeholder: var(--instui-grey-45);
+    --instui-text-link:        var(--instui-link);
+    --instui-text-success:     var(--instui-green-57);
+    --instui-text-warning:     var(--instui-orange-57);
+    --instui-text-error:       var(--instui-red-57);
+
+    /* Spacing — Parchment scale: 4 / 8 / 12 / 16 / 24 / 32 / 48 */
+    --instui-space-xxxs: 0.125rem;  /* 2  */
+    --instui-space-xxs:  0.25rem;   /* 4  */
+    --instui-space-xs:   0.5rem;    /* 8  */
+    --instui-space-sm:   0.75rem;   /* 12 — sharedTokens spaceMd */
+    --instui-space-msm:  1rem;      /* 16 — sharedTokens spaceLg */
+    --instui-space-md:   1.5rem;    /* 24 — sharedTokens spaceXl */
+    --instui-space-lg:   2rem;      /* 32 — sharedTokens space2xl */
+    --instui-space-xl:   3rem;      /* 48 — section gap */
+    --instui-space-xxl:  3.75rem;   /* 60 */
+
+    /* Typography — Inclusive Sans (heading) + Atkinson Hyperlegible (body) */
+    --instui-font-heading: 'Inclusive Sans', 'Atkinson Hyperlegible', 'Lato', sans-serif;
+    --instui-font-body:    'Atkinson Hyperlegible', 'Inclusive Sans', 'Lato', sans-serif;
+    --instui-fs-xsmall:   0.75rem;   /* 12 */
+    --instui-fs-small:    0.875rem;  /* 14 */
+    --instui-fs-medium:   1rem;      /* 16 */
+    --instui-fs-large:    1.25rem;   /* 20 */
+    --instui-fs-xlarge:   1.75rem;   /* 28 */
+    --instui-fs-xxlarge:  2.5rem;    /* 40 — titlePageDesktop */
+    --instui-title-page:    2.5rem;  /* 40 */
+    --instui-title-section: 1.75rem; /* 28 */
+    --instui-title-module:  1.5rem;  /* 24 */
+    --instui-title-card-lg: 1.5rem;  /* 24 */
+    --instui-title-card-rg: 1.25rem; /* 20 */
+    --instui-title-card-mn: 1rem;    /* 16 */
+    --instui-fw-normal:    400;
+    --instui-fw-medium:    500;
+    --instui-fw-semibold:  600;
+    --instui-fw-bold:      700;
+    --instui-lh-fit:       1.125;
+    --instui-lh-condensed: 1.25;
+    --instui-lh-default:   1.5;
+
+    /* Borders — Parchment uses larger radii */
+    --instui-bw-small:  0.0625rem;  /* 1 */
+    --instui-bw-medium: 0.125rem;   /* 2 */
+    --instui-bw-large:  0.25rem;    /* 4 */
+    --instui-br-small:  0.25rem;    /* 4  — nested container md */
+    --instui-br-medium: 0.5rem;     /* 8  — nested container lg, pills */
+    --instui-br-large:  0.75rem;    /* 12 — buttons, inputs, alerts */
+    --instui-br-card:   1rem;       /* 16 — card md */
+    --instui-br-card-lg:1.5rem;     /* 24 — card lg, side nav */
+
+    /* Shadows — sharedTokens/boxShadow/elevation1 */
+    --instui-shadow-resting: 0 0.0625rem 0.125rem #2344651A, 0 0.0625rem 0.1875rem #2344651A;
+    --instui-shadow-above:   0 0.125rem 0.25rem #2344651A, 0 0.25rem 0.75rem #23446533;
+    --instui-shadow-topmost: 0 0.375rem 0.5rem #23446526, 0 0.75rem 2rem #23446540;
+
+    /* Input + button heights */
+    --instui-input-h-sm: 2rem;      /* 32 */
+    --instui-input-h-md: 2.5rem;    /* 40 — baseButton mediumHeight */
+    --instui-input-h-lg: 3rem;      /* 48 — baseButton largeHeight */
+
+    /* Side nav — Parchment-specific */
+    --instui-sidenav-w: 5.875rem;   /* 94 */
   }
   *, *::before, *::after { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
-  body { font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: var(--instui-fs-medium); line-height: var(--instui-lh-default); color: var(--instui-text-body); background: var(--instui-surface-page-secondary); -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); line-height: var(--instui-lh-default); color: var(--instui-text-body); background: var(--instui-surface-page-secondary); -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4, h5, h6 { font-family: var(--instui-font-heading); }
   *::-webkit-scrollbar { width: 6px; height: 6px; }
   *::-webkit-scrollbar-track { background: var(--instui-grey-12); }
   *::-webkit-scrollbar-thumb { background: var(--instui-grey-24); border-radius: 3px; }
-  .instui-button { font-family: inherit; font-weight: var(--instui-fw-bold); line-height: var(--instui-lh-fit); border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--instui-space-xs); transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; text-decoration: none; white-space: nowrap; }
-  .instui-button:focus-visible { outline: 2px solid var(--instui-blue-45); outline-offset: 2px; }
+  /* Buttons — 12px radius, 32/40/48 heights, Atkinson 600 */
+  .instui-button { font-family: var(--instui-font-body); font-weight: var(--instui-fw-semibold); line-height: var(--instui-lh-fit); border-radius: var(--instui-br-large); border: var(--instui-bw-small) solid; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--instui-space-xs); transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; text-decoration: none; white-space: nowrap; }
+  .instui-button:focus-visible { outline: 2px solid var(--instui-brand); outline-offset: 2px; }
   .instui-button:disabled { opacity: 0.5; cursor: not-allowed; }
   .instui-button-sm { font-size: var(--instui-fs-small); padding: 0 var(--instui-space-sm); height: var(--instui-input-h-sm); }
-  .instui-button-md { font-size: var(--instui-fs-small); padding: 0 var(--instui-space-msm); height: var(--instui-input-h-md); }
-  .instui-button-lg { font-size: var(--instui-fs-medium); padding: 0 var(--instui-space-md); height: var(--instui-input-h-lg); }
-  .instui-button-primary { background: var(--instui-blue-45); border-color: var(--instui-blue-45); color: var(--instui-white); }
-  .instui-button-primary:hover:not(:disabled) { background: var(--instui-blue-57); border-color: var(--instui-blue-57); }
-  .instui-button-secondary { background: var(--instui-white); border-color: var(--instui-grey-14); color: var(--instui-text-body); }
-  .instui-button-secondary:hover:not(:disabled) { background: var(--instui-grey-11); border-color: var(--instui-grey-24); }
+  .instui-button-md { font-size: var(--instui-fs-medium); padding: 0 var(--instui-space-msm); height: var(--instui-input-h-md); }
+  .instui-button-lg { font-size: 1.125rem; padding: 0 1.25rem; height: var(--instui-input-h-lg); gap: var(--instui-space-sm); }
+  .instui-button-primary { background: var(--instui-brand); border-color: var(--instui-brand); color: var(--instui-white); }
+  .instui-button-primary:hover:not(:disabled) { background: var(--instui-brand-hover); border-color: var(--instui-brand-hover); }
+  .instui-button-secondary { background: var(--instui-brand-light); border-color: var(--instui-brand-light); color: var(--instui-brand); }
+  .instui-button-secondary:hover:not(:disabled) { background: #C2D2EE; border-color: #C2D2EE; }
   .instui-button-success { background: var(--instui-green-45); border-color: var(--instui-green-45); color: var(--instui-white); }
   .instui-button-success:hover:not(:disabled) { background: var(--instui-green-57); border-color: var(--instui-green-57); }
   .instui-button-danger { background: var(--instui-white); border-color: var(--instui-red-45); color: var(--instui-red-57); }
   .instui-button-danger:hover:not(:disabled) { background: var(--instui-red-12); }
-  .instui-button-ai { background: linear-gradient(135deg, var(--instui-violet-45), var(--instui-blue-45)); border-color: transparent; color: var(--instui-white); }
-  .instui-button-ai:hover:not(:disabled) { background: linear-gradient(135deg, var(--instui-violet-57), var(--instui-blue-57)); }
+  .instui-button-ai { background: linear-gradient(135deg, var(--instui-violet-45), var(--instui-brand)); border-color: transparent; color: var(--instui-white); }
+  .instui-button-ai:hover:not(:disabled) { background: linear-gradient(135deg, var(--instui-violet-57), var(--instui-brand-hover)); }
   .instui-button-ghost { background: transparent; border-color: transparent; color: var(--instui-text-link); }
   .instui-button-ghost:hover:not(:disabled) { background: var(--instui-blue-12); }
   .instui-button-inverse { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); color: var(--instui-white); }
   .instui-button-inverse:hover:not(:disabled) { background: rgba(255,255,255,0.20); }
-  .instui-input { font-family: inherit; font-size: var(--instui-fs-small); color: var(--instui-text-body); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-14); border-radius: var(--instui-br-medium); padding: 0 var(--instui-space-sm); height: var(--instui-input-h-md); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; }
-  .instui-input:focus { outline: none; border-color: var(--instui-blue-45); box-shadow: 0 0 0 1px var(--instui-blue-45); }
-  .instui-textarea { font-family: inherit; font-size: var(--instui-fs-small); color: var(--instui-text-body); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-14); border-radius: var(--instui-br-medium); padding: var(--instui-space-sm); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; resize: vertical; line-height: var(--instui-lh-default); }
-  .instui-textarea:focus { outline: none; border-color: var(--instui-blue-45); box-shadow: 0 0 0 1px var(--instui-blue-45); }
-  .instui-label { display: block; font-size: var(--instui-fs-small); font-weight: var(--instui-fw-bold); color: var(--instui-text-body); margin-bottom: var(--instui-space-xxs); }
-  .instui-tabs { display: flex; gap: 0; border-bottom: var(--instui-bw-small) solid var(--instui-line-stroke); }
-  .instui-tab { position: relative; height: 3rem; padding: 0 var(--instui-space-md); font-size: var(--instui-fs-medium); font-weight: var(--instui-fw-bold); color: var(--instui-text-secondary); background: transparent; border: 0; cursor: pointer; transition: color 0.12s ease; }
-  .instui-tab:hover { color: var(--instui-text-body); }
-  .instui-tab[aria-selected="true"] { color: var(--instui-text-body); }
-  .instui-tab[aria-selected="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 0.1875rem; background: var(--instui-blue-45); border-radius: 0.125rem 0.125rem 0 0; }
-  .instui-pill { display: inline-flex; align-items: center; gap: var(--instui-space-xxxs); font-size: var(--instui-fs-xsmall); font-weight: var(--instui-fw-bold); padding: 0.125rem var(--instui-space-xs); border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; line-height: 1.4; }
+  /* Inputs — 12px radius, 40px height */
+  .instui-input { font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); color: var(--instui-grey-input); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-57); border-radius: var(--instui-br-large); padding: 0 var(--instui-space-sm); height: var(--instui-input-h-md); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; }
+  .instui-input::placeholder { color: var(--instui-text-placeholder); }
+  .instui-input:focus { outline: none; border-color: var(--instui-brand); box-shadow: 0 0 0 1px var(--instui-brand); }
+  .instui-textarea { font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); color: var(--instui-grey-input); background: var(--instui-white); border: var(--instui-bw-small) solid var(--instui-grey-57); border-radius: var(--instui-br-large); padding: var(--instui-space-sm); width: 100%; transition: border-color 0.12s ease, box-shadow 0.12s ease; resize: vertical; line-height: var(--instui-lh-default); }
+  .instui-textarea:focus { outline: none; border-color: var(--instui-brand); box-shadow: 0 0 0 1px var(--instui-brand); }
+  .instui-label { display: block; font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); font-weight: var(--instui-fw-semibold); color: var(--instui-text-body); margin-bottom: var(--instui-space-xs); }
+  /* Tabs — secondary variant: filled pill, navy active */
+  .instui-tabs { display: flex; gap: var(--instui-space-xs); padding: var(--instui-space-xs); background: var(--instui-grey-11); border-radius: var(--instui-br-large); }
+  .instui-tab { position: relative; height: 2.5rem; padding: 0 var(--instui-space-msm); font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); font-weight: var(--instui-fw-semibold); color: var(--instui-text-body); background: transparent; border: 0; border-radius: var(--instui-br-medium); cursor: pointer; transition: background 0.12s ease, color 0.12s ease; }
+  .instui-tab:hover:not([aria-selected="true"]) { background: rgba(29,53,79,0.06); }
+  .instui-tab[aria-selected="true"] { color: var(--instui-white); background: var(--instui-brand); }
+  /* Pills — 8px radius, 24px height, Atkinson 600 */
+  .instui-pill { display: inline-flex; align-items: center; gap: var(--instui-space-xxs); font-family: var(--instui-font-body); font-size: var(--instui-fs-small); font-weight: var(--instui-fw-semibold); padding: 0 var(--instui-space-xs); height: 1.5rem; border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; line-height: 1; }
+  /* Side nav */
+  .sidenav { width: var(--instui-sidenav-w); background: var(--instui-white); box-shadow: 0 0.125rem 0.25rem #2344651A, 0 0.0625rem 0.125rem #2344651A; border-radius: var(--instui-br-card); margin: var(--instui-space-sm); display: flex; flex-direction: column; gap: var(--instui-space-xxs); padding: var(--instui-space-xxs); position: sticky; top: var(--instui-space-sm); height: calc(100vh - 1.5rem); }
+  .sidenav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--instui-space-xxs); padding: var(--instui-space-sm) var(--instui-space-xxs); border-radius: var(--instui-br-large); border: 0; background: transparent; cursor: pointer; transition: background 0.12s ease, color 0.12s ease; color: var(--instui-text-body); font-family: var(--instui-font-body); font-size: var(--instui-fs-small); font-weight: var(--instui-fw-normal); text-align: center; line-height: 1.2; }
+  .sidenav-item:hover:not(.is-active) { background: var(--instui-grey-11); }
+  .sidenav-item.is-active { background: var(--instui-brand); color: var(--instui-white); }
+  .sidenav-item .icon { width: 1.5rem; height: 1.5rem; }
   .instui-link { color: var(--instui-text-link); text-decoration: none; font-weight: var(--instui-fw-bold); }
   .instui-link:hover { text-decoration: underline; }
   .fade-in { animation: fadeIn 0.3s ease-in-out; }
@@ -109,10 +203,10 @@
 // ═════════════════════ InstUI Primitives ═════════════════════
 const SPACE = {'none':'0','0':'0','xxx-small':'var(--instui-space-xxxs)','xx-small':'var(--instui-space-xxs)','x-small':'var(--instui-space-xs)','small':'var(--instui-space-sm)','medium-small':'var(--instui-space-msm)','medium':'var(--instui-space-md)','large':'var(--instui-space-lg)','x-large':'var(--instui-space-xl)','xx-large':'var(--instui-space-xxl)'};
 const space = v => v ? String(v).split(' ').map(p => SPACE[p] || p).join(' ') : undefined;
-const BG = {'primary':'var(--instui-surface-card-primary)','secondary':'var(--instui-surface-card-secondary)','primary-inverse':'var(--instui-surface-dark)','brand':'var(--instui-blue-45)','info':'var(--instui-blue-12)','success':'var(--instui-green-12)','warning':'var(--instui-orange-12)','danger':'var(--instui-red-12)'};
-const BORDER_COLOR = {'primary':'var(--instui-line-stroke)','secondary':'var(--instui-grey-24)','brand':'var(--instui-blue-45)','info':'var(--instui-blue-45)','success':'var(--instui-green-45)','warning':'var(--instui-orange-45)','danger':'var(--instui-red-45)','transparent':'transparent'};
+const BG = {'primary':'var(--instui-surface-card-primary)','secondary':'var(--instui-surface-card-secondary)','primary-inverse':'var(--instui-surface-dark)','brand':'var(--instui-brand)','brand-light':'var(--instui-brand-light)','info':'var(--instui-blue-12)','success':'var(--instui-green-12)','warning':'var(--instui-orange-12)','danger':'var(--instui-red-12)'};
+const BORDER_COLOR = {'primary':'var(--instui-line-stroke)','secondary':'var(--instui-grey-45)','brand':'var(--instui-brand)','info':'var(--instui-info)','success':'var(--instui-green-45)','warning':'var(--instui-orange-45)','danger':'var(--instui-red-45)','transparent':'transparent'};
 const BORDER_W = {'none':'0','small':'var(--instui-bw-small)','medium':'var(--instui-bw-medium)','large':'var(--instui-bw-large)'};
-const RADIUS = {'none':'0','small':'var(--instui-br-small)','medium':'var(--instui-br-medium)','large':'var(--instui-br-large)','circle':'50%','pill':'9999px'};
+const RADIUS = {'none':'0','small':'var(--instui-br-small)','medium':'var(--instui-br-medium)','large':'var(--instui-br-large)','card':'var(--instui-br-card)','card-lg':'var(--instui-br-card-lg)','circle':'50%','pill':'9999px'};
 const SHADOW = {'none':'none','resting':'var(--instui-shadow-resting)','above':'var(--instui-shadow-above)','topmost':'var(--instui-shadow-topmost)'};
 
 const View = ({ as='div', display, padding, margin, background, borderWidth, borderColor='primary', borderRadius, shadow, width, maxWidth, minWidth, height, minHeight, position, textAlign, overflow, overflowY, overflowX, style={}, children, className, ...rest }) => {
@@ -156,15 +250,16 @@ const Heading = ({ level='h2', children, color, margin, style={}, ...rest }) => 
     h4: { fontSize:'var(--instui-title-card-rg)', lineHeight:'var(--instui-lh-condensed)' },
     h5: { fontSize:'var(--instui-title-card-mn)', lineHeight:'var(--instui-lh-condensed)' },
   };
-  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-blue-57)', inverse:'var(--instui-white)' };
-  return <Tag style={{ ...sizes[level], fontWeight:'var(--instui-fw-bold)', color: colors[color]||colors.primary, margin: space(margin)||0, ...style }} {...rest}>{children}</Tag>;
+  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-brand)', inverse:'var(--instui-white)' };
+  return <Tag style={{ ...sizes[level], fontWeight:'var(--instui-fw-bold)', color: colors[color]||colors.primary, margin: space(margin)||0, fontFamily:'var(--instui-font-heading)', ...style }} {...rest}>{children}</Tag>;
 };
 
 const Text = ({ as='span', size='medium', weight='normal', color='primary', transform, letterSpacing, lineHeight, children, style={}, ...rest }) => {
   const Tag = as;
   const sizes = {'x-small':'var(--instui-fs-xsmall)','small':'var(--instui-fs-small)','medium':'var(--instui-fs-medium)','large':'var(--instui-fs-large)','x-large':'var(--instui-fs-xlarge)','xx-large':'var(--instui-fs-xxlarge)'};
-  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-blue-57)', success:'var(--instui-text-success)', warning:'var(--instui-text-warning)', danger:'var(--instui-text-error)', placeholder:'var(--instui-text-placeholder)', inverse:'var(--instui-white)' };
-  return <Tag style={{ fontSize:sizes[size], fontWeight: weight==='bold'?'var(--instui-fw-bold)':'var(--instui-fw-normal)', color:colors[color], textTransform:transform, letterSpacing, lineHeight, ...style }} {...rest}>{children}</Tag>;
+  const colors = { primary:'var(--instui-text-body)', secondary:'var(--instui-text-secondary)', brand:'var(--instui-brand)', success:'var(--instui-text-success)', warning:'var(--instui-text-warning)', danger:'var(--instui-text-error)', placeholder:'var(--instui-text-placeholder)', inverse:'var(--instui-white)' };
+  const weights = { normal:'var(--instui-fw-normal)', medium:'var(--instui-fw-medium)', semibold:'var(--instui-fw-semibold)', bold:'var(--instui-fw-bold)' };
+  return <Tag style={{ fontSize:sizes[size], fontWeight: weights[weight]||weights.normal, color:colors[color], textTransform:transform, letterSpacing, lineHeight, ...style }} {...rest}>{children}</Tag>;
 };
 
 const Button = ({ children, color='primary', size='md', isLoading, disabled, renderIcon, style={}, className='', ...rest }) => (
@@ -177,20 +272,21 @@ const Button = ({ children, color='primary', size='md', isLoading, disabled, ren
 
 const Pill = ({ children, color='info', style={}, ...rest }) => {
   const palette = {
-    info:    { bg:'var(--instui-blue-12)',   fg:'var(--instui-blue-57)',   bd:'var(--instui-blue-45)' },
-    success: { bg:'var(--instui-green-12)',  fg:'var(--instui-green-57)',  bd:'var(--instui-green-45)' },
-    warning: { bg:'var(--instui-orange-12)', fg:'var(--instui-orange-57)', bd:'var(--instui-orange-45)' },
-    danger:  { bg:'var(--instui-red-12)',    fg:'var(--instui-red-57)',    bd:'var(--instui-red-45)' },
-    violet:  { bg:'var(--instui-violet-12)', fg:'var(--instui-violet-57)', bd:'var(--instui-violet-45)' },
+    info:    { bg:'var(--instui-white)',     fg:'var(--instui-info)',      bd:'var(--instui-info)' },
+    brand:   { bg:'var(--instui-brand-light)', fg:'var(--instui-brand)',   bd:'var(--instui-brand-light)' },
+    success: { bg:'var(--instui-green-12)',  fg:'var(--instui-green-57)',  bd:'var(--instui-green-57)' },
+    warning: { bg:'var(--instui-orange-12)', fg:'var(--instui-orange-57)', bd:'var(--instui-orange-57)' },
+    danger:  { bg:'var(--instui-red-12)',    fg:'var(--instui-red-57)',    bd:'var(--instui-red-57)' },
+    violet:  { bg:'var(--instui-violet-12)', fg:'var(--instui-violet-57)', bd:'var(--instui-violet-57)' },
     sea:     { bg:'var(--instui-sea-12)',    fg:'var(--instui-sea-57)',    bd:'var(--instui-sea-57)' },
-    neutral: { bg:'var(--instui-grey-11)',   fg:'var(--instui-grey-57)',   bd:'var(--instui-grey-14)' },
+    neutral: { bg:'var(--instui-white)',     fg:'var(--instui-text-body)', bd:'var(--instui-grey-45)' },
   };
   const p = palette[color]||palette.info;
   return <span className="instui-pill" style={{ background:p.bg, color:p.fg, borderColor:p.bd, ...style }} {...rest}>{children}</span>;
 };
 
 const Card = ({ padding='medium', children, hover=false, className='', style={}, ...rest }) => (
-  <View background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" padding={padding} className={hover?`card-hover ${className}`:className} style={style} {...rest}>{children}</View>
+  <View background="primary" shadow="resting" borderRadius="card" padding={padding} className={hover?`card-hover ${className}`:className} style={style} {...rest}>{children}</View>
 );
 
 // ═════════════════════ MOCK DATA ═════════════════════
@@ -1002,7 +1098,7 @@ const OpportunitiesPage = ({ lers, activeLerId, credentials, onSetActiveLer, onV
       </Flex>
 
       {activeLer && (
-        <View borderRadius="medium" padding="medium" shadow="resting" style={{background:'linear-gradient(135deg, var(--instui-grey-100) 0%, var(--instui-grey-125) 100%)',color:'#fff'}}>
+        <View borderRadius="card" padding="medium" shadow="resting" style={{background:'linear-gradient(135deg, var(--instui-brand) 0%, var(--instui-brand-hover) 100%)',color:'#fff'}}>
           <Flex justifyItems="space-between" alignItems="flex-start" gap="medium">
             <Flex.Item shouldGrow shouldShrink>
               <Text size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" as="div" style={{opacity:0.6,marginBottom:'var(--instui-space-xs)'}}>Active Learning & Employment Record</Text>
@@ -1254,39 +1350,57 @@ const PublicLERView = ({ ler, credentials }) => {
   );
 };
 
-// ═════════════════════ TopNavBar / Tabs ═════════════════════
+// ═════════════════════ TopNavBar (white) ═════════════════════
 const TopNavBar = ({ onLogoClick }) => (
-  <View as="header" background="primary-inverse" className="no-print" style={{position:'sticky',top:0,zIndex:40,height:'4rem',borderBottom:'var(--instui-bw-small) solid rgba(0,0,0,0.2)'}}>
-    <View maxWidth="80rem" margin="0 auto" padding="0 medium" style={{height:'100%'}}>
+  <View as="header" background="primary" className="no-print" style={{position:'sticky',top:0,zIndex:40,height:'4rem',borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
+    <View padding="0 medium" style={{height:'100%'}}>
       <Flex alignItems="center" justifyItems="space-between" style={{height:'100%'}}>
         <Flex gap="x-small" alignItems="center" onClick={onLogoClick} style={{cursor:'pointer'}}>
-          <View style={{width:'2rem',height:'2rem',background:'var(--instui-blue-45)',borderRadius:'var(--instui-br-medium)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <View style={{width:'2.25rem',height:'2.25rem',background:'var(--instui-logo-main)',borderRadius:'var(--instui-br-large)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
             <Text size="medium" weight="bold" color="inverse">P</Text>
+            <View style={{position:'absolute',top:'-2px',right:'-2px',width:'0.625rem',height:'0.625rem',borderRadius:'50%',background:'var(--instui-logo-accent)'}}/>
           </View>
-          <Flex direction="column" style={{lineHeight:1}}>
-            <Text size="large" weight="bold" color="inverse">Parchment</Text>
-            <Text size="x-small" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.6}}>by Instructure</Text>
+          <Flex direction="column" style={{lineHeight:1.1}}>
+            <Text size="medium" weight="bold" style={{color:'var(--instui-logo-main)',fontFamily:'var(--instui-font-heading)'}}>Parchment</Text>
+            <Text size="x-small" color="placeholder" style={{letterSpacing:'0.0625rem'}}>by Instructure</Text>
           </Flex>
         </Flex>
         <Flex gap="x-small" alignItems="center">
-          <img src="https://picsum.photos/seed/jessica/32/32" style={{width:'2rem',height:'2rem',borderRadius:'50%',border:'2px solid rgba(255,255,255,0.3)'}} alt=""/>
-          <Text size="small" color="inverse" style={{opacity:0.9}}>Hello, <Text weight="bold" color="inverse">Jessica</Text></Text>
+          <button style={{background:'transparent',border:0,padding:'0.5rem',cursor:'pointer',borderRadius:'50%',color:'var(--instui-text-body)'}} aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </button>
+          <button style={{background:'transparent',border:0,padding:'0.5rem',cursor:'pointer',borderRadius:'50%',color:'var(--instui-text-body)'}} aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          </button>
+          <View style={{width:'1px',height:'1.5rem',background:'var(--instui-line-stroke)',margin:'0 var(--instui-space-xs)'}}/>
+          <img src="https://picsum.photos/seed/jessica/40/40" style={{width:'2.5rem',height:'2.5rem',borderRadius:'50%',border:'1px solid var(--instui-grey-45)'}} alt=""/>
+          <View>
+            <Text as="div" size="small" weight="semibold">Jessica Anderson</Text>
+            <Text as="div" size="x-small" color="placeholder">Learner</Text>
+          </View>
         </Flex>
       </Flex>
     </View>
   </View>
 );
 
-const TabNav = ({ tabs, value, onChange }) => (
-  <View background="primary" className="no-print" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
-    <View maxWidth="80rem" margin="0 auto" padding="0 medium">
-      <div className="instui-tabs" role="tablist">
-        {tabs.map(t=>(
-          <button key={t} role="tab" aria-selected={value===t} className="instui-tab" onClick={()=>onChange(t)}>{t}</button>
-        ))}
-      </div>
-    </View>
-  </View>
+// ═════════════════════ Side Nav ═════════════════════
+const SIDE_NAV_ICONS = {
+  Dashboard: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>,
+  Opportunities: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.93 23.93 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
+  Orders: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
+  Settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>,
+};
+
+const SideNav = ({ tabs, value, onChange }) => (
+  <nav className="sidenav no-print" aria-label="Primary">
+    {tabs.map(t => (
+      <button key={t} className={`sidenav-item ${value===t?'is-active':''}`} onClick={()=>onChange(t)} aria-current={value===t?'page':undefined}>
+        {SIDE_NAV_ICONS[t]}
+        <span>{t}</span>
+      </button>
+    ))}
+  </nav>
 );
 
 // ═════════════════════ App ═════════════════════
@@ -1324,15 +1438,20 @@ const App = () => {
   return (
     <View background="secondary" minHeight="100vh" style={{display:'flex',flexDirection:'column'}}>
       <TopNavBar onLogoClick={()=>{setViewingLerId(null);setTab('Dashboard');}}/>
-      {!viewingLerId && <TabNav tabs={TABS} value={tab} onChange={setTab}/>}
 
-      <View as="main" maxWidth="80rem" width="100%" margin="0 auto" padding="large medium" style={{flex:1}}>
-        {clrPreviewId && <CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
-        {viewingLerId && viewingLer && <LERDetailView ler={viewingLer} credentials={credentials} onBack={()=>setViewingLerId(null)} onEdit={()=>{setEditingLer(viewingLer);setShowBuilder(true);}} onUpdate={u=>setLers(prev=>prev.map(l=>l.id===u.id?u:l))} isOwner={true}/>}
-        {!viewingLerId && tab==='Dashboard' && <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>}
-        {!viewingLerId && tab==='Opportunities' && <OpportunitiesPage lers={lers} activeLerId={activeLerId} credentials={credentials} onSetActiveLer={setActiveLerId} onViewLer={id=>setViewingLerId(id)} onNewLer={()=>setShowBuilder(true)} onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}} onDeleteLer={deleteLer} onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}/>}
-        {!viewingLerId && tab==='Orders' && <OrdersPage/>}
-        {!viewingLerId && tab==='Settings' && <SettingsPage/>}
+      <View style={{display:'flex',flex:1,alignItems:'flex-start'}}>
+        {!viewingLerId && <SideNav tabs={TABS} value={tab} onChange={t=>{setTab(t);setViewingLerId(null);}}/>}
+
+        <View as="main" style={{flex:1,minWidth:0,padding:'var(--instui-space-md) var(--instui-space-md) var(--instui-space-xl)'}}>
+          <View maxWidth="80rem" margin="0 auto">
+            {clrPreviewId && <CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+            {viewingLerId && viewingLer && <LERDetailView ler={viewingLer} credentials={credentials} onBack={()=>setViewingLerId(null)} onEdit={()=>{setEditingLer(viewingLer);setShowBuilder(true);}} onUpdate={u=>setLers(prev=>prev.map(l=>l.id===u.id?u:l))} isOwner={true}/>}
+            {!viewingLerId && tab==='Dashboard' && <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>}
+            {!viewingLerId && tab==='Opportunities' && <OpportunitiesPage lers={lers} activeLerId={activeLerId} credentials={credentials} onSetActiveLer={setActiveLerId} onViewLer={id=>setViewingLerId(id)} onNewLer={()=>setShowBuilder(true)} onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}} onDeleteLer={deleteLer} onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}/>}
+            {!viewingLerId && tab==='Orders' && <OrdersPage/>}
+            {!viewingLerId && tab==='Settings' && <SettingsPage/>}
+          </View>
+        </View>
       </View>
 
       {showBuilder && <LERBuilder credentials={credentials} initialLer={editingLer} initialSelectedIds={[]} onSave={saveLer} onCancel={()=>{setShowBuilder(false);setEditingLer(null);}}/>}
