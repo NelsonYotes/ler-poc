@@ -340,7 +340,18 @@ const MOCK_ORDERS = [
   {id:'ord-5', date:'2023-06-18', status:'Delivered', statusDetail:'Available for download', document:'Official Transcript', purpose:'Scholarship Application', from:'West Valley Community College', to:'National Merit Scholarship Corp.', subtotal:8.50, fee:1.00, total:9.50},
 ];
 
-const INITIAL_LER = { id:'ler-1', title:'Senior Frontend Engineering Portfolio', executiveSummary:'Experienced front-end developer with expertise in React, TypeScript, and cloud infrastructure. Holds verified credentials from leading institutions and an AWS certification, demonstrating a strong foundation in building and deploying scalable web applications. Co-curricular records document broad experiential learning across leadership, research, and professional development.', skillsProfile:['React','TypeScript','AWS','Cloud Computing','Web Development','Performance Optimization','UI Design','Data Analysis'], customSkills:['GraphQL','Tailwind CSS','Next.js'], softSkills:['Communication','Mentorship','Agile'], employmentHistory:[], credentialIds:['c3','c4','c7','c8'], status:'Published', createdAt:new Date().toISOString(), targetRole:'Cloud Architect / Senior Engineer' };
+const INITIAL_LER = { id:'ler-1', title:'Senior Frontend Engineering Portfolio', executiveSummary:'Experienced front-end developer with expertise in React, TypeScript, and cloud infrastructure. Holds verified credentials from leading institutions and an AWS certification, demonstrating a strong foundation in building and deploying scalable web applications. Co-curricular records document broad experiential learning across leadership, research, and professional development.', skillsProfile:['React','TypeScript','Web Development','Performance Optimization','UI Design','UX Research','AI Design','Prototyping'], customSkills:['GraphQL','Tailwind CSS','Next.js'], softSkills:['Communication','Mentorship','Agile'], employmentHistory:[], credentialIds:['c3','c4','c5','c8'], status:'Published', createdAt:new Date().toISOString(), targetRole:'Senior Frontend Engineer / Product Designer' };
+
+const INITIAL_LERS = [
+  INITIAL_LER,
+  { id:'ler-2', title:'Cloud & Infrastructure Profile', executiveSummary:'AWS-certified solutions architect with deep expertise in cloud computing, infrastructure, and IT operations. Combines formal engineering education with hands-on certifications in scalability, networking, and cybersecurity fundamentals to design and operate reliable cloud platforms at scale.', skillsProfile:['AWS','Cloud Computing','Scalability','Infrastructure','Security','Networking','IT Support','Troubleshooting'], customSkills:['Terraform','Kubernetes'], softSkills:['Communication','Risk Management'], employmentHistory:[], credentialIds:['c3','c6','c10','c13'], status:'Published', createdAt:new Date(Date.now()-86400000*7).toISOString(), targetRole:'Cloud Solutions Architect' },
+  { id:'ler-3', title:'STEM Research & Graduate School', executiveSummary:'B.S. Chemical Engineering graduate with a strong foundation in lab research, data analysis, and statistics. Documented research experience through co-curricular records and a Data Science Foundations course from Coursera / Johns Hopkins. Targeting STEM graduate programs and research fellowships.', skillsProfile:['Chemical Engineering','Process Control','Thermodynamics','Lab Research','Research','Data Analysis','Statistics','Python','Machine Learning'], customSkills:['MATLAB','LaTeX'], softSkills:['Critical Thinking','Curiosity'], employmentHistory:[], credentialIds:['c1','c7','c9'], status:'Private', createdAt:new Date(Date.now()-86400000*30).toISOString(), targetRole:'PhD in Chemical Engineering' },
+];
+
+const OTHER_BADGES = [
+  { id:'ob1', name:'Agile Development', issuer:'School of Engineering', date:'2025-05-22', type:'Badge', skills:['Agile','Scrum','Sprint Planning','Retrospectives'], imageUrl:'https://picsum.photos/seed/agile-dev/200/200', isVerified:false, publicUrl:null },
+  { id:'ob2', name:'Inclusive UX Workshop', issuer:'Self-declared', date:'2024-10-04', type:'Badge', skills:['Accessibility','UX Research','Inclusive Design'], imageUrl:'https://picsum.photos/seed/ux-inclusive/200/200', isVerified:false, publicUrl:null },
+];
 
 // ═════════════════════ Utilities ═════════════════════
 async function generateLERSummary(credentials, customSkills) {
@@ -887,8 +898,15 @@ const LERBuilder = ({ credentials, onSave, onCancel, initialLer=null, initialSel
   const [status,setStatus] = React.useState(initialLer?.status||'Published');
   const [search,setSearch] = React.useState('');
 
-  const filteredCreds = React.useMemo(()=>credentials.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())),[credentials,search]);
-  const grouped = React.useMemo(()=>({'Comprehensive Learner Records':filteredCreds.filter(c=>c.type==='CLR'),'Diplomas':filteredCreds.filter(c=>c.type==='Degree'),'Certificates & Courses':filteredCreds.filter(c=>c.type==='Certification'||c.type==='Course'),'Digital Badges':filteredCreds.filter(c=>c.type==='Badge')}),[filteredCreds]);
+  const allCreds = React.useMemo(()=>[...credentials, ...OTHER_BADGES],[credentials]);
+  const filteredCreds = React.useMemo(()=>allCreds.filter(c=>c.name.toLowerCase().includes(search.toLowerCase())||c.issuer.toLowerCase().includes(search.toLowerCase())),[allCreds,search]);
+  const grouped = React.useMemo(()=>({
+    'Comprehensive Learner Records': filteredCreds.filter(c=>c.type==='CLR'),
+    'Diplomas': filteredCreds.filter(c=>c.type==='Degree'),
+    'Certificates & Courses': filteredCreds.filter(c=>c.type==='Certification'||c.type==='Course'),
+    'Digital Badges': filteredCreds.filter(c=>c.type==='Badge' && c.isVerified),
+    'Other Credentials & Badges': filteredCreds.filter(c=>!c.isVerified || OTHER_BADGES.some(o=>o.id===c.id)),
+  }),[filteredCreds]);
   const toggle = id => setSelectedIds(prev=>prev.includes(id)?prev.filter(i=>i!==id):[...prev,id]);
 
   const handleGenerate = async (regen=false) => {
@@ -1137,6 +1155,23 @@ const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) 
               ? <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)'}}>{lerCreds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={id=>setClrPreviewId(id)}/>)}</View>
               : <Text as="p" size="small" color="placeholder" style={{fontStyle:'italic'}}>No credentials attached to this record.</Text>}
           </View>
+
+          {/* Matched Opportunities — powered by Talent Neuron */}
+          {matched.length > 0 && (
+            <View>
+              <Flex justifyItems="space-between" alignItems="flex-end" gap="small" margin="0 0 medium-small" wrap="wrap">
+                <View>
+                  <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div">Matched Opportunities ({matched.length})</Text>
+                  <Flex gap="x-small" alignItems="center" margin="xxs 0 0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--instui-info)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <Text size="x-small" color="secondary">Match scores from <Text weight="semibold" color="brand">Talent Neuron</Text> labor market data, based on this LER's skills</Text>
+                  </Flex>
+                </View>
+              </Flex>
+              <Flex direction="column" gap="small">{matched.slice(0,3).map(opp=><OpportunityCard key={opp.id} opp={opp}/>)}</Flex>
+              {matched.length > 3 && <Text as="p" size="x-small" color="placeholder" style={{textAlign:'center',marginTop:'var(--instui-space-sm)'}}>+ {matched.length - 3} more opportunities matched to this LER's skill profile.</Text>}
+            </View>
+          )}
         </Flex>
 
         <Flex direction="column" gap="medium">
@@ -1233,8 +1268,8 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
         const docs = creds.filter(c => c.type !== 'Badge');
         const badges = creds.filter(c => c.type === 'Badge');
         return (
-          <View key={institution} background="primary" borderRadius="card" shadow="resting" style={{overflow:'hidden'}}>
-            <View style={{height:'0.5rem',background:color}}/>
+          <View key={institution} background="primary" borderRadius="card" shadow="resting">
+            <View style={{height:'0.625rem',background:color,borderTopLeftRadius:'var(--instui-br-card)',borderTopRightRadius:'var(--instui-br-card)'}}/>
             <View padding="large">
               {/* Institution header row */}
               <Flex justifyItems="space-between" alignItems="flex-start" gap="small" margin="0 0 large" wrap="wrap">
@@ -1264,52 +1299,97 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
                 </View>
               )}
 
-              {/* Badges section */}
+              {/* Badges section — only show "Show All" sidebar when 3+ badges */}
               {badges.length > 0 && (
                 <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)',marginBottom:'var(--instui-space-lg)'}}>
                   <Heading level="h4" margin="0 0 medium">Digital Badges</Heading>
-                  <Flex gap="large" alignItems="center" wrap="wrap">
-                    <Flex.Item shouldGrow shouldShrink style={{minWidth:'18rem'}}>
-                      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-msm)'}}>
-                        {badges.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+                  {badges.length >= 3 ? (
+                    <Flex gap="large" alignItems="center" wrap="wrap">
+                      <Flex.Item shouldGrow shouldShrink style={{minWidth:'18rem'}}>
+                        <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-msm)'}}>
+                          {badges.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+                        </View>
+                      </Flex.Item>
+                      <View style={{minWidth:'14rem'}}>
+                        <Text as="p" size="medium" weight="semibold" style={{margin:'0 0 var(--instui-space-sm)'}}>View and manage all of your digital badges.</Text>
+                        <Button color="secondary" size="sm">Show All</Button>
                       </View>
-                    </Flex.Item>
-                    <View style={{minWidth:'14rem'}}>
-                      <Text as="p" size="medium" weight="semibold" style={{margin:'0 0 var(--instui-space-sm)'}}>View and manage all of your digital badges.</Text>
-                      <Button color="secondary" size="sm">Show All</Button>
+                    </Flex>
+                  ) : (
+                    <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-msm)'}}>
+                      {badges.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
                     </View>
-                  </Flex>
+                  )}
                 </View>
               )}
 
-              {/* Bottom action rows — only for academic institutions */}
+              {/* Bottom action rows — side-by-side */}
               {!isProfessional && (
-                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)'}}>
-                  <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap" margin="0 0 large">
+                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)',display:'grid',gridTemplateColumns:'1fr 1fr',gap:'var(--instui-space-lg)',alignItems:'stretch'}}>
+                  {/* Create Collections section */}
+                  <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
                     <View>
                       <Text as="div" size="medium" weight="semibold">Create Collections, Explore Pathways, View Record</Text>
-                      <Text as="div" size="small" color="secondary" style={{marginTop:'var(--instui-space-xxs)'}}>and more in Parchment Digital Badges</Text>
+                      <Text as="div" size="small" color="secondary" style={{marginTop:'var(--instui-space-xxs)',marginBottom:'var(--instui-space-sm)'}}>and more in Parchment Digital Badges</Text>
                     </View>
-                    <Button color="secondary" size="sm">Go To Digital Badges</Button>
-                  </Flex>
-                  <Flex justifyItems="space-between" alignItems="flex-start" gap="medium" wrap="wrap" padding="large 0 0" style={{borderTop:'1px solid var(--instui-line-divider)'}}>
+                    <View><Button color="secondary" size="sm">Go To Digital Badges</Button></View>
+                  </View>
+                  {/* Order A Credential section */}
+                  <View style={{display:'flex',flexDirection:'column',justifyContent:'space-between',borderLeft:'1px solid var(--instui-line-divider)',paddingLeft:'var(--instui-space-lg)'}}>
                     <View>
                       <Heading level="h4" margin="0 0 x-small">Order A Credential</Heading>
                       <Text as="div" size="small" color="secondary" style={{marginBottom:'var(--instui-space-sm)'}}>{institution} offers:</Text>
                       <Flex gap="x-small" wrap="wrap">
-                        {['Transcripts','Diplomas','Verifications','And More!'].map(t => (
-                          <span key={t} className="instui-pill" style={{background:'var(--instui-brand-light)',color:'var(--instui-brand)',borderColor:'var(--instui-brand-light)'}}>{t}</span>
+                        {[
+                          {label:'Transcripts', icon:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>},
+                          {label:'Diplomas', icon:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="9" r="5"/><path strokeLinecap="round" strokeLinejoin="round" d="M8.5 13l-2 9 5.5-3 5.5 3-2-9"/></svg>},
+                          {label:'Verifications', icon:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path strokeLinecap="round" strokeLinejoin="round" d="M8 12l3 3 5-6"/></svg>},
+                          {label:'And More!', icon:<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/></svg>},
+                        ].map(t => (
+                          <span key={t.label} className="instui-pill" style={{background:'var(--instui-brand-light)',color:'var(--instui-brand)',borderColor:'var(--instui-brand-light)',gap:'4px'}}>{t.icon}{t.label}</span>
                         ))}
                       </Flex>
                     </View>
-                    <Button color="secondary" size="sm">Order Now</Button>
-                  </Flex>
+                    <View style={{marginTop:'var(--instui-space-sm)'}}><Button color="secondary" size="sm">Order Now</Button></View>
+                  </View>
                 </View>
               )}
             </View>
           </View>
         );
       })}
+
+      {/* Other Badges section */}
+      <View background="primary" borderRadius="card" shadow="resting">
+        <View padding="large">
+          <Flex justifyItems="space-between" alignItems="flex-start" gap="small" wrap="wrap" margin="0 0 medium">
+            <Flex gap="small" alignItems="center">
+              <View background="secondary" borderRadius="medium" style={{width:'3rem',height:'3rem',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid var(--instui-line-stroke)'}}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--instui-violet-57)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M12 2l2.39 4.85 5.36.78-3.88 3.78.92 5.34L12 14.27 7.21 16.75l.92-5.34L4.25 7.63l5.36-.78L12 2z"/></svg>
+              </View>
+              <View>
+                <Heading level="h3">Other Badges</Heading>
+                <Text as="p" size="small" color="secondary" style={{margin:'2px 0 0',maxWidth:'42rem'}}>All your imported badges and those not tied to a validated Parchment organization</Text>
+              </View>
+            </Flex>
+            <Button color="secondary" size="md">+ Add A Badge</Button>
+          </Flex>
+          <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)',marginBottom:'var(--instui-space-lg)'}}>
+            <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-msm)'}}>
+              {OTHER_BADGES.map(cred => <CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+            </View>
+          </View>
+          <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-lg)'}}>
+            <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap">
+              <View>
+                <Text as="div" size="medium" weight="semibold">Create Collections, Explore Pathways, View Record</Text>
+                <Text as="div" size="small" color="secondary" style={{marginTop:'var(--instui-space-xxs)'}}>and more in Parchment Digital Badges</Text>
+              </View>
+              <Button color="secondary" size="sm">Go To Digital Badges</Button>
+            </Flex>
+          </View>
+        </View>
+      </View>
 
       {/* Order From Another Institution CTA */}
       <Flex justifyItems="center" margin="medium 0 0">
@@ -1394,8 +1474,14 @@ const OpportunitiesPage = ({ lers, activeLerId, credentials, onSetActiveLer, onV
 
       {matchedOpps.length>0 && (
         <View>
-          <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium-small">
-            <Text size="medium" weight="bold" transform="uppercase" letterSpacing="0.0625rem">Top Matched Opportunities</Text>
+          <Flex justifyItems="space-between" alignItems="flex-end" gap="small" wrap="wrap" margin="0 0 medium-small">
+            <View>
+              <Text size="medium" weight="bold" transform="uppercase" letterSpacing="0.0625rem" as="div">Top Matched Opportunities</Text>
+              <Flex gap="x-small" alignItems="center" margin="xxs 0 0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--instui-info)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <Text size="x-small" color="secondary">Match scores powered by <Text weight="semibold" color="brand">Talent Neuron</Text> labor market data</Text>
+              </Flex>
+            </View>
             <button onClick={()=>setShowAllOpps(true)} className="instui-link" style={{fontSize:'var(--instui-fs-small)',background:'none',border:0,cursor:'pointer'}}>View All ({matchedOpps.length}) →</button>
           </Flex>
           <Flex direction="column" gap="small">{matchedOpps.slice(0,3).map(opp=><OpportunityCard key={opp.id} opp={opp}/>)}</Flex>
@@ -1700,7 +1786,7 @@ const SideNav = ({ tabs, value, onChange, onLogoClick, userInitials='JC', userFi
 const App = () => {
   const lerViewId = React.useMemo(()=>new URLSearchParams(window.location.search).get('lerView'),[]);
   const [tab,setTab] = React.useState('Dashboard');
-  const [lers,setLers] = React.useState([INITIAL_LER]);
+  const [lers,setLers] = React.useState(INITIAL_LERS);
   const [credentials,setCredentials] = React.useState(MOCK_CREDENTIALS);
   const [activeLerId,setActiveLerId] = React.useState('ler-1');
   const [viewingLerId,setViewingLerId] = React.useState(null);
