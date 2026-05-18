@@ -176,11 +176,26 @@
   /* Pills — 8px radius, 24px height, Atkinson 600 */
   .instui-pill { display: inline-flex; align-items: center; gap: var(--instui-space-xxs); font-family: var(--instui-font-body); font-size: var(--instui-fs-small); font-weight: var(--instui-fw-semibold); padding: 0 var(--instui-space-xs); height: 1.5rem; border-radius: var(--instui-br-medium); border: var(--instui-bw-small) solid; line-height: 1; }
   /* Side nav */
-  .sidenav { width: var(--instui-sidenav-w); background: var(--instui-white); box-shadow: 0 0.125rem 0.25rem #2344651A, 0 0.0625rem 0.125rem #2344651A; border-radius: var(--instui-br-card); margin: var(--instui-space-sm); display: flex; flex-direction: column; gap: var(--instui-space-xxs); padding: var(--instui-space-xxs); position: sticky; top: var(--instui-space-sm); height: calc(100vh - 1.5rem); }
-  .sidenav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--instui-space-xxs); padding: var(--instui-space-sm) var(--instui-space-xxs); border-radius: var(--instui-br-large); border: 0; background: transparent; cursor: pointer; transition: background 0.12s ease, color 0.12s ease; color: var(--instui-text-body); font-family: var(--instui-font-body); font-size: var(--instui-fs-small); font-weight: var(--instui-fw-normal); text-align: center; line-height: 1.2; }
+  .sidenav { width: var(--instui-sidenav-w); background: var(--instui-white); box-shadow: 0 0.125rem 0.25rem #2344651A, 0 0.0625rem 0.125rem #2344651A; border-radius: var(--instui-br-card); margin: var(--instui-space-sm); display: flex; flex-direction: column; padding: var(--instui-space-sm) var(--instui-space-xxs); position: sticky; top: var(--instui-space-sm); height: calc(100vh - 1.5rem); }
+  .sidenav-logo { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; background: var(--instui-logo-main); border-radius: var(--instui-br-medium); margin: 0 auto var(--instui-space-md); color: #fff; position: relative; }
+  .sidenav-logo::after { content: ''; position: absolute; top: -2px; right: -2px; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--instui-logo-accent); }
+  .sidenav-user { display: flex; flex-direction: column; align-items: center; gap: var(--instui-space-xxs); padding: var(--instui-space-xs) var(--instui-space-xxs); border-radius: var(--instui-br-large); cursor: pointer; transition: background 0.12s ease; margin-bottom: var(--instui-space-xs); }
+  .sidenav-user:hover { background: var(--instui-grey-11); }
+  .sidenav-user-avatar { width: 2rem; height: 2rem; border-radius: 50%; border: 1.5px solid var(--instui-info); display: flex; align-items: center; justify-content: center; font-family: var(--instui-font-body); font-size: var(--instui-fs-xsmall); font-weight: var(--instui-fw-semibold); color: var(--instui-info); background: var(--instui-white); }
+  .sidenav-divider { height: 1px; background: var(--instui-line-divider); margin: var(--instui-space-xs) var(--instui-space-xxs); }
+  .sidenav-items { display: flex; flex-direction: column; gap: var(--instui-space-xxs); flex: 1; }
+  .sidenav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--instui-space-xxs); padding: var(--instui-space-xs) var(--instui-space-xxs); border-radius: var(--instui-br-large); border: 0; background: transparent; cursor: pointer; transition: background 0.12s ease, color 0.12s ease; color: var(--instui-text-body); font-family: var(--instui-font-body); font-size: var(--instui-fs-small); font-weight: var(--instui-fw-normal); text-align: center; line-height: 1.15; min-height: 3.5rem; }
   .sidenav-item:hover:not(.is-active) { background: var(--instui-grey-11); }
   .sidenav-item.is-active { background: var(--instui-brand); color: var(--instui-white); }
-  .sidenav-item .icon { width: 1.5rem; height: 1.5rem; }
+  .sidenav-item .icon { width: 1.5rem; height: 1.5rem; flex-shrink: 0; }
+  .sidenav-collapse { display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; margin: var(--instui-space-xs) auto 0; background: transparent; border: 0; border-radius: var(--instui-br-medium); cursor: pointer; color: var(--instui-text-secondary); }
+  .sidenav-collapse:hover { background: var(--instui-grey-11); }
+  /* Underline tabs (for in-page tab navigation) */
+  .instui-tabs-underline { display: flex; gap: var(--instui-space-md); border-bottom: 1px solid var(--instui-line-stroke); }
+  .instui-tab-underline { position: relative; padding: var(--instui-space-xs) 0 var(--instui-space-sm); font-family: var(--instui-font-body); font-size: var(--instui-fs-medium); font-weight: var(--instui-fw-semibold); color: var(--instui-text-secondary); background: transparent; border: 0; cursor: pointer; transition: color 0.12s ease; }
+  .instui-tab-underline:hover:not([aria-selected="true"]) { color: var(--instui-text-body); }
+  .instui-tab-underline[aria-selected="true"] { color: var(--instui-brand); }
+  .instui-tab-underline[aria-selected="true"]::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--instui-brand); }
   .instui-link { color: var(--instui-text-link); text-decoration: none; font-weight: var(--instui-fw-bold); }
   .instui-link:hover { text-decoration: underline; }
   .fade-in { animation: fadeIn 0.3s ease-in-out; }
@@ -501,7 +516,7 @@ const CLRPreviewModal = ({ credential:c, onClose }) => {
               <View>
                 <Text as="div" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,marginBottom:'0.5rem'}}>University of Florida</Text>
                 <Heading level="h1" color="inverse" style={{textTransform:'uppercase',letterSpacing:'-0.0625rem'}}>Gator Experience Record</Heading>
-                <Text as="div" size="large" weight="bold" color="inverse" style={{opacity:0.9,marginTop:'0.25rem'}}>Jordan K. Anderson</Text>
+                <Text as="div" size="large" weight="bold" color="inverse" style={{opacity:0.9,marginTop:'0.25rem'}}>Jessica Cumberland</Text>
               </View>
               <View style={{textAlign:'right'}}>
                 <Text as="p" size="x-small" weight="bold" color="inverse" transform="uppercase" letterSpacing="0.125rem" style={{opacity:0.7,margin:'0 0 0.25rem'}}>Issued: Feb 10, 2026</Text>
@@ -625,6 +640,170 @@ const AddCredentialModal = ({ onSave, onCancel }) => {
           <Button color="secondary" size="md" onClick={onCancel}>Cancel</Button>
           <Button color="primary" size="md" onClick={()=>onSave({id:Math.random().toString(36).slice(2,11),name,issuer,date,type,skills:[],isVerified:false})} disabled={!name.trim()||!issuer.trim()}>Save Achievement</Button>
         </Flex>
+      </View>
+    </Flex>
+  );
+};
+
+// ═════════════════════ Skill Detail Modal (Talent Neuron market data) ═════════════════════
+const SkillDetailModal = ({ skill, onClose }) => {
+  const [activeTab, setActiveTab] = React.useState('Market Labor Insights');
+  // Deterministic mock numbers based on skill name length
+  const len = skill.length;
+  const trend = 20 + (len * 3) % 40;
+  const description = `Focusing on understanding user needs and business goals to create a cohesive and effective strategy that guides design and development.`;
+  const companies = [
+    {name:'Google', count: 120 + len % 30},
+    {name:'Apple', count: 100 + len % 25},
+    {name:'Blackrock', count: 50 + len % 20},
+    {name:'Instructure', count: 20 + len % 15},
+    {name:'Amazon', count: 5 + len % 10},
+  ];
+  const titles = [
+    {name:`${skill} Lead`, pct: 100},
+    {name:`Director of ${skill.split(' ')[0]}`, pct: 75},
+    {name:'Product Design Lead', pct: 60},
+    {name:'Head of Product Designer', pct: 50},
+    {name:'VP of User Experience', pct: 50},
+  ];
+  const locations = [
+    {name:'Miami-Fort Lauderdale-Pompano Beach MSA, FL', postings:1000, trend:40},
+    {name:'New York-Newark-Jersey City MSA, NY', postings:400, trend:20},
+    {name:'San Francisco-Oakland MSA, CA', postings:246, trend:35},
+    {name:'Austin-Round Rock MSA, TX', postings:867, trend:10},
+  ];
+  return (
+    <Flex alignItems="flex-start" justifyItems="center" padding="medium" style={{position:'fixed',inset:0,zIndex:60,background:'rgba(39,53,64,0.75)',overflowY:'auto'}}>
+      <View background="primary" borderRadius="card" shadow="topmost" style={{width:'100%',maxWidth:'62rem',margin:'1rem 0',overflow:'hidden'}}>
+        <Flex justifyItems="flex-end" padding="x-small medium" style={{borderBottom:'1px solid var(--instui-line-divider)'}}>
+          <button onClick={onClose} aria-label="Close" style={{background:'transparent',border:0,padding:'0.5rem',cursor:'pointer',color:'var(--instui-text-body)'}}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </Flex>
+        <View padding="large">
+          <Heading level="h1">{skill}</Heading>
+          <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xs) 0 var(--instui-space-md)'}}>{description}</Text>
+          <Flex gap="x-small" alignItems="center" margin="0 0 medium">
+            <Text size="small" color="secondary">Talent Neuron Skill</Text>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="var(--instui-info)"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" fill="none" stroke="var(--instui-info)" strokeWidth="2"/></svg>
+          </Flex>
+          <View margin="0 0 medium">
+            <span className="instui-pill" style={{background:'var(--instui-white)',color:'var(--instui-info)',borderColor:'var(--instui-info)'}}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{marginRight:'4px'}}><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+              Public
+            </span>
+          </View>
+
+          {/* Underline tabs */}
+          <div className="instui-tabs-underline" role="tablist" style={{marginBottom:'var(--instui-space-md)'}}>
+            {['Market Labor Insights','Aligned Badges'].map(t => (
+              <button key={t} role="tab" aria-selected={activeTab===t} className="instui-tab-underline" onClick={()=>setActiveTab(t)}>{t}</button>
+            ))}
+          </div>
+
+          {activeTab==='Market Labor Insights' && (
+            <Flex direction="column" gap="medium">
+              <Flex justifyItems="space-between" alignItems="center" gap="small" wrap="wrap">
+                <Text as="p" size="small" color="secondary" style={{margin:0,maxWidth:'42rem'}}>Explore market labor data related to this specific skill and discover live job opportunities.</Text>
+                <Button color="secondary" size="sm">Placeholder</Button>
+              </Flex>
+
+              {/* Three-card row */}
+              <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:'var(--instui-space-msm)'}}>
+                <Card padding="medium">
+                  <Heading level="h5" margin="0 0 x-small">Skill Demand Trend</Heading>
+                  <Text as="p" size="x-small" color="secondary" style={{margin:'0 0 var(--instui-space-sm)'}}>See how in-demand a skill has been over time based on job titles</Text>
+                  <svg width="100%" height="80" viewBox="0 0 200 80" style={{display:'block'}}>
+                    <defs><linearGradient id="trendG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--instui-green-45)" stopOpacity="0.4"/><stop offset="100%" stopColor="var(--instui-green-45)" stopOpacity="0"/></linearGradient></defs>
+                    <path d="M0,60 Q40,50 60,40 T120,30 T200,20 L200,80 L0,80 Z" fill="url(#trendG)"/>
+                    <path d="M0,60 Q40,50 60,40 T120,30 T200,20" stroke="var(--instui-green-45)" strokeWidth="2" fill="none"/>
+                  </svg>
+                  <Flex gap="x-small" alignItems="center" margin="x-small 0 0">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--instui-green-45)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <Text size="x-small" weight="semibold" color="success">{trend}%</Text>
+                    <Text size="x-small" color="secondary">vs last month</Text>
+                  </Flex>
+                </Card>
+
+                <Card padding="medium">
+                  <Heading level="h5" margin="0 0 small">Top Companies Posting</Heading>
+                  <Flex direction="column" gap="x-small">
+                    {companies.map(c => (
+                      <Flex key={c.name} justifyItems="space-between" alignItems="center">
+                        <Text size="small">{c.name}</Text>
+                        <Text size="small" weight="semibold">{c.count}</Text>
+                      </Flex>
+                    ))}
+                  </Flex>
+                </Card>
+
+                <Card padding="medium">
+                  <Heading level="h5" margin="0 0 x-small">Skills Hierarchy</Heading>
+                  <Text as="p" size="x-small" color="secondary" style={{margin:'0 0 var(--instui-space-sm)'}}>View the relationships of the skill within the taxonomy.</Text>
+                  <Text as="div" size="small" weight="semibold" style={{marginBottom:'var(--instui-space-xxs)'}}>Design & Innovation</Text>
+                  {['User Experience (UX) Design','UX Research & Design Practices',skill].map(s => (
+                    <Flex key={s} gap="xxs" alignItems="center" padding="xxs 0">
+                      <Text size="small" color="secondary">→</Text>
+                      <Text size="small" style={{marginLeft:'4px'}}>{s}</Text>
+                    </Flex>
+                  ))}
+                </Card>
+              </View>
+
+              {/* Bar chart - top titles */}
+              <Card padding="medium">
+                <Heading level="h4" margin="0 0 medium">Top Job Titles Hiring for {skill}</Heading>
+                <Flex direction="column" gap="small">
+                  {titles.map(t => (
+                    <Flex key={t.name} gap="small" alignItems="center">
+                      <Text size="small" style={{minWidth:'12rem'}}>{t.name}</Text>
+                      <Flex.Item shouldGrow style={{position:'relative',height:'1.5rem'}}>
+                        <View style={{position:'absolute',inset:0,background:'var(--instui-grey-11)',borderRadius:'var(--instui-br-small)'}}/>
+                        <View style={{position:'absolute',top:0,left:0,bottom:0,width:`${t.pct}%`,background:'var(--instui-brand)',borderRadius:'var(--instui-br-small)'}}/>
+                      </Flex.Item>
+                      <Text size="small" weight="semibold" style={{minWidth:'3rem',textAlign:'right'}}>{t.pct}%</Text>
+                    </Flex>
+                  ))}
+                </Flex>
+                <Flex justifyItems="flex-start" margin="medium 0 0">
+                  <Button color="primary" size="sm">Show More</Button>
+                </Flex>
+              </Card>
+
+              {/* Top locations */}
+              <Card padding="medium">
+                <Heading level="h4" margin="0 0 x-small">Top Locations</Heading>
+                <Text as="p" size="small" color="secondary" style={{margin:'0 0 var(--instui-space-md)'}}>The number of job postings categorized by location that feature {skill.toLowerCase()} skill in their descriptions.</Text>
+                <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))',gap:'var(--instui-space-sm)'}}>
+                  {locations.map(loc => (
+                    <View key={loc.name} background="primary" borderRadius="medium" padding="small" style={{border:'1px solid var(--instui-line-stroke)'}}>
+                      <Text as="div" size="small" weight="semibold" style={{minHeight:'2.5rem',marginBottom:'var(--instui-space-xs)'}}>{loc.name}</Text>
+                      <Text as="div" weight="bold" size="medium" style={{marginBottom:'var(--instui-space-xxs)'}}>{loc.postings.toLocaleString()} <Text weight="normal" size="small" color="secondary">postings</Text></Text>
+                      <Flex gap="xxs" alignItems="center">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--instui-green-45)" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        <Text size="x-small" color="success" weight="semibold">{loc.trend}%</Text>
+                        <Text size="x-small" color="secondary">vs last month</Text>
+                      </Flex>
+                    </View>
+                  ))}
+                </View>
+                <Flex justifyItems="flex-start" margin="medium 0 0">
+                  <Button color="primary" size="sm">Show More</Button>
+                </Flex>
+              </Card>
+            </Flex>
+          )}
+
+          {activeTab==='Aligned Badges' && (
+            <Card padding="medium">
+              <Text as="p" color="secondary" style={{margin:0,textAlign:'center',padding:'var(--instui-space-md) 0'}}>Credentials and badges aligned to <Text weight="bold">{skill}</Text> appear here.</Text>
+            </Card>
+          )}
+
+          <Flex justifyItems="flex-end" margin="large 0 0">
+            <a href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" className="instui-link" style={{fontSize:'var(--instui-fs-small)'}}>Open in Talent Neuron ↗</a>
+          </Flex>
+        </View>
       </View>
     </Flex>
   );
@@ -895,6 +1074,7 @@ const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) 
   const [editingSummary,setEditingSummary] = React.useState(false);
   const [summary,setSummary] = React.useState(ler.executiveSummary);
   const [clrPreviewId,setClrPreviewId] = React.useState(null);
+  const [skillDetail,setSkillDetail] = React.useState(null);
   const [copied,setCopied] = React.useState(false);
   const lerCreds = credentials.filter(c=>ler.credentialIds.includes(c.id));
   const matched = React.useMemo(()=>matchOpportunities(ler),[ler]);
@@ -903,6 +1083,7 @@ const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) 
   return (
     <View className="slide-up" padding="0 0 x-large">
       {clrPreviewId && <CLRPreviewModal credential={credentials.find(c=>c.id===clrPreviewId)} onClose={()=>setClrPreviewId(null)}/>}
+      {skillDetail && <SkillDetailModal skill={skillDetail} onClose={()=>setSkillDetail(null)}/>}
       <Card padding="medium" style={{marginBottom:'var(--instui-space-lg)'}}>
         <Flex gap="medium" alignItems="center" wrap="wrap">
           {isOwner && (
@@ -963,9 +1144,9 @@ const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) 
                 <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Verified Skills</Text>
                 <Flex gap="x-small" wrap="wrap">
                   {ler.skillsProfile.map(skill=>(
-                    <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
-                      <Pill color="info">{skill} ↗</Pill>
-                    </a>
+                    <button key={skill} onClick={()=>setSkillDetail(skill)} style={{background:'none',border:0,padding:0,cursor:'pointer'}}>
+                      <Pill color="info">{skill} →</Pill>
+                    </button>
                   ))}
                 </Flex>
               </View>
@@ -975,9 +1156,9 @@ const LERDetailView = ({ ler, credentials, onBack, onEdit, onUpdate, isOwner }) 
                 <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'var(--instui-space-xs)'}}>Self-Declared Skills</Text>
                 <Flex gap="x-small" wrap="wrap">
                   {ler.customSkills.map(skill=>(
-                    <a key={skill} href={talentNeuronUrl(skill)} target="_blank" rel="noopener noreferrer" style={{textDecoration:'none'}}>
-                      <Pill color="warning">{skill} ↗</Pill>
-                    </a>
+                    <button key={skill} onClick={()=>setSkillDetail(skill)} style={{background:'none',border:0,padding:0,cursor:'pointer'}}>
+                      <Pill color="warning">{skill} →</Pill>
+                    </button>
                   ))}
                 </Flex>
               </View>
@@ -1043,28 +1224,93 @@ const DashboardPage = ({ credentials, onViewCLR, onAddCred }) => {
       )}
 
       {groups.map(([institution,creds])=>{
-        const color = INST_COLORS[institution] || 'var(--instui-blue-45)';
-        const hasCLR = creds.some(c=>c.type==='CLR');
+        const color = INST_COLORS[institution] || 'var(--instui-brand)';
+        const isProfessional = institution === 'Professional & Industry';
+        const docs = creds.filter(c => c.type !== 'Badge');
+        const badges = creds.filter(c => c.type === 'Badge');
         return (
-          <View key={institution} background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" style={{overflow:'hidden'}}>
-            <View style={{height:'0.375rem',background:color}}/>
+          <View key={institution} background="primary" borderRadius="card" shadow="resting" style={{overflow:'hidden'}}>
+            <View style={{height:'0.5rem',background:color}}/>
             <View padding="medium">
-              <Flex gap="small" alignItems="center" margin="0 0 medium">
-                <View background="secondary" borderWidth="small" borderColor="primary" borderRadius="medium" style={{width:'2.75rem',height:'2.75rem',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                  <Text size="large" weight="bold" style={{color}}>{institution.charAt(0)}</Text>
-                </View>
-                <View>
-                  <Heading level="h4">{institution}</Heading>
-                  <Text as="p" size="x-small" color="placeholder" style={{margin:'2px 0 0'}}>{creds.length} credential{creds.length!==1?'s':''}{hasCLR?' · Includes Co-curricular Record':''}</Text>
-                </View>
+              {/* Institution header row */}
+              <Flex justifyItems="space-between" alignItems="flex-start" gap="small" margin="0 0 medium" wrap="wrap">
+                <Flex gap="small" alignItems="center">
+                  <View background="secondary" borderRadius="medium" style={{width:'3.5rem',height:'3.5rem',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,border:'1px solid var(--instui-line-stroke)'}}>
+                    <Text size="x-large" weight="bold" style={{color,fontFamily:'var(--instui-font-heading)'}}>{institution.charAt(0)}</Text>
+                  </View>
+                  <View>
+                    <Heading level="h3">{institution}</Heading>
+                    <Text as="p" size="small" color="secondary" style={{margin:'2px 0 0',lineHeight:1.3}}>{isProfessional?'Various Locations':'United States'}</Text>
+                  </View>
+                </Flex>
+                {!isProfessional && (
+                  <Flex gap="x-small" alignItems="center">
+                    <Button color="primary" size="md">Order This Credential</Button>
+                    <button style={{width:'2.5rem',height:'2.5rem',background:'var(--instui-brand-light)',border:0,borderRadius:'50%',cursor:'pointer',color:'var(--instui-brand)',display:'flex',alignItems:'center',justifyContent:'center'}} aria-label="More options">
+                      <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>
+                    </button>
+                  </Flex>
+                )}
               </Flex>
-              <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)'}}>
-                {creds.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
-              </View>
+
+              {/* Documents grid */}
+              {docs.length > 0 && (
+                <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(320px, 1fr))',gap:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
+                  {docs.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+                </View>
+              )}
+
+              {/* Badges section */}
+              {badges.length > 0 && (
+                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)',marginBottom:'var(--instui-space-md)'}}>
+                  <Heading level="h4" margin="0 0 small">Digital Badges</Heading>
+                  <Flex gap="medium" alignItems="center" wrap="wrap">
+                    <Flex.Item shouldGrow shouldShrink style={{minWidth:'18rem'}}>
+                      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))',gap:'var(--instui-space-xs)'}}>
+                        {badges.map(cred=><CredentialCard key={cred.id} credential={cred} onView={onViewCLR}/>)}
+                      </View>
+                    </Flex.Item>
+                    <View style={{minWidth:'14rem'}}>
+                      <Text as="p" size="medium" weight="semibold" style={{margin:'0 0 var(--instui-space-xs)'}}>View and manage all of your digital badges.</Text>
+                      <Button color="secondary" size="sm">Show All</Button>
+                    </View>
+                  </Flex>
+                </View>
+              )}
+
+              {/* Bottom action rows — only for academic institutions */}
+              {!isProfessional && (
+                <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)'}}>
+                  <Flex justifyItems="space-between" alignItems="center" gap="medium" wrap="wrap" margin="0 0 medium">
+                    <View>
+                      <Text as="div" size="medium" weight="semibold">Create Collections, Explore Pathways, View Record</Text>
+                      <Text as="div" size="small" color="secondary">and more in Parchment Digital Badges</Text>
+                    </View>
+                    <Button color="secondary" size="sm">Go To Digital Badges</Button>
+                  </Flex>
+                  <Flex justifyItems="space-between" alignItems="flex-start" gap="medium" wrap="wrap" padding="medium 0 0" style={{borderTop:'1px solid var(--instui-line-divider)'}}>
+                    <View>
+                      <Heading level="h4" margin="0 0 xx-small">Order A Credential</Heading>
+                      <Text as="div" size="small" color="secondary" style={{marginBottom:'var(--instui-space-xs)'}}>{institution} offers:</Text>
+                      <Flex gap="x-small" wrap="wrap">
+                        {['Transcripts','Diplomas','Verifications','And More!'].map(t => (
+                          <span key={t} className="instui-pill" style={{background:'var(--instui-brand-light)',color:'var(--instui-brand)',borderColor:'var(--instui-brand-light)'}}>{t}</span>
+                        ))}
+                      </Flex>
+                    </View>
+                    <Button color="secondary" size="sm">Order Now</Button>
+                  </Flex>
+                </View>
+              )}
             </View>
           </View>
         );
       })}
+
+      {/* Order From Another Institution CTA */}
+      <Flex justifyItems="center" margin="medium 0 0">
+        <Button color="primary" size="md" renderIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>}>Order From Another Institution</Button>
+      </Flex>
     </Flex>
   );
 };
@@ -1157,130 +1403,161 @@ const OpportunitiesPage = ({ lers, activeLerId, credentials, onSetActiveLer, onV
   );
 };
 
-// ═════════════════════ Orders Page ═════════════════════
+// ═════════════════════ Orders Page (Open + Completed sections) ═════════════════════
+const OrderCard = ({ order }) => (
+  <View background="secondary" borderRadius="large" style={{overflow:'hidden'}}>
+    <Flex justifyItems="space-between" alignItems="center" padding="small medium" wrap="wrap" gap="small">
+      <Text size="small" as="div"><Text weight="semibold">Order Date:</Text> <Text weight="bold">{new Date(order.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</Text></Text>
+      <Text size="small" as="div"><Text weight="semibold">Transaction Total:</Text> <Text weight="bold">{order.total===0?'Free':'$'+order.total.toFixed(2)}</Text></Text>
+    </Flex>
+    <View background="primary" padding="medium" style={{margin:'0 var(--instui-space-sm) var(--instui-space-sm)',borderRadius:'var(--instui-br-medium)'}}>
+      <Heading level="h4" margin="0 0 small">{order.status==='Delivered'?'Download Confirmed':order.status==='Processing'?`Pending Fulfillment by ${order.from}`:'Cancelled by Requester'}</Heading>
+      <Flex gap="medium" wrap="wrap" alignItems="flex-start">
+        <View style={{width:'4rem',height:'4.5rem',background:'var(--instui-blue-12)',borderRadius:'var(--instui-br-medium)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+          <svg width="32" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--instui-info)" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </View>
+        <Flex.Item shouldGrow shouldShrink>
+          <Text as="div" size="medium" weight="semibold">{order.document}</Text>
+          <Text as="div" size="small" color="secondary">Document ID  {order.id.toUpperCase().replace('ORD-','M')}{Math.random().toString(36).slice(2,7).toUpperCase()}</Text>
+        </Flex.Item>
+        <View style={{minWidth:'12rem'}}>
+          <Flex gap="x-small" margin="0 0 xx-small"><Text size="small" color="secondary" weight="semibold" style={{minWidth:'3rem'}}>For</Text><Text size="small">Jessica Cumberland</Text></Flex>
+          <Flex gap="x-small" margin="0 0 xx-small"><Text size="small" color="secondary" weight="semibold" style={{minWidth:'3rem'}}>From</Text><Text size="small">{order.from}</Text></Flex>
+          <Flex gap="x-small"><Text size="small" color="secondary" weight="semibold" style={{minWidth:'3rem'}}>To</Text><Text size="small">{order.to}</Text></Flex>
+        </View>
+        {order.total>0 && (
+          <View style={{textAlign:'right',minWidth:'7rem'}}>
+            <Flex gap="medium" justifyItems="space-between"><Text size="small" color="secondary">Item Total</Text><Text size="small" weight="semibold">${order.subtotal.toFixed(2)}</Text></Flex>
+            <Flex gap="medium" justifyItems="space-between"><Text size="small" color="secondary">Sales Tax</Text><Text size="small" weight="semibold">${order.fee.toFixed(2)}</Text></Flex>
+          </View>
+        )}
+      </Flex>
+      {order.status==='Delivered' && (
+        <Flex justifyItems="flex-end" margin="medium 0 0">
+          <Button color="secondary" size="sm">⬇ Download Document</Button>
+        </Flex>
+      )}
+    </View>
+  </View>
+);
+
 const OrdersPage = () => {
-  const statusPill = s => s==='Delivered'?'success':s==='Processing'?'info':'danger';
-  const statusIcon = s => s==='Delivered'?'✓ Delivered':s==='Processing'?'⟳ Processing':'✕ Cancelled';
+  const openOrders = MOCK_ORDERS.filter(o => o.status === 'Processing');
+  const completedOrders = MOCK_ORDERS.filter(o => o.status !== 'Processing');
   return (
     <Flex direction="column" gap="large" className="fade-in">
-      <View>
-        <Heading level="h1">Orders</Heading>
-        <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>Your credential request history</Text>
-      </View>
-      {MOCK_ORDERS.map(order=>(
-        <View key={order.id} background="primary" borderWidth="small" borderColor="primary" borderRadius="medium" shadow="resting" style={{overflow:'hidden'}}>
-          <Flex justifyItems="space-between" alignItems="center" padding="small medium" background="secondary" gap="medium" wrap="wrap" style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
-            <Flex gap="medium" alignItems="center" wrap="wrap">
-              <View>
-                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div">Order Date</Text>
-                <Text size="small" weight="bold" as="div">{new Date(order.date).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'})}</Text>
-              </View>
-              <View style={{height:'2rem',width:'1px',background:'var(--instui-line-stroke)'}}/>
-              <View>
-                <Pill color={statusPill(order.status)}>{statusIcon(order.status)}</Pill>
-                <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{order.statusDetail}</Text>
-              </View>
-            </Flex>
-            <View style={{textAlign:'right'}}>
-              <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div">Total</Text>
-              <Text size="large" weight="bold" as="div">{order.total===0?'Free':'$'+order.total.toFixed(2)}</Text>
-            </View>
-          </Flex>
-          <View padding="medium">
-            <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:'var(--instui-space-md)',marginBottom:'var(--instui-space-msm)'}}>
-              <View>
-                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>Document</Text>
-                <Text size="small" weight="bold" as="div">{order.document}</Text>
-                <Text size="x-small" color="secondary" as="div" style={{marginTop:'2px'}}>For: {order.purpose}</Text>
-              </View>
-              <View>
-                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>From</Text>
-                <Text size="small" as="div">{order.from}</Text>
-              </View>
-              <View>
-                <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.0625rem" as="div" style={{marginBottom:'2px'}}>To</Text>
-                <Text size="small" as="div">{order.to}</Text>
-              </View>
-            </View>
-            {order.total>0 && (
-              <Flex gap="medium" wrap="wrap" padding="x-small 0 0" style={{borderTop:'var(--instui-bw-small) solid var(--instui-line-divider)'}}>
-                <Text size="x-small" color="placeholder">Subtotal: <Text weight="bold">${order.subtotal.toFixed(2)}</Text></Text>
-                <Text size="x-small" color="placeholder">Processing fee: <Text weight="bold">${order.fee.toFixed(2)}</Text></Text>
-              </Flex>
-            )}
+      <Flex justifyItems="space-between" alignItems="center" wrap="wrap" gap="small">
+        <Flex gap="small" alignItems="center">
+          <View style={{width:'3rem',height:'3rem',background:'var(--instui-blue-12)',borderRadius:'var(--instui-br-large)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--instui-info)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           </View>
-          {order.status==='Delivered' && (
-            <Flex justifyItems="flex-end" padding="0 medium small">
-              <Button color="secondary" size="sm">⬇ Download Document</Button>
-            </Flex>
-          )}
-        </View>
-      ))}
+          <Heading level="h1">Orders</Heading>
+        </Flex>
+        <Button color="primary" size="md">New Order +</Button>
+      </Flex>
+
+      <Card padding="medium">
+        <Flex gap="x-small" alignItems="center" margin="0 0 medium">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--instui-text-body)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <Heading level="h3">Open Orders</Heading>
+        </Flex>
+        {openOrders.length>0
+          ? <Flex direction="column" gap="medium">{openOrders.map(o => <OrderCard key={o.id} order={o}/>)}</Flex>
+          : <Text as="p" color="placeholder" style={{margin:0}}>No open orders.</Text>}
+      </Card>
+
+      <Card padding="medium">
+        <Flex gap="x-small" alignItems="center" margin="0 0 medium">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--instui-text-body)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <Heading level="h3">Completed Orders</Heading>
+        </Flex>
+        <Flex direction="column" gap="medium">{completedOrders.map(o => <OrderCard key={o.id} order={o}/>)}</Flex>
+      </Card>
     </Flex>
   );
 };
 
-// ═════════════════════ Settings Page ═════════════════════
-const SettingsPage = () => (
-  <Flex direction="column" gap="large" className="fade-in" style={{maxWidth:'42rem'}}>
-    <Heading level="h1">Settings</Heading>
+// ═════════════════════ Settings Page (Account Details + Schools) ═════════════════════
+const EditIcon = ({size=18,color='var(--instui-text-body)'}) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+);
 
+const SettingsPage = () => (
+  <Flex direction="column" gap="large" className="fade-in" style={{maxWidth:'56rem'}}>
     <Card padding="medium">
-      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
-        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Profile</Text>
-      </View>
-      <Flex gap="medium" alignItems="center" margin="0 0 medium">
-        <img src="https://picsum.photos/seed/jessica/80/80" style={{width:'5rem',height:'5rem',borderRadius:'50%',border:'2px solid var(--instui-line-stroke)',display:'block'}} alt="Profile photo"/>
-        <View>
-          <Button color="secondary" size="sm">Change Photo</Button>
-          <Text as="p" size="x-small" color="placeholder" style={{margin:'var(--instui-space-xxs) 0 0'}}>JPG or PNG, max 5 MB</Text>
+      <Text size="small" weight="semibold" color="secondary" as="div" style={{paddingBottom:'var(--instui-space-xs)',borderBottom:'1px solid var(--instui-line-divider)',marginBottom:'var(--instui-space-lg)'}}>Available Settings</Text>
+
+      {/* Profile photo centered */}
+      <Flex justifyItems="center" margin="0 0 large">
+        <View style={{position:'relative'}}>
+          <img src="https://picsum.photos/seed/jessica-panda/72/72" style={{width:'4.5rem',height:'4.5rem',borderRadius:'50%',display:'block',objectFit:'cover'}} alt="Profile photo"/>
+          <button aria-label="Edit photo" style={{position:'absolute',top:'-4px',right:'-12px',background:'transparent',border:0,cursor:'pointer'}}>
+            <EditIcon size={20}/>
+          </button>
         </View>
       </Flex>
-      <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(200px, 1fr))',gap:'var(--instui-space-msm)'}}>
-        {[['First Name','Jordan'],['Last Name','Anderson'],['Email','jordan.anderson@email.com'],['Phone','(555) 867-5309']].map(([label,val])=>(
-          <View key={label}>
-            <label className="instui-label">{label}</label>
-            <View background="secondary" borderWidth="small" borderColor="primary" borderRadius="medium" padding="x-small small" style={{height:'var(--instui-input-h-md)',display:'flex',alignItems:'center'}}>
-              <Text size="small">{val}</Text>
+
+      {/* Account Details */}
+      <Flex justifyItems="space-between" alignItems="center" margin="0 0 medium">
+        <Flex gap="x-small" alignItems="center">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--instui-text-body)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+          <Heading level="h3">Account Details</Heading>
+        </Flex>
+        <button aria-label="Edit details" style={{background:'transparent',border:0,cursor:'pointer',padding:'4px'}}>
+          <EditIcon/>
+        </button>
+      </Flex>
+      <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)',marginBottom:'var(--instui-space-md)'}}>
+        <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(240px, 1fr))',rowGap:'var(--instui-space-md)',columnGap:'var(--instui-space-lg)'}}>
+          {[
+            ['Name','Jessica Lynn Cumberland'],
+            ['Mobile Number','444-555-4545'],
+            ['Date of Birth','February 20, 2006'],
+            ['Address','123 Main Street\nScottsdale, AZ 85009'],
+          ].map(([label,val])=>(
+            <View key={label}>
+              <Text as="div" size="small" color="secondary" style={{marginBottom:'var(--instui-space-xxs)'}}>{label}</Text>
+              <Text as="div" size="medium" weight="bold" style={{whiteSpace:'pre-line'}}>{val}</Text>
             </View>
-          </View>
-        ))}
+          ))}
+        </View>
       </View>
-      <Flex justifyItems="flex-end" margin="medium 0 0">
-        <Button color="primary" size="md">Save Changes</Button>
+
+      {/* Authentication + Privacy buttons */}
+      <Flex gap="small" justifyItems="center" wrap="wrap" margin="medium 0 0">
+        <Button color="primary" size="md" renderIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>}>Authentication Settings</Button>
+        <Button color="primary" size="md" renderIcon={<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="11" width="14" height="10" rx="2"/><path strokeLinecap="round" strokeLinejoin="round" d="M8 11V7a4 4 0 118 0v4"/></svg>}>Privacy Settings</Button>
       </Flex>
     </Card>
 
+    {/* Schools Attended */}
     <Card padding="medium">
-      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
-        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Schools Attended</Text>
-      </View>
-      {[{name:'Mount Elbert University',enrolled:'2020 – 2024',status:'Alumni'},{name:'West Valley Community College',enrolled:'2018 – 2020',status:'Alumni'},{name:'Appletree High School',enrolled:'2015 – 2019',status:'Graduate'}].map((school,i,arr)=>(
-        <Flex key={i} justifyItems="space-between" alignItems="center" padding="x-small 0" style={i<arr.length-1?{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)'}:{}}>
-          <View>
-            <Text size="small" weight="bold" as="div">{school.name}</Text>
-            <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{school.enrolled} · {school.status}</Text>
-          </View>
-          <Button color="ghost" size="sm">Request Credentials</Button>
-        </Flex>
-      ))}
-    </Card>
-
-    <Card padding="medium">
-      <View style={{borderBottom:'var(--instui-bw-small) solid var(--instui-line-divider)',paddingBottom:'var(--instui-space-xs)',marginBottom:'var(--instui-space-md)'}}>
-        <Text size="x-small" weight="bold" transform="uppercase" letterSpacing="0.125rem">Account</Text>
-      </View>
-      <Flex direction="column" gap="x-small">
-        {[{title:'Authentication Settings',desc:'Password, two-factor authentication, and sign-in options'},{title:'Privacy Settings',desc:'Control who can view and share your records'}].map(item=>(
-          <Flex key={item.title} justifyItems="space-between" alignItems="center" padding="small medium-small" background="secondary" borderRadius="medium">
-            <View>
-              <Text size="small" weight="bold" as="div">{item.title}</Text>
-              <Text size="x-small" color="placeholder" as="div" style={{marginTop:'2px'}}>{item.desc}</Text>
+      <Flex gap="x-small" alignItems="center" margin="0 0 medium">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--instui-text-body)" strokeWidth="1.75"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <Heading level="h3">Schools Attended</Heading>
+      </Flex>
+      <View style={{borderTop:'1px solid var(--instui-line-divider)',paddingTop:'var(--instui-space-md)',marginBottom:'var(--instui-space-md)'}}>
+        {[
+          {name:'Mount Elbert University',location:'Denver, Colorado USA',seed:'meu-school'},
+          {name:'West Valley Community College',location:'Cupertino, California USA',seed:'wvcc-school'},
+          {name:'Appletree High School',location:'Scottsdale, Arizona USA',seed:'apple-school'},
+        ].map((school,i,arr)=>(
+          <Flex key={i} gap="small" alignItems="center" padding="x-small 0" style={i<arr.length-1?{borderBottom:'1px solid var(--instui-line-divider)'}:{}}>
+            <View style={{width:'3rem',height:'3rem',background:'var(--instui-grey-11)',borderRadius:'50%',border:'1px solid var(--instui-line-stroke)',overflow:'hidden',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+              <img src={`https://picsum.photos/seed/${school.seed}/48/48`} style={{width:'100%',height:'100%',objectFit:'cover'}} alt=""/>
             </View>
-            <Button color="secondary" size="sm">Manage →</Button>
+            <Flex.Item shouldGrow>
+              <Text size="medium" weight="bold" as="div">{school.name}</Text>
+              <Text size="small" color="secondary" as="div">{school.location}</Text>
+            </Flex.Item>
           </Flex>
         ))}
-      </Flex>
+      </View>
+      {/* Add school search */}
+      <View style={{position:'relative'}}>
+        <input type="text" placeholder="Add a school you attended" className="instui-input" style={{paddingLeft:'2.5rem'}}/>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--instui-text-placeholder)" strokeWidth="2" style={{position:'absolute',left:'0.875rem',top:'0.75rem'}}><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </View>
     </Card>
   </Flex>
 );
@@ -1302,8 +1579,8 @@ const PublicLERView = ({ ler, credentials }) => {
       </Flex>
       <View padding="large medium" maxWidth="48rem" margin="0 auto">
         <Card padding="x-large" style={{textAlign:'center',marginBottom:'var(--instui-space-lg)'}}>
-          <img src="https://picsum.photos/seed/jessica/80/80" style={{width:'5rem',height:'5rem',borderRadius:'50%',margin:'0 auto var(--instui-space-msm)',border:'2px solid var(--instui-line-stroke)',display:'block'}} alt="Jordan K. Anderson"/>
-          <Heading level="h2" margin="0 0 xx-small">Jordan K. Anderson</Heading>
+          <img src="https://picsum.photos/seed/jessica/80/80" style={{width:'5rem',height:'5rem',borderRadius:'50%',margin:'0 auto var(--instui-space-msm)',border:'2px solid var(--instui-line-stroke)',display:'block'}} alt="Jessica Cumberland"/>
+          <Heading level="h2" margin="0 0 xx-small">Jessica Cumberland</Heading>
           <Text size="x-small" weight="bold" color="placeholder" transform="uppercase" letterSpacing="0.125rem" as="div" style={{marginBottom:'var(--instui-space-md)'}}>Learning & Employment Record</Text>
           <Heading level="h3" color="brand" margin="0 0 x-small">{ler.title}</Heading>
           {ler.targetRole && <Text as="p" size="small" color="secondary" style={{margin:'var(--instui-space-xs) 0 0'}}>Looking for: <Text weight="bold">{ler.targetRole}</Text></Text>}
@@ -1350,56 +1627,68 @@ const PublicLERView = ({ ler, credentials }) => {
   );
 };
 
-// ═════════════════════ TopNavBar (white) ═════════════════════
-const TopNavBar = ({ onLogoClick }) => (
-  <View as="header" background="primary" className="no-print" style={{position:'sticky',top:0,zIndex:40,height:'4rem',borderBottom:'var(--instui-bw-small) solid var(--instui-line-stroke)'}}>
-    <View padding="0 medium" style={{height:'100%'}}>
-      <Flex alignItems="center" justifyItems="space-between" style={{height:'100%'}}>
-        <Flex gap="x-small" alignItems="center" onClick={onLogoClick} style={{cursor:'pointer'}}>
-          <View style={{width:'2.25rem',height:'2.25rem',background:'var(--instui-logo-main)',borderRadius:'var(--instui-br-large)',display:'flex',alignItems:'center',justifyContent:'center',position:'relative'}}>
-            <Text size="medium" weight="bold" color="inverse">P</Text>
-            <View style={{position:'absolute',top:'-2px',right:'-2px',width:'0.625rem',height:'0.625rem',borderRadius:'50%',background:'var(--instui-logo-accent)'}}/>
-          </View>
-          <Flex direction="column" style={{lineHeight:1.1}}>
-            <Text size="medium" weight="bold" style={{color:'var(--instui-logo-main)',fontFamily:'var(--instui-font-heading)'}}>Parchment</Text>
-            <Text size="x-small" color="placeholder" style={{letterSpacing:'0.0625rem'}}>by Instructure</Text>
-          </Flex>
-        </Flex>
-        <Flex gap="x-small" alignItems="center">
-          <button style={{background:'transparent',border:0,padding:'0.5rem',cursor:'pointer',borderRadius:'50%',color:'var(--instui-text-body)'}} aria-label="Search">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          </button>
-          <button style={{background:'transparent',border:0,padding:'0.5rem',cursor:'pointer',borderRadius:'50%',color:'var(--instui-text-body)'}} aria-label="Notifications">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-          </button>
-          <View style={{width:'1px',height:'1.5rem',background:'var(--instui-line-stroke)',margin:'0 var(--instui-space-xs)'}}/>
-          <img src="https://picsum.photos/seed/jessica/40/40" style={{width:'2.5rem',height:'2.5rem',borderRadius:'50%',border:'1px solid var(--instui-grey-45)'}} alt=""/>
-          <View>
-            <Text as="div" size="small" weight="semibold">Jessica Anderson</Text>
-            <Text as="div" size="x-small" color="placeholder">Learner</Text>
-          </View>
-        </Flex>
-      </Flex>
+// ═════════════════════ College Tools Page (placeholder) ═════════════════════
+const CollegeToolsPage = () => (
+  <Flex direction="column" gap="large" className="fade-in">
+    <View>
+      <Heading level="h1">College Tools</Heading>
+      <Text as="p" size="medium" color="secondary" style={{margin:'var(--instui-space-xxxs) 0 0'}}>Discover programs, compare schools, and plan your path.</Text>
     </View>
-  </View>
+    <View style={{display:'grid',gridTemplateColumns:'repeat(auto-fill, minmax(260px, 1fr))',gap:'var(--instui-space-md)'}}>
+      {[
+        {title:'Find a College',desc:'Search and filter accredited institutions by location, program, and outcomes.',icon:'🎓'},
+        {title:'Application Tracker',desc:'Manage deadlines, essays, and submission status across all your applications.',icon:'📋'},
+        {title:'Scholarship Finder',desc:'Match to scholarships aligned with your credentials and target programs.',icon:'💰'},
+        {title:'Career Pathways',desc:'See how your skills connect to careers and the credentials that build toward them.',icon:'🧭'},
+      ].map(t => (
+        <Card key={t.title} hover padding="medium">
+          <Flex gap="small" alignItems="flex-start">
+            <View style={{fontSize:'2rem',lineHeight:1}}>{t.icon}</View>
+            <Flex.Item shouldGrow shouldShrink>
+              <Heading level="h4" margin="0 0 xx-small">{t.title}</Heading>
+              <Text as="p" size="small" color="secondary" style={{margin:0}}>{t.desc}</Text>
+            </Flex.Item>
+          </Flex>
+        </Card>
+      ))}
+    </View>
+  </Flex>
 );
 
-// ═════════════════════ Side Nav ═════════════════════
+// ═════════════════════ Side Nav (logo + user + items + collapse) ═════════════════════
 const SIDE_NAV_ICONS = {
-  Dashboard: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>,
-  Opportunities: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.93 23.93 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
-  Orders: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
-  Settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>,
+  Dashboard: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="icon"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>,
+  Opportunities: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.93 23.93 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
+  Orders: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="icon"><rect x="6" y="3" width="12" height="18" rx="2"/><path strokeLinecap="round" strokeLinejoin="round" d="M9 8h6M9 12h6M9 16h4"/></svg>,
+  'College Tools': <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="icon"><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5z"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>,
+  Settings: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" className="icon"><circle cx="12" cy="12" r="3"/><path strokeLinecap="round" strokeLinejoin="round" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
 };
 
-const SideNav = ({ tabs, value, onChange }) => (
+const SideNav = ({ tabs, value, onChange, onLogoClick, userInitials='JC', userFirstName='Jessica' }) => (
   <nav className="sidenav no-print" aria-label="Primary">
-    {tabs.map(t => (
-      <button key={t} className={`sidenav-item ${value===t?'is-active':''}`} onClick={()=>onChange(t)} aria-current={value===t?'page':undefined}>
-        {SIDE_NAV_ICONS[t]}
-        <span>{t}</span>
-      </button>
-    ))}
+    {/* Logo */}
+    <div className="sidenav-logo" onClick={onLogoClick} style={{cursor:'pointer'}}>
+      <span style={{fontWeight:700,fontSize:'1rem',fontFamily:'var(--instui-font-heading)'}}>P</span>
+    </div>
+    {/* User avatar */}
+    <button className="sidenav-user" aria-label={`${userFirstName} profile`}>
+      <span className="sidenav-user-avatar">{userInitials}</span>
+      <span style={{fontSize:'var(--instui-fs-small)',fontWeight:'var(--instui-fw-normal)',color:'var(--instui-text-body)'}}>{userFirstName}</span>
+    </button>
+    <div className="sidenav-divider"/>
+    {/* Nav items */}
+    <div className="sidenav-items">
+      {tabs.map(t => (
+        <button key={t} className={`sidenav-item ${value===t?'is-active':''}`} onClick={()=>onChange(t)} aria-current={value===t?'page':undefined}>
+          {SIDE_NAV_ICONS[t]}
+          <span>{t}</span>
+        </button>
+      ))}
+    </div>
+    {/* Collapse button */}
+    <button className="sidenav-collapse" aria-label="Collapse navigation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
   </nav>
 );
 
@@ -1433,14 +1722,12 @@ const App = () => {
   const saveLer = ler => { setLers(prev=>{const ex=prev.find(l=>l.id===ler.id);return ex?prev.map(l=>l.id===ler.id?ler:l):[ler,...prev];}); setActiveLerId(ler.id); setShowBuilder(false); setEditingLer(null); };
   const deleteLer = id => { if(!confirm('Delete this Learning & Employment Record? This cannot be undone.')) return; setLers(prev=>prev.filter(l=>l.id!==id)); if(activeLerId===id) setActiveLerId(lers.find(l=>l.id!==id)?.id||''); if(viewingLerId===id) setViewingLerId(null); };
 
-  const TABS = ['Dashboard','Opportunities','Orders','Settings'];
+  const TABS = ['Dashboard','Opportunities','Orders','College Tools','Settings'];
 
   return (
-    <View background="secondary" minHeight="100vh" style={{display:'flex',flexDirection:'column'}}>
-      <TopNavBar onLogoClick={()=>{setViewingLerId(null);setTab('Dashboard');}}/>
-
-      <View style={{display:'flex',flex:1,alignItems:'flex-start'}}>
-        {!viewingLerId && <SideNav tabs={TABS} value={tab} onChange={t=>{setTab(t);setViewingLerId(null);}}/>}
+    <View background="secondary" minHeight="100vh">
+      <View style={{display:'flex',alignItems:'flex-start',minHeight:'100vh'}}>
+        <SideNav tabs={TABS} value={tab} onChange={t=>{setTab(t);setViewingLerId(null);}} onLogoClick={()=>{setViewingLerId(null);setTab('Dashboard');}} userInitials="JC" userFirstName="Jessica"/>
 
         <View as="main" style={{flex:1,minWidth:0,padding:'var(--instui-space-md) var(--instui-space-md) var(--instui-space-xl)'}}>
           <View maxWidth="80rem" margin="0 auto">
@@ -1449,6 +1736,7 @@ const App = () => {
             {!viewingLerId && tab==='Dashboard' && <DashboardPage credentials={credentials} onViewCLR={id=>setClrPreviewId(id)} onAddCred={()=>setShowAddCred(true)}/>}
             {!viewingLerId && tab==='Opportunities' && <OpportunitiesPage lers={lers} activeLerId={activeLerId} credentials={credentials} onSetActiveLer={setActiveLerId} onViewLer={id=>setViewingLerId(id)} onNewLer={()=>setShowBuilder(true)} onEditLer={ler=>{setEditingLer(ler);setShowBuilder(true);}} onDeleteLer={deleteLer} onToggleLerStatus={id=>setLers(prev=>prev.map(l=>l.id===id?{...l,status:l.status==='Published'?'Private':'Published'}:l))}/>}
             {!viewingLerId && tab==='Orders' && <OrdersPage/>}
+            {!viewingLerId && tab==='College Tools' && <CollegeToolsPage/>}
             {!viewingLerId && tab==='Settings' && <SettingsPage/>}
           </View>
         </View>
